@@ -186,18 +186,19 @@
 
 	#filters {
 		let {
-			// TODO: Is use of feature names allowed in sumOfIndex?
-			sum_load_c = sumOfIndex(vec, 21 .. 53);
-			sum_load_q = sumOfIndex(veq, 21 .. 53);
-			sum_store_c = sumOfIndex(vec, 54 .. 86);
-			sum_store_q = sumOfIndex(veq, 54 .. 86);
+			// Compute the total values for the load and store groups
+			// in the clone and query byte code vectors.
+			sum_load_c = sumOfFeatures(vec, s_load);
+			sum_load_q = sumOfFeatures(veq, s_load);
+			sum_store_c = sumOfFeatures(vec, s_store);
+			sum_store_q = sumOfFeatures(veq, s_store);
 
-			// TODO: Is there a better way to compute sum for
-			// non-consecutive indexes?
-			sum_var_decl_src_c = sourceOf(vec)(f_44_SINGLE_VARIABLE_DECLARATION) +
-				sumOfIndex(sourceOf(vec), 58 .. 60);
-			sum_var_decl_src_q = sourceOf(veq)(f_44_SINGLE_VARIABLE_DECLARATION) +
-				sumOfIndex(sourceOf(veq), 58 .. 60);
+			// Compute the total values for the variable declatation
+			// group in the clone and query source code vectors.
+			sum_var_decl_src_c = sumOfFeatures(sourceOf(vec),
+					s_variable_declaration);
+			sum_var_decl_src_q = sumOfFeatures(sourceOf(veq),
+					s_variable_declaration);
 		} in {
 			sum_load_q - sum_load_c > 0;
 			sum_load_q - sum_load_c == sum_store_q - sum_store_c ==
