@@ -205,8 +205,6 @@
 	#query veq;
 
 	#filters {
-		// TODO: is it possible to write not(Exists) or should the
-		// condition be re-written using forall?
 		not(Exists) vi in inlinedInto(veq): {
 			veq == vi;
 		}
