@@ -13,6 +13,7 @@
 #[[#include]]# <pthread.h>
 #[[#include]]# <set>
 
+#[[#include]]# "refactorings.h"
 #[[#include]]# "include/location.h"
 #[[#include]]# "vinline/vector-reader.h"
 

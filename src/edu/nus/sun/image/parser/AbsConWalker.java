@@ -7,6 +7,8 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
+import org.omg.SendingContext.RunTime;
 
 
 import java.io.BufferedWriter;
@@ -390,7 +392,7 @@ public class AbsConWalker implements   AbsConListener {
         isSourceOf = true;
         String exp;
         if(Integer.parseInt(ctx.getChild(8).getText())==0) {
-            exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"sourcecode_vectorindex"+")";
+            exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"sourcecode_vectorindex"+","+ctx.getChild(5) +")";
         } else{
             exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"sourcecode_vectorindex"+ctx.getChild(8)+ ","+ctx.getChild(5) +")";
         }
@@ -788,11 +790,10 @@ public class AbsConWalker implements   AbsConListener {
 
     public void writeToAbstractionTemplate(){
         VelocityEngine ve = new VelocityEngine();
-        Properties prop = new Properties();
-        String path = "/Users/Aish/IdeaProjects/AbsCon/src";
-        ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH,path);
+        ve.setProperty(RuntimeConstants.RESOURCE_LOADER,"classpath");
+        ve.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
         ve.init();
-        Template t = ve.getTemplate("Abstraction.cpp.template");
+        Template t = ve.getTemplate("templates/Abstraction.cpp.template");
         VelocityContext context = new VelocityContext();
         context.put("declList",declarationList);
         context.put("setDeclList",setDeclarationList);
@@ -806,11 +807,10 @@ public class AbsConWalker implements   AbsConListener {
 
     public void writeToConcretizationTemplate(){
         VelocityEngine ve = new VelocityEngine();
-        Properties prop = new Properties();
-        String path = "/Users/Aish/IdeaProjects/AbsCon/src";
-        ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH,path);
+        ve.setProperty(RuntimeConstants.RESOURCE_LOADER,"classpath");
+        ve.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
         ve.init();
-        Template t = ve.getTemplate("Concretization.cpp.template");
+        Template t = ve.getTemplate("templates/Concretization.cpp.template");
         VelocityContext context = new VelocityContext();
         context.put("declList",declarationList);
         context.put("setDeclList",setDeclarationList);
