@@ -13,23 +13,21 @@
 #[[#include]]# <pthread.h>
 #[[#include]]# <set>
 
-#[[#include]]# "headers.h"
-#[[#include]]# "refactorings.h"
-#[[#include]]# "../../include/location.h"
-#[[#include]]# "../../vinline/vector-reader.h"
+#[[#include]]# "include/location.h"
+#[[#include]]# "vinline/vector-reader.h"
 
 using namespace std;
 
 #foreach ($decl in $declList)
-    int $decl.id = $decl.index;
+    static int $decl.id = $decl.index;
 #end
 
 #foreach ($dec in $setDeclList)
-    int _tmp_$foreach.index [] = { #foreach ($var in $dec.features) #if($foreach.count == ($dec.features.size()))$var#else $var,#end  #end };
-    std::set<int> $dec.id ( _tmp_$foreach.index , _tmp_$foreach.index + sizeof ( _tmp_$foreach.index ) / sizeof( _tmp_$foreach.index [0] ));
+    static int _tmp_$foreach.index [] = { #foreach ($var in $dec.features) #if($foreach.count == ($dec.features.size()))$var#else $var,#end  #end };
+    static std::set<int> $dec.id ( _tmp_$foreach.index , _tmp_$foreach.index + sizeof ( _tmp_$foreach.index ) / sizeof( _tmp_$foreach.index [0] ));
 #end
 
-int sumOfFeatures(VectorReader* conc,std::set<int> features) {
+static int sumOfFeatures(VectorReader* conc,std::set<int> features) {
 	int sumofFeatures=0;
 
 	for (set<int>::iterator i = features.begin(); i != features.end(); i++) {
@@ -41,21 +39,28 @@ int sumOfFeatures(VectorReader* conc,std::set<int> features) {
 }
 
 
-int accessor(VectorReader* conc,int index) {
+static int accessor(VectorReader* conc,int index) {
     return conc->counters[index];
 }
 
+static int sourceOfSize(VectorReader* q,std::map<std::string, VectorReader::VectorSet>* vectorindex){
+vector<VectorReader*>* sourceVector =
+				VectorReader::getMethodVectorsFromIndex(vectorindex,
+						q->methodIDs[0]);
 
-int sourceOf(VectorReader* q,std::map<std::string, VectorReader::VectorSet>* vectorindex,int index){
+return (*sourceVector).size();
+}
+
+
+static int sourceOf(VectorReader* q,std::map<std::string, VectorReader::VectorSet>* vectorindex,int index){
 vector<VectorReader*>* sourceVector =
 				VectorReader::getMethodVectorsFromIndex(vectorindex,
 						q->methodIDs[0]);
 
 return (*sourceVector)[0]->counters[index];
-
 }
 
-bool compare_clone_vectors_fse(VectorReader* v1, VectorReader* v2) {
+static bool compare_clone_vectors_fse_abscon(VectorReader* v1, VectorReader* v2) {
 	bool res = true;
 	int i = 0;
 	int n = 218;
@@ -106,7 +111,7 @@ bool compare_clone_vectors_fse(VectorReader* v1, VectorReader* v2) {
 }
 
 
-bool checkInlinedInto(VectorReader* inlinedVector, VectorReader* $vectorNames.query, VectorReader* $vectorNames.clone, std::map<std::string, VectorReader::VectorSet>* vectorindex){
+static bool checkInlinedInto(VectorReader* inlinedVector, VectorReader* $vectorNames.query, VectorReader* $vectorNames.clone, std::map<std::string, VectorReader::VectorSet>* vectorindex){
 bool isExists = false;
 for (int i = 1; i < inlinedVector->methodIDs.size(); i++) {
     vector<VectorReader*>* clone_target_vectors =
@@ -114,14 +119,14 @@ for (int i = 1; i < inlinedVector->methodIDs.size(); i++) {
     					inlinedVector->methodIDs[i]);
     VectorReader* clone_inlined_vector = new VectorReader(
     			*(*clone_target_vectors)[0]);
-    if ((compare_vectors_fse(clone_inlined_vector, veq) == true))
+    if ((compare_clone_vectors_fse_abscon(clone_inlined_vector, veq) == true))
     		isExists =  true;
 }
 
 return isExists;
 }
 
-bool getFilterResult(std::map<std::string, VectorReader::VectorSet>* source_index0,std::map<std::string, VectorReader::VectorSet>* source_index1,std::map<std::string, VectorReader::VectorSet>* source_index2, VectorReader* $vectorNames.query, VectorReader* $vectorNames.clone){
+bool getFilterResult(VectorReader* $vectorNames.query, VectorReader* $vectorNames.clone){
 
 //var declarations
 bool isValidImitation= true;

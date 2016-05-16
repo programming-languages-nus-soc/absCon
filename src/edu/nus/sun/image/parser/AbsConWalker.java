@@ -17,6 +17,8 @@ import java.util.*;
 
 public class AbsConWalker implements   AbsConListener {
 
+
+
     public class LetBlock{
         public ArrayList getFilters() {
             return filters;
@@ -132,6 +134,7 @@ public class AbsConWalker implements   AbsConListener {
     boolean isSumOfFeatures;
     boolean isSourceOf;
     boolean isInlinedInto;
+    boolean isSourceSizeOf;
 
     @Override public void enterProgram(AbsConParser.ProgramContext ctx) {
         letBlockCount = 0;
@@ -385,7 +388,12 @@ public class AbsConWalker implements   AbsConListener {
 
     @Override public void enterSourceOf(AbsConParser.SourceOfContext ctx) {
         isSourceOf = true;
-        String exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"source_index"+ctx.getChild(8)+ ","+ctx.getChild(5) +")";
+        String exp;
+        if(Integer.parseInt(ctx.getChild(8).getText())==0) {
+            exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"sourcecode_vectorindex"+")";
+        } else{
+            exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"sourcecode_vectorindex"+ctx.getChild(8)+ ","+ctx.getChild(5) +")";
+        }
         if(!isSumOfFeatures){
             expressionList.add(exp);
         }
@@ -394,6 +402,27 @@ public class AbsConWalker implements   AbsConListener {
 
     @Override public void exitSourceOf(AbsConParser.SourceOfContext ctx) {
         isSourceOf  = false;
+    }
+
+    @Override
+    public void enterSourceOfSize(AbsConParser.SourceOfSizeContext ctx) {
+        String exp;
+        if(Integer.parseInt(ctx.getChild(5).getText())==0){
+             exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"sourcecode_vectorindex"+")";
+        } else{
+             exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"sourcecode_vectorindex"+ctx.getChild(5)+")";
+        }
+
+        System.out.println(exp);
+        isSourceSizeOf = true;
+        if(isCondition){
+            expressionList.add(exp);
+        }
+    }
+
+    @Override
+    public void exitSourceOfSize(AbsConParser.SourceOfSizeContext ctx) {
+        isSourceSizeOf = false;
     }
 
     @Override public void enterAbsFeature(AbsConParser.AbsFeatureContext ctx) { }
@@ -746,7 +775,7 @@ public class AbsConWalker implements   AbsConListener {
             break;
         }
         if(node.getText().matches("^-?\\d+$")){
-            if(isExp && !isIndexAccessor && !isSourceOf){
+            if(isExp && !isIndexAccessor && !isSourceOf && !isSourceSizeOf){
                 expressionList.add(node.getText());
             }
         }

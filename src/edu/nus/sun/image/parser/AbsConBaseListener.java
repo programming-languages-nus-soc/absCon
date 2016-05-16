@@ -316,6 +316,18 @@ public class AbsConBaseListener implements AbsConListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterSourceOfSize(AbsConParser.SourceOfSizeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSourceOfSize(AbsConParser.SourceOfSizeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAbsFeature(AbsConParser.AbsFeatureContext ctx) { }
 	/**
 	 * {@inheritDoc}

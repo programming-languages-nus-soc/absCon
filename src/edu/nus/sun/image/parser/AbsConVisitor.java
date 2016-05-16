@@ -161,6 +161,12 @@ public interface AbsConVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSourceOf(AbsConParser.SourceOfContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AbsConParser#sourceOfSize}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSourceOfSize(AbsConParser.SourceOfSizeContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AbsConParser#absFeature}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

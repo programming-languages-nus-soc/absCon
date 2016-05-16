@@ -258,6 +258,16 @@ public interface AbsConListener extends ParseTreeListener {
 	 */
 	void exitSourceOf(AbsConParser.SourceOfContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AbsConParser#sourceOfSize}.
+	 * @param ctx the parse tree
+	 */
+	void enterSourceOfSize(AbsConParser.SourceOfSizeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AbsConParser#sourceOfSize}.
+	 * @param ctx the parse tree
+	 */
+	void exitSourceOfSize(AbsConParser.SourceOfSizeContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AbsConParser#absFeature}.
 	 * @param ctx the parse tree
 	 */

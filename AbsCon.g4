@@ -26,11 +26,12 @@ featureAccessor: ID OPENBRACE ID CLOSEBRACE ;
 indexAccessor: ID SQUAREBRACEOPEN DIGITS SQUAREBRACECLOSE;
 gAssign:'setFeatures' OPENBRACE ID COMMA ID CLOSEBRACE ASSIGN expr SEMICOLON ;
 expr: exp+;
-exp: paranthesizedExp | exp MULDIV exp | exp ADDSUB exp | accessor |DIGITS | sumOfFeatures  | sourceOf | absFeature |id;
+exp: paranthesizedExp | exp MULDIV exp | exp ADDSUB exp | accessor |DIGITS | sumOfFeatures  | sourceOf | sourceOfSize|absFeature |id;
 id:ID;
 paranthesizedExp: OPENBRACE exp CLOSEBRACE;
 sumOfFeatures :'sumOfFeatures' OPENBRACE (ID | sourceOf) COMMA (ID|sourceOf) CLOSEBRACE;
 sourceOf:'sourceOf' OPENBRACE ID CLOSEBRACE OPENBRACE (ID|DIGITS) CLOSEBRACE OPENBRACE DIGITS CLOSEBRACE;
+sourceOfSize:'sourceOfSize' OPENBRACE ID CLOSEBRACE OPENBRACE (ID|DIGITS) CLOSEBRACE;
 absFeature:'abs' OPENBRACE ID CLOSEBRACE;
 
 //Concretization Declarations
