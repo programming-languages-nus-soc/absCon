@@ -1,0 +1,262 @@
+// Abstractions rules for “Split temporary variable” refactoring.
+
+
+#declares
+{
+	// Bytecode features and groups.
+
+	// Load operations.
+	f_21_iload = OP_iload;
+	f_22_lload = OP_lload;
+	f_23_fload = OP_fload;
+	f_24_dload = OP_dload;
+	f_25_aload = OP_aload;
+	f_26_iload_0 = OP_iload_0;
+	f_27_iload_1 = OP_iload_1;
+	f_28_iload_2 = OP_iload_2;
+	f_29_iload_3 = OP_iload_3;
+	f_30_lload_0 = OP_lload_0;
+	f_31_lload_1 = OP_lload_1;
+	f_32_lload_2 = OP_lload_2;
+	f_33_lload_3 = OP_lload_3;
+	f_34_fload_0 = OP_fload_0;
+	f_35_fload_1 = OP_fload_1;
+	f_36_fload_2 = OP_fload_2;
+	f_37_fload_3 = OP_fload_3;
+	f_38_dload_0 = OP_dload_0;
+	f_39_dload_1 = OP_dload_1;
+	f_40_dload_2 = OP_dload_2;
+	f_41_dload_3 = OP_dload_3;
+	f_42_aload_0 = OP_aload_0;
+	f_43_aload_1 = OP_aload_1;
+	f_44_aload_2 = OP_aload_2;
+	f_45_aload_3 = OP_aload_3;
+
+
+	// Set of load operations.
+	s_iload = setOf(
+		f_26_iload_0,
+		f_27_iload_1,
+		f_28_iload_2,
+		f_29_iload_3
+	);
+
+	s_lload = setOf(
+		f_30_lload_0,
+		f_31_lload_1,
+		f_32_lload_2,
+		f_33_lload_3
+	);
+
+	s_fload=setOf(
+		f_34_fload_0,
+		f_35_fload_1,
+		f_36_fload_2,
+		f_37_fload_3
+	);
+
+	s_dload = setOf(
+		f_38_dload_0,
+		f_39_dload_1,
+		f_40_dload_2,
+		f_41_dload_3
+	);
+
+	s_aload=setOf(
+		f_42_aload_0,
+		f_43_aload_1,
+		f_44_aload_2,
+		f_45_aload_3
+	);
+
+	// Store operations.
+	f_54_istore = OP_istore;
+	f_55_lstore = OP_lstore;
+	f_56_fstore = OP_fstore;
+	f_57_dstore = OP_dstore;
+	f_58_astore = OP_astore;
+	f_59_istore_0 = OP_istore_0;
+	f_60_istore_1 = OP_istore_1;
+	f_61_istore_2 = OP_istore_2;
+	f_62_istore_3 = OP_istore_3;
+	f_63_lstore_0 = OP_lstore_0;
+	f_64_lstore_1 = OP_lstore_1;
+	f_65_lstore_2 = OP_lstore_2;
+	f_66_lstore_3 = OP_lstore_3;
+	f_67_fstore_0 = OP_fstore_0;
+	f_68_fstore_1 = OP_fstore_1;
+	f_69_fstore_2 = OP_fstore_2;
+	f_70_fstore_3 = OP_fstore_3;
+	f_71_dstore_0 = OP_dstore_0;
+	f_72_dstore_1 = OP_dstore_1;
+	f_73_dstore_2 = OP_dstore_2;
+	f_74_dstore_3 = OP_dstore_3;
+	f_75_astore_0 = OP_astore_0;
+	f_76_astore_1 = OP_astore_1;
+	f_77_astore_2 = OP_astore_2;
+	f_78_astore_3 = OP_astore_3;
+
+
+	s_istore= setOf(
+		f_59_istore_0,
+		f_60_istore_1,
+		f_61_istore_2,
+		f_62_istore_3
+	);
+
+	s_lstore = setOf(
+		f_63_lstore_0,
+		f_64_lstore_1,
+		f_65_lstore_2,
+		f_66_lstore_3
+	);
+
+	s_fstore=setOf(
+		f_67_fstore_0,
+		f_68_fstore_1,
+		f_69_fstore_2,
+		f_70_fstore_3
+	);
+
+	s_dstore = setOf(
+		f_71_dstore_0,
+		f_72_dstore_1,
+		f_73_dstore_2,
+		f_74_dstore_3
+	);
+
+	s_astore=setOf(
+		f_75_astore_0,
+		f_76_astore_1,
+		f_77_astore_2,
+		f_78_astore_3
+	);
+
+	// Comparison features.
+	f_149_fcmpl = OP_fcmpl;
+	f_150_fcmpg = OP_fcmpg;
+	f_151_dcmpl = OP_dcmpl;
+	f_152_dcmpg = OP_dcmpg;
+	f_153_ifeq = OP_ifeq;
+	f_154_ifne = OP_ifne;
+	f_155_iflt = OP_iflt;
+	f_156_ifge = OP_ifge;
+	f_157_ifgt = OP_ifgt;
+	f_158_ifle = OP_ifle;
+	f_159_if_icmpeq = OP_if_icmpeq;
+	f_160_if_icmpne = OP_if_icmpne;
+	f_161_if_icmplt = OP_if_icmplt;
+	f_162_if_icmpge = OP_if_icmpge;
+	f_163_if_icmpgt = OP_if_icmpgt;
+	f_164_if_icmple = OP_if_icmple;
+	f_165_if_acmpeq = OP_if_acmpeq;
+	f_166_if_acmpne = OP_if_acmpne;
+
+}
+
+#abstract
+{
+	#concVec vec;
+	#abstVec abst;
+
+	#assigns {
+		// As per the C++ implementation, this refactoring op also requires
+		// abstracting variable load store accesses.
+		abst(f_21_iload) = vec(f_21_iload) + sumOfFeatures(vec, s_iload);
+		abst(f_22_lload) = vec(f_22_iload) + sumOfFeatures(vec, s_lload);
+		abst(f_23_fload) = vec(f_23_iload) + sumOfFeatures(vec, s_fload);
+		abst(f_24_dload) = vec(f_24_iload) + sumOfFeatures(vec, s_dload);
+		abst(f_24_aload) = vec(f_25_iload) + sumOfFeatures(vec, s_aload);
+
+		abst(f_54_istore) = vec(f_54_istore) + sumOfFeatures(vec, s_istore);
+		abst(f_55_lstore) = vec(f_55_lstore) + sumOfFeatures(vec, s_lstore);
+		abst(f_56_fstore) = vec(f_56_fstore) + sumOfFeatures(vec, s_fstore);
+		abst(f_57_dstore) = vec(f_57_dstore) + sumOfFeatures(vec, s_dstore);
+		abst(f_58_astore) = vec(f_58_astore) + sumOfFeatures(vec, s_astore);
+
+		setFeatures(abst, s_iload) = 0;
+		setFeatures(abst, s_lload) = 0;
+		setFeatures(abst, s_fload) = 0;
+		setFeatures(abst, s_dload) = 0;
+		setFeatures(abst, s_aload) = 0;
+		setFeatures(abst, s_istore) = 0;
+		setFeatures(abst, s_lstore) = 0;
+		setFeatures(abst, s_fstore) = 0;
+		setFeatures(abst, s_dstore) = 0;
+		setFeatures(abst, s_astore) = 0;
+
+		// This does not match the description in the paper, but this is how
+		// the abstraction is implemented in the existing system.
+		abst(f_149_fcmpl) = vec(f_149_fcmpl) + vec(f_150_fcmpg);
+		abst(f_150_fcmpg) = 0;
+
+		abst(f_151_dcmpl) = vec(f_151_dcmpl) + vec(f_152_dcmpg);
+		abst(f_152_dcmpg) = 0;
+
+		abst(f_153_ifeq) = vec(f_153_ifeq) + vec(f_154_ifne);
+		abst(f_154_ifne) = 0;
+
+		abst(f_155_iflt) = vec(f_155_iflt) + vec(f_156_ifge);
+		abst(f_156_ifge) = 0;
+
+		abst(f_157_ifgt) = vec(f_157_ifgt) + vec(f_158_ifle);
+		abst(f_158_ifle) = 0;
+
+		abst(f_159_if_icmpeq) = vec(f_159_if_icmpeq) + vec(f_160_if_icmpne);
+		abst(f_160_if_icmpne) = 0;
+
+		abst(f_161_if_icmplt) = vec(f_161_if_icmplt) + vec(f_162_if_icmpge);
+		abst(f_162_if_icmpge) = 0;
+
+		abst(f_163_if_icmpgt) = vec(f_163_if_icmpgt) + vec(f_164_if_icmple);
+		abst(f_164_if_icmple) = 0;
+
+		abst(f_165_if_acmpeq) = vec(f_165_if_acmpeq) + vec(f_166_if_acmpne);
+		abst(f_166_if_acmpne) = 0;
+	}
+}
+
+#concrete
+{
+	#clone vec;
+	#query veq;
+
+	#filters {
+		// Equivalent implementation of the one in the current system.
+		if (veq(f_149_fcmpl) - vec(f_149_fcmpl) != 0) {
+			veq(f_150_fcmpg) - vec(f_150_fcmpg) == veq(f_149_fcmpl) - vec(f_149_fcmpl);
+		}
+
+		if (veq(f_151_dcmpl) - vec(f_151_dcmpl) != 0) {
+			veq(f_152_dcmpg) - vec(f_152_dcmpg) == veq(f_151_dcmpl) - vec(f_151_dcmpl);
+		}
+
+		if (veq(f_153_ifeq) - vec(f_153_ifeq) != 0) {
+			veq(f_154_ifne) - vec(f_154_ifne) == veq(f_153_ifeq) - vec(f_153_ifeq);
+		}
+
+		if (veq(f_155_iflt) - vec(f_155_iflt) != 0) {
+			veq(f_156_ifge) - vec(f_156_ifge) == veq(f_155_iflt) - vec(f_155_iflt);
+		}
+
+		if (veq(f_157_ifgt) - vec(f_151_dcmpl) != 0) {
+			veq(f_158_ifle) - vec(f_158_ifle) == veq(f_157_ifgt) - vec(f_157_ifgt);
+		}
+
+		if (veq(f_159_if_icmpeq) - vec(f_159_if_icmpeq) != 0) {
+			veq(f_160_if_icmpne) - vec(f_160_if_icmpne) == veq(f_159_if_icmpeq) - vec(f_159_if_icmpeq);
+		}
+
+		if (veq(f_161_if_icmplt) - vec(f_161_if_icmplt) != 0) {
+			veq(f_162_if_icmpge) - vec(f_162_if_icmpge) == veq(f_161_if_icmplt) - vec(f_161_if_icmplt);
+		}
+
+		if (veq(f_163_if_icmpgt) - vec(f_163_if_icmpgt) != 0) {
+			veq(f_164_if_icmple) - vec(f_164_if_icmple) == veq(f_163_if_icmpgt) - vec(f_163_if_icmpgt);
+		}
+
+		if (veq(f_165_if_acmpeq) - vec(f_165_if_acmpeq) != 0) {
+			veq(f_166_if_acmpne) - vec(f_166_if_acmpne) == veq(f_165_if_acmpeq) - vec(f_165_if_acmpeq);
+		}
+	}
+}
