@@ -1,0 +1,82 @@
+#[[#include]]# <cstdio>
+#[[#include]]# <cstdlib>
+#[[#include]]# <sys/times.h>
+#[[#include]]# <sys/types.h>
+#[[#include]]# <cctype>
+#[[#include]]# <regex.h>
+#[[#include]]# <unistd.h>
+#[[#include]]# <string>
+#[[#include]]# <map>
+#[[#include]]# <set>
+#[[#include]]# <list>
+#[[#include]]# <time.h>
+#[[#include]]# <pthread.h>
+#[[#include]]# <set>
+
+#[[#include]]# "headers.h"
+#[[#include]]# "refactorings.h"
+#[[#include]]# "../../include/location.h"
+#[[#include]]# "../../vinline/vector-reader.h"
+
+using namespace std;
+
+#foreach ($decl in $declList)
+    int $decl.id = $decl.index;
+#end
+
+#foreach ($dec in $setDeclList)
+    int _tmp_$foreach.index [] = { #foreach ($var in $dec.features) #if($foreach.count == ($dec.features.size()))$var#else $var,#end  #end };
+    std::set<int> $dec.id ( _tmp_$foreach.index , _tmp_$foreach.index + sizeof ( _tmp_$foreach.index ) / sizeof( _tmp_$foreach.index [0] ));
+#end
+
+void _abstractionRuleCalls(VectorReader* abst,VectorReader* conc){
+    setFeatureByIndex(abst);
+    #foreach ($setFeatures in $setFeaturesList)
+    $setFeatures.call;
+    #end
+}
+
+
+#foreach ($features in $setFeaturesList)
+void setFeatures_$foreach.index#[[(VectorReader* abst,std::set<int> features) { ]]#
+	int  op_stmts;
+
+#[[	for (set<int>::iterator i = features.begin(); i != features.end(); i++) { ]]#
+       int element = *i;
+        op_stmts = abst->counters[element];
+        abst->counters[element] = #foreach ($expr in $features.expr) $expr #end;
+        abst->totalCount -= op_stmts;
+    }
+
+}
+#end
+
+
+
+void setFeatureByIndex(VectorReader* abst) {
+    #foreach ($accessor in $assignmentCallList)
+        abst->counters[$accessor.index] = #foreach ($expr in $accessor.expr) $expr #end;
+    #end
+}
+
+
+
+int sumofFeatures(VectorReader* conc,std::set<int> features) {
+	int sumofFeatures=0;
+
+	for (set<int>::iterator i = features.begin(); i != features.end(); i++) {
+       int element = *i;
+       sumofFeatures+=conc->counters[element];
+    }
+
+    return sumofFeatures;
+}
+
+
+int accessor(VectorReader* conc,int index) {
+    return conc->counters[index];
+}
+
+
+
+

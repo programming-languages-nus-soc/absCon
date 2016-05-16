@@ -1,0 +1,156 @@
+#[[#include]]# <cstdio>
+#[[#include]]# <cstdlib>
+#[[#include]]# <sys/times.h>
+#[[#include]]# <sys/types.h>
+#[[#include]]# <cctype>
+#[[#include]]# <regex.h>
+#[[#include]]# <unistd.h>
+#[[#include]]# <string>
+#[[#include]]# <map>
+#[[#include]]# <set>
+#[[#include]]# <list>
+#[[#include]]# <time.h>
+#[[#include]]# <pthread.h>
+#[[#include]]# <set>
+
+#[[#include]]# "headers.h"
+#[[#include]]# "refactorings.h"
+#[[#include]]# "../../include/location.h"
+#[[#include]]# "../../vinline/vector-reader.h"
+
+using namespace std;
+
+#foreach ($decl in $declList)
+    int $decl.id = $decl.index;
+#end
+
+#foreach ($dec in $setDeclList)
+    int _tmp_$foreach.index [] = { #foreach ($var in $dec.features) #if($foreach.count == ($dec.features.size()))$var#else $var,#end  #end };
+    std::set<int> $dec.id ( _tmp_$foreach.index , _tmp_$foreach.index + sizeof ( _tmp_$foreach.index ) / sizeof( _tmp_$foreach.index [0] ));
+#end
+
+int sumOfFeatures(VectorReader* conc,std::set<int> features) {
+	int sumofFeatures=0;
+
+	for (set<int>::iterator i = features.begin(); i != features.end(); i++) {
+       int element = *i;
+       sumofFeatures+=conc->counters[element];
+    }
+
+    return sumofFeatures;
+}
+
+
+int accessor(VectorReader* conc,int index) {
+    return conc->counters[index];
+}
+
+
+int sourceOf(VectorReader* q,std::map<std::string, VectorReader::VectorSet>* vectorindex,int index){
+vector<VectorReader*>* sourceVector =
+				VectorReader::getMethodVectorsFromIndex(vectorindex,
+						q->methodIDs[0]);
+
+return (*sourceVector)[0]->counters[index];
+
+}
+
+bool compare_clone_vectors_fse(VectorReader* v1, VectorReader* v2) {
+	bool res = true;
+	int i = 0;
+	int n = 218;
+	if (v1->totalCount != v2->totalCount) {
+
+		int op = 0;
+		int ops_v1 = 0;
+		int ops_v2 = 0;
+
+		int calls_v1 = 0;
+		int calls_v2 = 0;
+
+		for (op = 46; op <= 202; op = op + 1) {
+			if (v1->counters[op] != v2->counters[op]) {
+				return false;
+			}
+		}
+
+		for (op = 210; op <= 218; op = op + 1) {
+			if (v1->counters[op] != v2->counters[op]) {
+				return false;
+			}
+		}
+		for (op = 203; op <= 209; op = op + 1) {
+			calls_v1 = v1->counters[op];
+			calls_v2 = v2->counters[op];
+		}
+
+		for (op = 2; op <= 45; op = op + 1) {
+			ops_v1 += v1->counters[op];
+			ops_v2 += v2->counters[op];
+		}
+
+		if ((ops_v1 - ops_v2) == (v1->totalCount - v2->totalCount))
+			return true;
+		else
+			return false;
+	} else {
+		for (i = 0; i < n; i++) {
+			if (v1->counters[i] != v2->counters[i]) {
+				res = false;
+				break;
+				//printf("Different at index %i with values %i %i",i,v1->counters[i],v1->counters[i]);
+			}
+		}
+		return res;
+	}
+}
+
+
+bool checkInlinedInto(VectorReader* inlinedVector, VectorReader* $vectorNames.query, VectorReader* $vectorNames.clone, std::map<std::string, VectorReader::VectorSet>* vectorindex){
+bool isExists = false;
+for (int i = 1; i < inlinedVector->methodIDs.size(); i++) {
+    vector<VectorReader*>* clone_target_vectors =
+    			VectorReader::getMethodVectorsFromIndex(vectorindex,
+    					inlinedVector->methodIDs[i]);
+    VectorReader* clone_inlined_vector = new VectorReader(
+    			*(*clone_target_vectors)[0]);
+    if ((compare_vectors_fse(clone_inlined_vector, veq) == true))
+    		isExists =  true;
+}
+
+return isExists;
+}
+
+bool getFilterResult(std::map<std::string, VectorReader::VectorSet>* source_index0,std::map<std::string, VectorReader::VectorSet>* source_index1,std::map<std::string, VectorReader::VectorSet>* source_index2, VectorReader* $vectorNames.query, VectorReader* $vectorNames.clone){
+
+//var declarations
+bool isValidImitation= true;
+#foreach ($assign in ${assignList})
+int $assign.ID = #foreach ($expr in $assign.expr) $expr #end;
+#end
+
+#foreach ($filter in $filterList)
+#if($filter.class.simpleName == "ForAll")
+for (set<int>::iterator ${filter.getCondition()}= ${filter.getVar()}.begin(); ${filter.getCondition()} != ${filter.getVar()}.end(); ${filter.getCondition()}++) {
+   if(!(${filter.getExpression()}){
+    isValidImitation = false;
+   }
+}
+#end
+
+#if($filter.class.simpleName =="HashMap")
+if(!(#foreach ($expr in $filter.expr) $expr #end )) {
+isValidImitation = false;
+}
+#end
+
+#if($filter.class.simpleName =="InlinedInto")
+#if(${filter.getInlineCheckType()} =="ForAll")
+isValidImitation = checkInlinedInto(${filter.getVar()},$vectorNames.query,$vectorNames.clone,source_index0);
+#end
+#end
+#end
+return isValidImitation;
+}
+
+
