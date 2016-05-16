@@ -150,22 +150,6 @@
 		f_86_sastore
 	);
 
-
-	// Source code features and groups.
-
-	// Variable declaration operations.
-	f_44_SINGLE_VARIABLE_DECLARATION = SINGLE_VARIABLE_DECLARATION;
-	f_58_VARIABLE_DECLARATION_EXPRESSION = VARIABLE_DECLARATION_EXPRESSION;
-	f_59_VARIABLE_DECLARATION_FRAGMENT = VARIABLE_DECLARATION_FRAGMENT;
-	f_60_VARIABLE_DECLARATION_STATEMENT = VARIABLE_DECLARATION_STATEMENT;
-
-	// Set of variable declaration operations.
-	s_variable_declaration = setOf(
-		f_44_SINGLE_VARIABLE_DECLARATION,
-		f_58_VARIABLE_DECLARATION_EXPRESSION,
-		f_59_VARIABLE_DECLARATION_FRAGMENT,
-		f_60_VARIABLE_DECLARATION_STATEMENT
-	);
 }
 
 #abstract
@@ -192,17 +176,11 @@
 			sum_load_q = sumOfFeatures(veq, s_load);
 			sum_store_c = sumOfFeatures(vec, s_store);
 			sum_store_q = sumOfFeatures(veq, s_store);
+            variable_declaration_statement = 60;
 
-			// Compute the total values for the variable declatation
-			// group in the clone and query source code vectors.
-			sum_var_decl_src_c = sumOfFeatures(sourceOf(vec),
-					s_variable_declaration);
-			sum_var_decl_src_q = sumOfFeatures(sourceOf(veq),
-					s_variable_declaration);
 		} in {
-			sum_load_q - sum_load_c > 0;
-			sum_load_q - sum_load_c == sum_store_q - sum_store_c ==
-				sum_var_decl_src_q - sum_var_decl_src_c;
+			sum_load_q - sum_load_c > 0 && sum_load_q - sum_load_c == sum_store_q - sum_store_c;
+            sourceOfSize(veq)(0) == 0 || sourceOfSize(vec)(0) == 0 || sourceOfSize(veq)(0) > 0 && sourceOfSize(vec)(0) > 0 && sourceOf(veq)(variable_declaration_statement)(0) - sourceOf(vec)(variable_declaration_statement)(0) == sum_load_q - sum_load_c;
 		}
 	}
 }
