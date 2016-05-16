@@ -1,4 +1,4 @@
-// Abstractions rules for “Split temporary variable” refactoring.
+// Abstractions rules for “Reverse Conditional” refactoring.
 
 
 #declares
@@ -223,40 +223,15 @@
 
 	#filters {
 		// Equivalent implementation of the one in the current system.
-		if (veq(f_149_fcmpl) - vec(f_149_fcmpl) != 0) {
-			veq(f_150_fcmpg) - vec(f_150_fcmpg) == veq(f_149_fcmpl) - vec(f_149_fcmpl);
-		}
+		veq(f_149_fcmpl) - vec(f_149_fcmpl) != 0 && veq(f_150_fcmpg) - vec(f_150_fcmpg) == veq(f_149_fcmpl) - vec(f_149_fcmpl);
+		veq(f_151_dcmpl) - vec(f_151_dcmpl) != 0 && veq(f_152_dcmpg) - vec(f_152_dcmpg) == veq(f_151_dcmpl) - vec(f_151_dcmpl);
+		veq(f_153_ifeq) - vec(f_153_ifeq) != 0 && veq(f_154_ifne) - vec(f_154_ifne) == veq(f_153_ifeq) - vec(f_153_ifeq);
+		veq(f_155_iflt) - vec(f_155_iflt) != 0 && veq(f_156_ifge) - vec(f_156_ifge) == veq(f_155_iflt) - vec(f_155_iflt);
+		veq(f_157_ifgt) - vec(f_151_dcmpl) != 0 && veq(f_158_ifle) - vec(f_158_ifle) == veq(f_157_ifgt) - vec(f_157_ifgt);
+		veq(f_159_if_icmpeq) - vec(f_159_if_icmpeq) != 0 && veq(f_160_if_icmpne) - vec(f_160_if_icmpne) == veq(f_159_if_icmpeq) - vec(f_159_if_icmpeq);
+		veq(f_161_if_icmplt) - vec(f_161_if_icmplt) != 0 && veq(f_162_if_icmpge) - vec(f_162_if_icmpge) == veq(f_161_if_icmplt) - vec(f_161_if_icmplt);
+		veq(f_163_if_icmpgt) - vec(f_163_if_icmpgt) != 0 && veq(f_164_if_icmple) - vec(f_164_if_icmple) == veq(f_163_if_icmpgt) - vec(f_163_if_icmpgt);
+		veq(f_165_if_acmpeq) - vec(f_165_if_acmpeq) != 0 && veq(f_166_if_acmpne) - vec(f_166_if_acmpne) == veq(f_165_if_acmpeq) - vec(f_165_if_acmpeq);
 
-		if (veq(f_151_dcmpl) - vec(f_151_dcmpl) != 0) {
-			veq(f_152_dcmpg) - vec(f_152_dcmpg) == veq(f_151_dcmpl) - vec(f_151_dcmpl);
-		}
-
-		if (veq(f_153_ifeq) - vec(f_153_ifeq) != 0) {
-			veq(f_154_ifne) - vec(f_154_ifne) == veq(f_153_ifeq) - vec(f_153_ifeq);
-		}
-
-		if (veq(f_155_iflt) - vec(f_155_iflt) != 0) {
-			veq(f_156_ifge) - vec(f_156_ifge) == veq(f_155_iflt) - vec(f_155_iflt);
-		}
-
-		if (veq(f_157_ifgt) - vec(f_151_dcmpl) != 0) {
-			veq(f_158_ifle) - vec(f_158_ifle) == veq(f_157_ifgt) - vec(f_157_ifgt);
-		}
-
-		if (veq(f_159_if_icmpeq) - vec(f_159_if_icmpeq) != 0) {
-			veq(f_160_if_icmpne) - vec(f_160_if_icmpne) == veq(f_159_if_icmpeq) - vec(f_159_if_icmpeq);
-		}
-
-		if (veq(f_161_if_icmplt) - vec(f_161_if_icmplt) != 0) {
-			veq(f_162_if_icmpge) - vec(f_162_if_icmpge) == veq(f_161_if_icmplt) - vec(f_161_if_icmplt);
-		}
-
-		if (veq(f_163_if_icmpgt) - vec(f_163_if_icmpgt) != 0) {
-			veq(f_164_if_icmple) - vec(f_164_if_icmple) == veq(f_163_if_icmpgt) - vec(f_163_if_icmpgt);
-		}
-
-		if (veq(f_165_if_acmpeq) - vec(f_165_if_acmpeq) != 0) {
-			veq(f_166_if_acmpne) - vec(f_166_if_acmpne) == veq(f_165_if_acmpeq) - vec(f_165_if_acmpeq);
-		}
 	}
 }

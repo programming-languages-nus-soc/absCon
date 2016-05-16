@@ -202,11 +202,11 @@
 #concrete
 {
 	#clone vec;
-	#query veq;
+    	#query veq;
 
-	#filters {
-		not(Exists) vi in inlinedInto(veq): {
-			veq == vi;
-		}
-	}
+    	#filters {
+    		forall (vi in inlinedInto(veq)): {
+    			veq == vi;
+    		};
+    	}
 }
