@@ -5,7 +5,11 @@
 Abstraction.cpp
 Concretization.cpp
 gen/
+src/META-INF/
+
+# Also ignore project files for now.
 .idea/
+abscon.iml
 
 ### C++ ###
 # Compiled Object files
