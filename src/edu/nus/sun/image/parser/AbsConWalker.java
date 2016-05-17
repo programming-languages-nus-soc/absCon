@@ -396,6 +396,9 @@ public class AbsConWalker implements   AbsConListener {
         } else{
             exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"sourcecode_vectorindex"+ctx.getChild(8)+ ","+ctx.getChild(5) +")";
         }
+        if(Integer.parseInt(ctx.getChild(5).getText())==4){
+            exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"vectorindex"+")";
+        }
         if(!isSumOfFeatures){
             expressionList.add(exp);
         }
@@ -414,7 +417,9 @@ public class AbsConWalker implements   AbsConListener {
         } else{
              exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"sourcecode_vectorindex"+ctx.getChild(5)+")";
         }
-
+        if(Integer.parseInt(ctx.getChild(5).getText())==4){
+            exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"vectorindex"+")";
+        }
         System.out.println(exp);
         isSourceSizeOf = true;
         if(isCondition){
