@@ -19,12 +19,13 @@ concreteVector:'#concVec' ID SEMICOLON;
 abstractVector:'#abstVec' ID SEMICOLON;
 
 abAssign:'#assigns' BLOCKOPEN (assign)+ BLOCKCLOSE;
-assign: iAssign|gAssign;
+assign: iAssign|gAssign|dAssign;
 iAssign:accessor ASSIGN expr SEMICOLON;
 accessor: featureAccessor | indexAccessor;
 featureAccessor: ID OPENBRACE ID CLOSEBRACE ;
 indexAccessor: ID SQUAREBRACEOPEN DIGITS SQUAREBRACECLOSE;
 gAssign:'setFeatures' OPENBRACE ID COMMA ID CLOSEBRACE ASSIGN expr SEMICOLON ;
+dAssign:'setFeaturesByRange' OPENBRACE numRange CLOSEBRACE ASSIGN expr SEMICOLON;
 expr: exp+;
 exp: paranthesizedExp | exp MULDIV exp | exp ADDSUB exp | accessor |DIGITS | sumOfFeatures  | sourceOf | sourceOfSize|absFeature |id;
 id:ID;
@@ -48,7 +49,7 @@ rExpr: rExp SEMICOLON;
 rExp:(expr rop)+ expr;
 rop: DOUBLEEQUAL | LESSTHAN | GREATERTHAN | NOTEQUAL | LESSTHANEQUAL | GREATERTHANEQUAL;
 existl:  'exists' eltChk COLON BLOCKOPEN bExpr BLOCKCLOSE ;
-univsl: 'forall' OPENBRACE eltChk CLOSEBRACE COLON BLOCKOPEN bExpr BLOCKCLOSE SEMICOLON;
+univsl: 'forall' OPENBRACE eltChk CLOSEBRACE COLON BLOCKOPEN (bExpr|compareInlinedVec) BLOCKCLOSE SEMICOLON;
 eltChk: elt 'in' set;
 elt: ID | OPENBRACE ids CLOSEBRACE;
 set: ID |setOfIds| inlineInto | numRange;
@@ -58,9 +59,9 @@ setOfIds: 'setOf' BLOCKOPEN ids BLOCKCLOSE;
 size:DIGITS | sizeOf;
 sizeOf: 'sizeOf' OPENBRACE ID CLOSEBRACE;
 bExpr: (bExp)+ SEMICOLON;
-bExp: rExp bop rExp | rExp bop rExp | bop rExp | rExp;
+bExp: rExp bop rExp | rExp bop rExp | bop rExp | rExp ;
 bop:'&&' | '||' | 'not';
-
+compareInlinedVec: 'compare' OPENBRACE ID COMMA ID CLOSEBRACE SEMICOLON ;
 //Common Statements
 simpAssign: ID ASSIGN expr SEMICOLON;
 

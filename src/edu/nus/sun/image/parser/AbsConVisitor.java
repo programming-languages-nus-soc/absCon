@@ -125,6 +125,12 @@ public interface AbsConVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitGAssign(AbsConParser.GAssignContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AbsConParser#dAssign}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDAssign(AbsConParser.DAssignContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AbsConParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -316,6 +322,12 @@ public interface AbsConVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitBop(AbsConParser.BopContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AbsConParser#compareInlinedVec}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCompareInlinedVec(AbsConParser.CompareInlinedVecContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link AbsConParser#simpAssign}.
 	 * @param ctx the parse tree

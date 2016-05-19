@@ -73,5 +73,10 @@ void _abstractionRuleCalls(VectorReader* abst,VectorReader* conc){
     #foreach ($setFeatures in $setFeaturesList)
     $setFeatures.call;
     #end
+    #foreach ($setFeatures in $setFeaturesByRangeList)
+    for(int i = ${setFeatures.range.getStartIndex()}; i < ${setFeatures.range.getEndIndex()}; i++){
+        abst->counters[i] = #foreach ($expr in $setFeatures.expr) $expr #end;
+    }
+    #end
 }
 

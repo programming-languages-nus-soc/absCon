@@ -8,7 +8,6 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
-import org.omg.SendingContext.RunTime;
 
 
 import java.io.BufferedWriter;
@@ -16,10 +15,31 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.*;
+import java.util.stream.StreamSupport;
 
 public class AbsConWalker implements   AbsConListener {
 
 
+    public class NumberRange{
+        public String startIndex;
+        public String endIndex;
+
+        public String getStartIndex() {
+            return startIndex;
+        }
+
+        public void setStartIndex(String startIndex) {
+            this.startIndex = startIndex;
+        }
+
+        public String getEndIndex() {
+            return endIndex;
+        }
+
+        public void setEndIndex(String endIndex) {
+            this.endIndex = endIndex;
+        }
+    }
 
     public class LetBlock{
         public ArrayList getFilters() {
@@ -55,19 +75,37 @@ public class AbsConWalker implements   AbsConListener {
         String condition;
         String var;
         String expression;
-        public void assignVariables(String condition,String var,String expression){
+        NumberRange numberRange;
+        boolean isNumberRange;
+
+        public void assignVariables(String condition,String var,String expression,NumberRange numberRange){
             this.var = var;
             this.condition = condition;
             this.expression = expression;
+            this.numberRange = numberRange;
         }
+
+        public boolean isNumberRange() {
+            return isNumberRange;
+        }
+
+        public NumberRange getNumberRange() {
+            return numberRange;
+        }
+
+        public void setExpression(String expression) {
+            this.expression = expression;
+        }
+
     }
 
     public  class InlinedInto{
         String var;
-        String expression;
+        ArrayList expression;
         String inlineCheckType;
+        boolean isCompare;
 
-        public String getExpression() {
+        public ArrayList getExpression() {
             return expression;
         }
 
@@ -75,8 +113,15 @@ public class AbsConWalker implements   AbsConListener {
             return var;
         }
 
+        public boolean isCompare() {
+            return isCompare;
+        }
 
-        public void setExpression(String expression) {
+        public void setCompare(boolean compare) {
+            isCompare = compare;
+        }
+
+        public void setExpression(ArrayList expression) {
             this.expression = expression;
         }
 
@@ -105,7 +150,7 @@ public class AbsConWalker implements   AbsConListener {
 
     //set set of features as expr
     ArrayList setFeaturesList ;
-
+    ArrayList setFeaturesByRangeList;
 
     //feature set features
     ArrayList features;
@@ -117,6 +162,8 @@ public class AbsConWalker implements   AbsConListener {
     LetBlock letBlock;
     ForAll forAll;
     InlinedInto inlinedInto;
+    NumberRange numberRange;
+
 
     Map map;
     int letBlockCount;
@@ -137,6 +184,9 @@ public class AbsConWalker implements   AbsConListener {
     boolean isSourceOf;
     boolean isInlinedInto;
     boolean isSourceSizeOf;
+    boolean isSizeOf;
+    boolean isNumRange;
+
 
     @Override public void enterProgram(AbsConParser.ProgramContext ctx) {
         letBlockCount = 0;
@@ -153,6 +203,8 @@ public class AbsConWalker implements   AbsConListener {
         letBlock = new LetBlock();
         forAll = new ForAll();
         inlinedInto = new InlinedInto();
+        setFeaturesByRangeList = new ArrayList();
+        numberRange = new NumberRange();
     }
 
     @Override public void exitProgram(AbsConParser.ProgramContext ctx) {
@@ -180,7 +232,7 @@ public class AbsConWalker implements   AbsConListener {
     @Override
     public void exitConDecls(AbsConParser.ConDeclsContext ctx) {
         for(int i=0;i<filters.size();i++){
-            System.out.println(i+" " +filters.get(i));
+            System.out.println(i+" " + filters.get(i));
         }
         writeToConcretizationTemplate();
     }
@@ -325,6 +377,20 @@ public class AbsConWalker implements   AbsConListener {
 
     @Override public void exitGAssign(AbsConParser.GAssignContext ctx) {
         setFeaturesList.add(new HashMap(map));
+        map.clear();
+        expressionList.clear();
+    }
+
+    @Override
+    public void enterDAssign(AbsConParser.DAssignContext ctx) {
+
+    }
+
+    @Override
+    public void exitDAssign(AbsConParser.DAssignContext ctx) {
+        System.out.println("The dassign map is "+numberRange.getStartIndex()+numberRange.getEndIndex());
+        map.put("range",numberRange);
+        setFeaturesByRangeList.add(new HashMap<>(map));
         map.clear();
         expressionList.clear();
     }
@@ -529,10 +595,8 @@ public class AbsConWalker implements   AbsConListener {
             if(isUniversal){
                 if(isInlinedInto){
                     filters.push(inlinedInto);
-                    System.out.println("Added to filters in inlinedinto");
                 } else{
                     filters.push(forAll);
-                    System.out.println("Added to filters in forall");
                 }
 
             }else{
@@ -543,13 +607,6 @@ public class AbsConWalker implements   AbsConListener {
 
             }
         }
-//        if(!isUniversal){
-//            if(!map.isEmpty()) {
-//                filters.push(new HashMap<>(map));
-//                System.out.println("Added to filters in not of universal outside ");
-//            }
-//
-//        }
 
         isRExpr = false;
         isBExpr = false;
@@ -571,7 +628,6 @@ public class AbsConWalker implements   AbsConListener {
         isLetBlock = false;
         letBlock.assignVariables(new ArrayList(simpleAssignList),new ArrayList(filterList));
         filters.push(letBlock);
-//        simpleAssignList.clear();
         filterList.clear();
         letBlock = new LetBlock();
     }
@@ -626,7 +682,8 @@ public class AbsConWalker implements   AbsConListener {
 
     @Override
     public void exitUnivsl(AbsConParser.UnivslContext ctx) {
-        forAll.assignVariables(forAll.var,forAll.condition,convertArrayListToString(expressionList));
+//        forAll.assignVariables(forAll.var,forAll.condition,convertArrayListToString(expressionList),forAll.);
+        forAll.setExpression(convertArrayListToString(expressionList));
         expressionList.clear();
     }
 
@@ -674,12 +731,17 @@ public class AbsConWalker implements   AbsConListener {
 
     @Override
     public void enterNumRange(AbsConParser.NumRangeContext ctx) {
-
+        isNumRange = true;
+        numberRange.setStartIndex(ctx.getChild(0).getText());
     }
 
     @Override
     public void exitNumRange(AbsConParser.NumRangeContext ctx) {
-
+        if(isUniversal){
+            forAll.numberRange = numberRange;
+            forAll.isNumberRange = true;
+        }
+        isNumRange = false;
     }
 
     @Override
@@ -708,7 +770,7 @@ public class AbsConWalker implements   AbsConListener {
 
     @Override
     public void enterSize(AbsConParser.SizeContext ctx) {
-
+        numberRange.setEndIndex(ctx.getChild(0).getText());
     }
 
     @Override
@@ -718,7 +780,8 @@ public class AbsConWalker implements   AbsConListener {
 
     @Override
     public void enterSizeOf(AbsConParser.SizeOfContext ctx) {
-
+        numberRange.setEndIndex(ctx.getText());
+        System.out.println("The end index is "+numberRange.getEndIndex());
     }
 
     @Override
@@ -735,6 +798,9 @@ public class AbsConWalker implements   AbsConListener {
     public void exitBExpr(AbsConParser.BExprContext ctx) {
         if(!isCondition){
             isBExpr = false;
+        }
+        if(isInlinedInto){
+            inlinedInto.setExpression(new ArrayList(expressionList));
         }
     }
 
@@ -755,6 +821,18 @@ public class AbsConWalker implements   AbsConListener {
     @Override
     public void exitBop(AbsConParser.BopContext ctx) {
         expressionList.add(ctx.getChild(0).getText());
+    }
+
+    @Override
+    public void enterCompareInlinedVec(AbsConParser.CompareInlinedVecContext ctx) {
+        if(isUniversal && isInlinedInto){
+            inlinedInto.isCompare = true;
+        }
+    }
+
+    @Override
+    public void exitCompareInlinedVec(AbsConParser.CompareInlinedVecContext ctx) {
+
     }
 
 
@@ -804,6 +882,7 @@ public class AbsConWalker implements   AbsConListener {
         context.put("setDeclList",setDeclarationList);
         context.put("assignmentCallList",assignmentCallList);
         context.put("setFeaturesList",setFeaturesList);
+        context.put("setFeaturesByRangeList",setFeaturesByRangeList);
         StringWriter writer = new StringWriter();
         t.merge(context,writer);
         writeToFile("Abstraction.cpp",writer.toString());
@@ -819,7 +898,7 @@ public class AbsConWalker implements   AbsConListener {
         VelocityContext context = new VelocityContext();
         context.put("declList",declarationList);
         context.put("setDeclList",setDeclarationList);
-        context.put("filtersList",filterList);
+//        context.put("filtersList",filterList);
         context.put("vectorNames",typeOfVariableAndName);
         context.put("filterList",filters);
         context.put("assignList",simpleAssignList);

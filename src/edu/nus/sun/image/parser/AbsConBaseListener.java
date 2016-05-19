@@ -244,6 +244,18 @@ public class AbsConBaseListener implements AbsConListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterDAssign(AbsConParser.DAssignContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDAssign(AbsConParser.DAssignContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterExpr(AbsConParser.ExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -623,6 +635,18 @@ public class AbsConBaseListener implements AbsConListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitBop(AbsConParser.BopContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCompareInlinedVec(AbsConParser.CompareInlinedVecContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCompareInlinedVec(AbsConParser.CompareInlinedVecContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -113,15 +113,15 @@ static bool compare_clone_vectors_fse_abscon(VectorReader* v1, VectorReader* v2)
 
 
 static bool checkInlinedInto(VectorReader* inlinedVector, VectorReader* $vectorNames.query, VectorReader* $vectorNames.clone, std::map<std::string, VectorReader::VectorSet>* vectorindex){
-bool isExists = false;
-for (int i = 1; i < inlinedVector->methodIDs.size(); i++) {
+bool isExists = true;
+for (int i = 0; i < inlinedVector->methodIDs.size(); i++) {
     vector<VectorReader*>* clone_target_vectors =
     			VectorReader::getMethodVectorsFromIndex(vectorindex,
     					inlinedVector->methodIDs[i]);
     VectorReader* clone_inlined_vector = new VectorReader(
     			*(*clone_target_vectors)[0]);
     if ((compare_clone_vectors_fse_abscon(clone_inlined_vector, veq) == true))
-    		isExists =  true;
+    		isExists =  false;
 }
 
 return isExists;
@@ -136,9 +136,17 @@ int $assign.ID = #foreach ($expr in $assign.expr) $expr #end;
 #end
 
 #foreach ($filter in $filterList)
-#if($filter.class.simpleName == "ForAll")
+#if($filter.class.simpleName == "ForAll" && !${filter.isNumberRange()})
 for (set<int>::iterator ${filter.getCondition()}= ${filter.getVar()}.begin(); ${filter.getCondition()} != ${filter.getVar()}.end(); ${filter.getCondition()}++) {
    if(!(${filter.getExpression()}){
+    isValidImitation = false;
+   }
+}
+#end
+
+#if($filter.class.simpleName == "ForAll" && ${filter.isNumberRange()})
+for (int ${filter.getVar()} = ${filter.getNumberRange().getStartIndex()}; ${filter.getVar()} < ${filter.getNumberRange().getEndIndex()} ;${filter.getVar()}++) {
+   if(!(${filter.getExpression()})){
     isValidImitation = false;
    }
 }
@@ -151,8 +159,10 @@ isValidImitation = false;
 #end
 
 #if($filter.class.simpleName =="InlinedInto")
-#if(${filter.getInlineCheckType()} =="ForAll")
+#if(${filter.getInlineCheckType()} =="ForAll" && ${filter.isCompare()})
 isValidImitation = checkInlinedInto(${filter.getVar()},$vectorNames.query,$vectorNames.clone,vectorindex);
+#else
+${filter.getExpression()}
 #end
 #end
 #end

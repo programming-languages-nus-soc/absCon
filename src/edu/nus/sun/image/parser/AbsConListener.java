@@ -198,6 +198,16 @@ public interface AbsConListener extends ParseTreeListener {
 	 */
 	void exitGAssign(AbsConParser.GAssignContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AbsConParser#dAssign}.
+	 * @param ctx the parse tree
+	 */
+	void enterDAssign(AbsConParser.DAssignContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AbsConParser#dAssign}.
+	 * @param ctx the parse tree
+	 */
+	void exitDAssign(AbsConParser.DAssignContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AbsConParser#expr}.
 	 * @param ctx the parse tree
 	 */
@@ -517,6 +527,16 @@ public interface AbsConListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBop(AbsConParser.BopContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AbsConParser#compareInlinedVec}.
+	 * @param ctx the parse tree
+	 */
+	void enterCompareInlinedVec(AbsConParser.CompareInlinedVecContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AbsConParser#compareInlinedVec}.
+	 * @param ctx the parse tree
+	 */
+	void exitCompareInlinedVec(AbsConParser.CompareInlinedVecContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AbsConParser#simpAssign}.
 	 * @param ctx the parse tree
