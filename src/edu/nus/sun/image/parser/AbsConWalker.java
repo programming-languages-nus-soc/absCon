@@ -15,7 +15,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.*;
-import java.util.stream.StreamSupport;
 
 public class AbsConWalker implements   AbsConListener {
 
@@ -99,13 +98,62 @@ public class AbsConWalker implements   AbsConListener {
 
     }
 
+    public class Exists{
+        String var;
+        String condition;
+        String expression;
+        NumberRange numberRange;
+        boolean isNumberRange;
+
+        public String getVar() {
+            return var;
+        }
+
+        public void setVar(String var) {
+            this.var = var;
+        }
+
+        public String getExpression() {
+            return expression;
+        }
+
+        public void setExpression(String expression) {
+            this.expression = expression;
+        }
+
+        public NumberRange getNumberRange() {
+            return numberRange;
+        }
+
+        public void setNumberRange(NumberRange numberRange) {
+            this.numberRange = numberRange;
+        }
+
+        public boolean isNumberRange() {
+            return isNumberRange;
+        }
+
+        public void setNumberRange(boolean numberRange) {
+            isNumberRange = numberRange;
+        }
+
+        public String getCondition() {
+            return condition;
+        }
+
+        public void setCondition(String condition) {
+            this.condition = condition;
+        }
+    }
+
     public  class InlinedInto{
         String var;
-        ArrayList expression;
+        String index;
+        String expression;
         String inlineCheckType;
         boolean isCompare;
 
-        public ArrayList getExpression() {
+        public String getExpression() {
             return expression;
         }
 
@@ -121,7 +169,7 @@ public class AbsConWalker implements   AbsConListener {
             isCompare = compare;
         }
 
-        public void setExpression(ArrayList expression) {
+        public void setExpression(String expression) {
             this.expression = expression;
         }
 
@@ -137,6 +185,13 @@ public class AbsConWalker implements   AbsConListener {
             this.inlineCheckType = inlineCheckType;
         }
 
+        public String getIndex() {
+            return index;
+        }
+
+        public void setIndex(String index) {
+            this.index = index;
+        }
     }
     //for concerete, abstract, clone, query vector
     HashMap<String,String> typeOfVariableAndName;
@@ -163,7 +218,7 @@ public class AbsConWalker implements   AbsConListener {
     ForAll forAll;
     InlinedInto inlinedInto;
     NumberRange numberRange;
-
+    Exists exists;
 
     Map map;
     int letBlockCount;
@@ -186,6 +241,7 @@ public class AbsConWalker implements   AbsConListener {
     boolean isSourceSizeOf;
     boolean isSizeOf;
     boolean isNumRange;
+    boolean isExistential;
 
 
     @Override public void enterProgram(AbsConParser.ProgramContext ctx) {
@@ -205,6 +261,7 @@ public class AbsConWalker implements   AbsConListener {
         inlinedInto = new InlinedInto();
         setFeaturesByRangeList = new ArrayList();
         numberRange = new NumberRange();
+        exists = new Exists();
     }
 
     @Override public void exitProgram(AbsConParser.ProgramContext ctx) {
@@ -462,8 +519,8 @@ public class AbsConWalker implements   AbsConListener {
         } else{
             exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"sourcecode_vectorindex"+ctx.getChild(8)+ ","+ctx.getChild(5) +")";
         }
-        if(Integer.parseInt(ctx.getChild(5).getText())==4){
-            exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"vectorindex"+")";
+        if(Integer.parseInt(ctx.getChild(8).getText())==4){
+            exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"vectorindex"+ ","+ctx.getChild(5) +")";
         }
         if(!isSumOfFeatures){
             expressionList.add(exp);
@@ -582,14 +639,19 @@ public class AbsConWalker implements   AbsConListener {
             if(isRExpr || isBExpr){
                 if(!map.isEmpty()){
                     filterList.add(new HashMap<>(map));
-                    filters.add(new HashMap<>(map));
+                    filters.push(new HashMap<>(map));
                 }
 
             } else{
                 if(isUniversal){
                     filterList.add(forAll);
+                    filters.push(forAll);
+                }
+                if(isExistential){
+                    filters.push(exists);
                 }
             }
+
 
         } else{
             if(isUniversal){
@@ -603,6 +665,14 @@ public class AbsConWalker implements   AbsConListener {
                 if(!map.isEmpty()) {
                     filters.push(new HashMap<>(map));
                     System.out.println("Added to filters in not of universal");
+                } else{
+                    if(isExistential){
+                        if(isInlinedInto){
+                            filters.push(inlinedInto);
+                        } else{
+                            filters.push(exists);
+                        }
+                    }
                 }
 
             }
@@ -610,6 +680,7 @@ public class AbsConWalker implements   AbsConListener {
 
         isRExpr = false;
         isBExpr = false;
+        isExistential = false;
         isInlinedInto = false;
         isUniversal = false;
         isLetBlock = false;
@@ -667,12 +738,13 @@ public class AbsConWalker implements   AbsConListener {
 
     @Override
     public void enterExistl(AbsConParser.ExistlContext ctx) {
-
+        isExistential = true;
     }
 
     @Override
     public void exitExistl(AbsConParser.ExistlContext ctx) {
-
+        exists.setExpression(convertArrayListToString(expressionList));
+        expressionList.clear();
     }
 
     @Override
@@ -682,7 +754,6 @@ public class AbsConWalker implements   AbsConListener {
 
     @Override
     public void exitUnivsl(AbsConParser.UnivslContext ctx) {
-//        forAll.assignVariables(forAll.var,forAll.condition,convertArrayListToString(expressionList),forAll.);
         forAll.setExpression(convertArrayListToString(expressionList));
         expressionList.clear();
     }
@@ -715,12 +786,18 @@ public class AbsConWalker implements   AbsConListener {
         if(isUniversal){
             forAll.var = ctx.getChild(0).getText();
         }
+        if(isExistential){
+            exists.var = ctx.getChild(0).getText();
+        }
     }
 
     @Override
     public void enterSet(AbsConParser.SetContext ctx) {
         if(isUniversal){
             forAll.condition = ctx.getChild(0).getText();
+        }
+        if(isExistential){
+            exists.condition = ctx.getChild(0).getText();
         }
     }
 
@@ -741,6 +818,11 @@ public class AbsConWalker implements   AbsConListener {
             forAll.numberRange = numberRange;
             forAll.isNumberRange = true;
         }
+        if(isExistential){
+            exists.numberRange = numberRange;
+            exists.isNumberRange = true;
+        }
+
         isNumRange = false;
     }
 
@@ -750,6 +832,11 @@ public class AbsConWalker implements   AbsConListener {
         inlinedInto.setVar(ctx.getChild(2).getText());
         if(isUniversal){
             inlinedInto.setInlineCheckType("ForAll");
+            inlinedInto.setIndex(forAll.getVar());
+        }
+        if(isExistential){
+            inlinedInto.setInlineCheckType("Exists");
+            inlinedInto.setIndex(exists.getVar());
         }
     }
 
@@ -800,7 +887,7 @@ public class AbsConWalker implements   AbsConListener {
             isBExpr = false;
         }
         if(isInlinedInto){
-            inlinedInto.setExpression(new ArrayList(expressionList));
+            inlinedInto.setExpression(convertArrayListToString(expressionList));
         }
     }
 

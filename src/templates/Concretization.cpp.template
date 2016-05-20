@@ -160,10 +160,20 @@ isValidImitation = false;
 
 #if($filter.class.simpleName =="InlinedInto")
 #if(${filter.getInlineCheckType()} =="ForAll" && ${filter.isCompare()})
-isValidImitation = checkInlinedInto(${filter.getVar()},$vectorNames.query,$vectorNames.clone,vectorindex);
-#else
-${filter.getExpression()}
+isValidImitation = isValidImitation && checkInlinedInto(${filter.getVar()},$vectorNames.query,$vectorNames.clone,vectorindex);
 #end
+#end
+#if(${filter.getInlineCheckType()} =="Exists" && !${filter.isCompare()})
+for (int i = 1; i < ${filter.getVar()}->methodIDs.size(); i++) {
+    vector<VectorReader*>* clone_target_vectors =
+    			VectorReader::getMethodVectorsFromIndex(vectorindex,
+    					${filter.getVar()}->methodIDs[i]);
+    VectorReader* ${filter.getIndex()} = new VectorReader(
+    			*(*clone_target_vectors)[0]);
+    if ((${filter.getExpression()}))
+    		isValidImitation = isValidImitation && true ;
+}
+
 #end
 #end
 return isValidImitation;
