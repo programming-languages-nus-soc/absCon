@@ -141,10 +141,10 @@
 
 	#assigns {
 		abst(f_21_iload) = vec(f_21_iload) + sumOfFeatures(vec, s_iload);
-		abst(f_22_lload) = vec(f_22_iload) + sumOfFeatures(vec, s_lload);
-		abst(f_23_fload) = vec(f_23_iload) + sumOfFeatures(vec, s_fload);
-		abst(f_24_dload) = vec(f_24_iload) + sumOfFeatures(vec, s_dload);
-		abst(f_24_aload) = vec(f_25_iload) + sumOfFeatures(vec, s_aload);
+		abst(f_22_lload) = vec(f_22_lload) + sumOfFeatures(vec, s_lload);
+		abst(f_23_fload) = vec(f_23_fload) + sumOfFeatures(vec, s_fload);
+		abst(f_24_dload) = vec(f_24_dload) + sumOfFeatures(vec, s_dload);
+		abst(f_25_aload) = vec(f_25_aload) + sumOfFeatures(vec, s_aload);
 
 		abst(f_54_istore) = vec(f_54_istore) + sumOfFeatures(vec, s_istore);
 		abst(f_55_lstore) = vec(f_55_lstore) + sumOfFeatures(vec, s_lstore);

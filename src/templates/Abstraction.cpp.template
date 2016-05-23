@@ -44,14 +44,8 @@ void setFeatures_$foreach.index#[[(VectorReader* abst,std::set<int> features) { 
 
 
 
-void setFeatureByIndex(VectorReader* abst) {
-    #foreach ($accessor in $assignmentCallList)
-        abst->counters[$accessor.index] = #foreach ($expr in $accessor.expr) $expr #end;
-    #end
-}
 
-
-static int sumofFeatures(VectorReader* conc,std::set<int> features) {
+static int sumOfFeatures(VectorReader* conc,std::set<int> features) {
 	int sumofFeatures=0;
 
 	for (set<int>::iterator i = features.begin(); i != features.end(); i++) {
@@ -67,9 +61,15 @@ static int accessor(VectorReader* conc,int index) {
     return conc->counters[index];
 }
 
+void setFeatureByIndex(VectorReader* abst,VectorReader* vec) {
+    #foreach ($accessor in $assignmentCallList)
+        abst->counters[$accessor.index] = #foreach ($expr in $accessor.expr) $expr #end;
+    #end
+}
+
 
 void _abstractionRuleCalls(VectorReader* abst,VectorReader* conc){
-    setFeatureByIndex(abst);
+    setFeatureByIndex(abst,conc);
     #foreach ($setFeatures in $setFeaturesList)
     $setFeatures.call;
     #end

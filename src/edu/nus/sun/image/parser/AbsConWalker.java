@@ -148,7 +148,7 @@ public class AbsConWalker implements   AbsConListener {
 
     public  class InlinedInto{
         String var;
-        String index;
+        String inlineVar;
         String expression;
         String inlineCheckType;
         boolean isCompare;
@@ -185,12 +185,12 @@ public class AbsConWalker implements   AbsConListener {
             this.inlineCheckType = inlineCheckType;
         }
 
-        public String getIndex() {
-            return index;
+        public String getInlineVar() {
+            return inlineVar;
         }
 
-        public void setIndex(String index) {
-            this.index = index;
+        public void setInlineVar(String inlineVar) {
+            this.inlineVar = inlineVar;
         }
     }
     //for concerete, abstract, clone, query vector
@@ -832,11 +832,11 @@ public class AbsConWalker implements   AbsConListener {
         inlinedInto.setVar(ctx.getChild(2).getText());
         if(isUniversal){
             inlinedInto.setInlineCheckType("ForAll");
-            inlinedInto.setIndex(forAll.getVar());
+            inlinedInto.setInlineVar(forAll.getVar());
         }
         if(isExistential){
             inlinedInto.setInlineCheckType("Exists");
-            inlinedInto.setIndex(exists.getVar());
+            inlinedInto.setInlineVar(exists.getVar());
         }
     }
 

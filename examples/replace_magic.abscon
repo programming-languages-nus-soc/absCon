@@ -1,0 +1,185 @@
+// Abstractions and concretization rules for "Replace Assignment" refactoring.
+
+
+#declares
+{
+    // Bytecode features and groups.
+
+    	// Load operations.
+    	f_21_iload = OP_iload;
+    	f_22_lload = OP_lload;
+    	f_23_fload = OP_fload;
+    	f_24_dload = OP_dload;
+    	f_25_aload = OP_aload;
+    	f_26_iload_0 = OP_iload_0;
+    	f_27_iload_1 = OP_iload_1;
+    	f_28_iload_2 = OP_iload_2;
+    	f_29_iload_3 = OP_iload_3;
+    	f_30_lload_0 = OP_lload_0;
+    	f_31_lload_1 = OP_lload_1;
+    	f_32_lload_2 = OP_lload_2;
+    	f_33_lload_3 = OP_lload_3;
+    	f_34_fload_0 = OP_fload_0;
+    	f_35_fload_1 = OP_fload_1;
+    	f_36_fload_2 = OP_fload_2;
+    	f_37_fload_3 = OP_fload_3;
+    	f_38_dload_0 = OP_dload_0;
+    	f_39_dload_1 = OP_dload_1;
+    	f_40_dload_2 = OP_dload_2;
+    	f_41_dload_3 = OP_dload_3;
+    	f_42_aload_0 = OP_aload_0;
+    	f_43_aload_1 = OP_aload_1;
+    	f_44_aload_2 = OP_aload_2;
+    	f_45_aload_3 = OP_aload_3;
+
+
+    	// Set of load operations.
+    	s_iload = setOf(
+    		f_26_iload_0,
+    		f_27_iload_1,
+    		f_28_iload_2,
+    		f_29_iload_3
+    	);
+
+    	s_lload = setOf(
+    		f_30_lload_0,
+    		f_31_lload_1,
+    		f_32_lload_2,
+    		f_33_lload_3
+    	);
+
+    	s_fload=setOf(
+    		f_34_fload_0,
+    		f_35_fload_1,
+    		f_36_fload_2,
+    		f_37_fload_3
+    	);
+
+    	s_dload = setOf(
+    		f_38_dload_0,
+    		f_39_dload_1,
+    		f_40_dload_2,
+    		f_41_dload_3
+    	);
+
+    	s_aload=setOf(
+    		f_42_aload_0,
+    		f_43_aload_1,
+    		f_44_aload_2,
+    		f_45_aload_3
+    	);
+
+    	// Store operations.
+    	f_54_istore = OP_istore;
+    	f_55_lstore = OP_lstore;
+    	f_56_fstore = OP_fstore;
+    	f_57_dstore = OP_dstore;
+    	f_58_astore = OP_astore;
+    	f_59_istore_0 = OP_istore_0;
+    	f_60_istore_1 = OP_istore_1;
+    	f_61_istore_2 = OP_istore_2;
+    	f_62_istore_3 = OP_istore_3;
+    	f_63_lstore_0 = OP_lstore_0;
+    	f_64_lstore_1 = OP_lstore_1;
+    	f_65_lstore_2 = OP_lstore_2;
+    	f_66_lstore_3 = OP_lstore_3;
+    	f_67_fstore_0 = OP_fstore_0;
+    	f_68_fstore_1 = OP_fstore_1;
+    	f_69_fstore_2 = OP_fstore_2;
+    	f_70_fstore_3 = OP_fstore_3;
+    	f_71_dstore_0 = OP_dstore_0;
+    	f_72_dstore_1 = OP_dstore_1;
+    	f_73_dstore_2 = OP_dstore_2;
+    	f_74_dstore_3 = OP_dstore_3;
+    	f_75_astore_0 = OP_astore_0;
+    	f_76_astore_1 = OP_astore_1;
+    	f_77_astore_2 = OP_astore_2;
+    	f_78_astore_3 = OP_astore_3;
+
+
+    	s_istore= setOf(
+    		f_59_istore_0,
+    		f_60_istore_1,
+    		f_61_istore_2,
+    		f_62_istore_3
+    	);
+
+    	s_lstore = setOf(
+    		f_63_lstore_0,
+    		f_64_lstore_1,
+    		f_65_lstore_2,
+    		f_66_lstore_3
+    	);
+
+    	s_fstore=setOf(
+    		f_67_fstore_0,
+    		f_68_fstore_1,
+    		f_69_fstore_2,
+    		f_70_fstore_3
+    	);
+
+    	s_dstore = setOf(
+    		f_71_dstore_0,
+    		f_72_dstore_1,
+    		f_73_dstore_2,
+    		f_74_dstore_3
+    	);
+
+    	s_astore=setOf(
+    		f_75_astore_0,
+    		f_76_astore_1,
+    		f_77_astore_2,
+    		f_78_astore_3
+    	);
+
+
+}
+#abstract
+{
+	#concVec vec;
+    	#abstVec abst;
+
+    	#assigns {
+    		abst(f_21_iload) = vec(f_21_iload) + sumOfFeatures(vec, s_iload);
+    		abst(f_22_lload) = vec(f_22_lload) + sumOfFeatures(vec, s_lload);
+    		abst(f_23_fload) = vec(f_23_fload) + sumOfFeatures(vec, s_fload);
+    		abst(f_24_dload) = vec(f_24_dload) + sumOfFeatures(vec, s_dload);
+    		abst(f_25_aload) = vec(f_25_aload) + sumOfFeatures(vec, s_aload);
+
+    		abst(f_54_istore) = vec(f_54_istore) + sumOfFeatures(vec, s_istore);
+    		abst(f_55_lstore) = vec(f_55_lstore) + sumOfFeatures(vec, s_lstore);
+    		abst(f_56_fstore) = vec(f_56_fstore) + sumOfFeatures(vec, s_fstore);
+    		abst(f_57_dstore) = vec(f_57_dstore) + sumOfFeatures(vec, s_dstore);
+    		abst(f_58_astore) = vec(f_58_astore) + sumOfFeatures(vec, s_astore);
+
+    		setFeatures(abst, s_iload) = 0;
+    		setFeatures(abst, s_lload) = 0;
+    		setFeatures(abst, s_fload) = 0;
+    		setFeatures(abst, s_dload) = 0;
+    		setFeatures(abst, s_aload) = 0;
+    		setFeatures(abst, s_istore) = 0;
+    		setFeatures(abst, s_lstore) = 0;
+    		setFeatures(abst, s_fstore) = 0;
+    		setFeatures(abst, s_dstore) = 0;
+    		setFeatures(abst, s_astore) = 0;
+    	}
+
+}
+
+#concrete
+{
+	#clone vec;
+    #query veq;
+
+    	#filters {
+    	            let{
+    	                query_literals = sourceOf(veq)(9)(1) + sourceOf(veq)(13)(1) +sourceOf(veq)(34)(1) + sourceOf(veq)(45)(1);
+    	                clone_literals = sourceOf(vec)(9)(2) + sourceOf(vec)(13)(2) + sourceOf(vec)(34)(2) + sourceOf(vec)(45)(2);
+    	                simple_name_diff = sourceOf(vec)(42)(2) - sourceOf(veq)(42)(1);
+
+    	            }in{
+                        query_literals - clone_literals > 0;
+                        query_literals - clone_literals <= simple_name_diff;
+    	            }
+        }
+}
