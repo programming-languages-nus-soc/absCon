@@ -922,6 +922,18 @@ public class AbsConWalker implements   AbsConListener {
 
     }
 
+    @Override
+    public void enterTotalCount(AbsConParser.TotalCountContext ctx) {
+        for(int i=0;i<ctx.getChildCount();i++){
+            expressionList.add(ctx.getChild(i));
+        }
+    }
+
+    @Override
+    public void exitTotalCount(AbsConParser.TotalCountContext ctx) {
+
+    }
+
 
     @Override
     public void enterSimpAssign(AbsConParser.SimpAssignContext ctx) {

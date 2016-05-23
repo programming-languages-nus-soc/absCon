@@ -27,7 +27,7 @@ indexAccessor: ID SQUAREBRACEOPEN DIGITS SQUAREBRACECLOSE;
 gAssign:'setFeatures' OPENBRACE ID COMMA ID CLOSEBRACE ASSIGN expr SEMICOLON ;
 dAssign:'setFeaturesByRange' OPENBRACE numRange CLOSEBRACE ASSIGN expr SEMICOLON;
 expr: exp+;
-exp: paranthesizedExp | exp MULDIV exp | exp ADDSUB exp | accessor |DIGITS | sumOfFeatures  | sourceOf | sourceOfSize|absFeature |id;
+exp: paranthesizedExp | exp MULDIV exp | exp ADDSUB exp | accessor |DIGITS | sumOfFeatures  | sourceOf | sourceOfSize|totalCount|absFeature |id;
 id:ID;
 paranthesizedExp: OPENBRACE exp CLOSEBRACE;
 sumOfFeatures :'sumOfFeatures' OPENBRACE (ID | sourceOf) COMMA (ID|sourceOf) CLOSEBRACE;
@@ -62,6 +62,7 @@ bExpr: (bExp)+ SEMICOLON;
 bExp: rExp bop rExp | rExp bop rExp | bop rExp | rExp ;
 bop:'&&' | '||' | 'not';
 compareInlinedVec: 'compare' OPENBRACE ID COMMA ID CLOSEBRACE SEMICOLON ;
+totalCount:'totalCount' OPENBRACE ID CLOSEBRACE;
 //Common Statements
 simpAssign: ID ASSIGN expr SEMICOLON;
 

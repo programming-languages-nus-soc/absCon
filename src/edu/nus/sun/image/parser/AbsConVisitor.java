@@ -329,6 +329,12 @@ public interface AbsConVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCompareInlinedVec(AbsConParser.CompareInlinedVecContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AbsConParser#totalCount}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTotalCount(AbsConParser.TotalCountContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AbsConParser#simpAssign}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

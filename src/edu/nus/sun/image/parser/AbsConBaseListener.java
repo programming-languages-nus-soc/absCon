@@ -652,6 +652,18 @@ public class AbsConBaseListener implements AbsConListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterTotalCount(AbsConParser.TotalCountContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTotalCount(AbsConParser.TotalCountContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterSimpAssign(AbsConParser.SimpAssignContext ctx) { }
 	/**
 	 * {@inheritDoc}

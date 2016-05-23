@@ -538,6 +538,16 @@ public interface AbsConListener extends ParseTreeListener {
 	 */
 	void exitCompareInlinedVec(AbsConParser.CompareInlinedVecContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AbsConParser#totalCount}.
+	 * @param ctx the parse tree
+	 */
+	void enterTotalCount(AbsConParser.TotalCountContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AbsConParser#totalCount}.
+	 * @param ctx the parse tree
+	 */
+	void exitTotalCount(AbsConParser.TotalCountContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AbsConParser#simpAssign}.
 	 * @param ctx the parse tree
 	 */
