@@ -163,10 +163,10 @@
 		// As per the C++ implementation, this refactoring op also requires
 		// abstracting variable load store accesses.
 		abst(f_21_iload) = vec(f_21_iload) + sumOfFeatures(vec, s_iload);
-		abst(f_22_lload) = vec(f_22_iload) + sumOfFeatures(vec, s_lload);
-		abst(f_23_fload) = vec(f_23_iload) + sumOfFeatures(vec, s_fload);
-		abst(f_24_dload) = vec(f_24_iload) + sumOfFeatures(vec, s_dload);
-		abst(f_24_aload) = vec(f_25_iload) + sumOfFeatures(vec, s_aload);
+		abst(f_22_lload) = vec(f_22_lload) + sumOfFeatures(vec, s_lload);
+		abst(f_23_fload) = vec(f_23_fload) + sumOfFeatures(vec, s_fload);
+		abst(f_24_dload) = vec(f_24_dload) + sumOfFeatures(vec, s_dload);
+		abst(f_25_aload) = vec(f_25_aload) + sumOfFeatures(vec, s_aload);
 
 		abst(f_54_istore) = vec(f_54_istore) + sumOfFeatures(vec, s_istore);
 		abst(f_55_lstore) = vec(f_55_lstore) + sumOfFeatures(vec, s_lstore);
@@ -223,15 +223,14 @@
 
 	#filters {
 		// Equivalent implementation of the one in the current system.
-		veq(f_149_fcmpl) - vec(f_149_fcmpl) != 0 && veq(f_150_fcmpg) - vec(f_150_fcmpg) == veq(f_149_fcmpl) - vec(f_149_fcmpl);
-		veq(f_151_dcmpl) - vec(f_151_dcmpl) != 0 && veq(f_152_dcmpg) - vec(f_152_dcmpg) == veq(f_151_dcmpl) - vec(f_151_dcmpl);
-		veq(f_153_ifeq) - vec(f_153_ifeq) != 0 && veq(f_154_ifne) - vec(f_154_ifne) == veq(f_153_ifeq) - vec(f_153_ifeq);
-		veq(f_155_iflt) - vec(f_155_iflt) != 0 && veq(f_156_ifge) - vec(f_156_ifge) == veq(f_155_iflt) - vec(f_155_iflt);
-		veq(f_157_ifgt) - vec(f_151_dcmpl) != 0 && veq(f_158_ifle) - vec(f_158_ifle) == veq(f_157_ifgt) - vec(f_157_ifgt);
-		veq(f_159_if_icmpeq) - vec(f_159_if_icmpeq) != 0 && veq(f_160_if_icmpne) - vec(f_160_if_icmpne) == veq(f_159_if_icmpeq) - vec(f_159_if_icmpeq);
-		veq(f_161_if_icmplt) - vec(f_161_if_icmplt) != 0 && veq(f_162_if_icmpge) - vec(f_162_if_icmpge) == veq(f_161_if_icmplt) - vec(f_161_if_icmplt);
-		veq(f_163_if_icmpgt) - vec(f_163_if_icmpgt) != 0 && veq(f_164_if_icmple) - vec(f_164_if_icmple) == veq(f_163_if_icmpgt) - vec(f_163_if_icmpgt);
-		veq(f_165_if_acmpeq) - vec(f_165_if_acmpeq) != 0 && veq(f_166_if_acmpne) - vec(f_166_if_acmpne) == veq(f_165_if_acmpeq) - vec(f_165_if_acmpeq);
-
+		veq[149]-vec[149]!=0 && veq[149]-vec[149] == vec[150]-veq[150]
+            || veq[151]-vec[151]!=0 &&  veq[151]-vec[151] == vec[152]-veq[152]
+            || veq[153]-vec[153]!=0 &&  veq[153]-vec[153] == vec[154]-veq[154]
+            || veq[155]-vec[155]!=0 &&  veq[155]-vec[155] == vec[156]-veq[156]
+            || veq[157]-vec[157]!=0 &&  veq[157]-vec[157] == vec[158]-veq[158]
+            || veq[159]-vec[159]!=0 &&  veq[159]-vec[159] == vec[160]-veq[160]
+            || veq[161]-vec[161]!=0 &&  veq[161]-vec[161] == vec[162]-veq[162]
+            || veq[163]-vec[163]!=0 &&  veq[163]-vec[163] == vec[164]-veq[164]
+            || veq[165]-vec[165]!=0 &&  veq[165]-vec[165] == vec[166]-veq[166];
 	}
 }

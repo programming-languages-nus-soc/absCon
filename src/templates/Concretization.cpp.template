@@ -185,6 +185,15 @@ for (int i = 1; i < ${filter.getVar()}->methodIDs.size(); i++) {
 }
 isValidImitation&= isFound_$foreach.count;
 #end
+#if($filter.class.simpleName == "Exists" && ${filter.isNumberRange()})
+bool isFound_$foreach.count = false;
+for (int ${filter.getVar()} = ${filter.getNumberRange().getStartIndex()}; ${filter.getVar()} < ${filter.getNumberRange().getEndIndex()} ;${filter.getVar()}++) {
+   if(${filter.getExpression()}){
+    isFound_$foreach.count = true;
+   }
+}
+isValidImitation&= isFound_$foreach.count;
+#end
 #end
 return isValidImitation;
 }
