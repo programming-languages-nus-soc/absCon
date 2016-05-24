@@ -224,7 +224,6 @@
 	f_216_apiinvoke6 = OP_apiinvoke6;
 	f_217_methodinvoke_checkcast = OP_methodinvoke_checkcast;
 	f_218_apiinvoke_checkcast = OP_apiinvoke_checkcast;
-	f_219_UNKNOWN = UNKNOWN;
 
 	// Set of all the bytecode features.
 	s_all_byc = setOf(
@@ -446,8 +445,7 @@
 		f_215_apiinvoke5,
 		f_216_apiinvoke6,
 		f_217_methodinvoke_checkcast,
-		f_218_apiinvoke_checkcast,
-		f_219_UNKOWN
+		f_218_apiinvoke_checkcast
 	);
 
 	// Set of load operations.
@@ -540,7 +538,7 @@
 		abst(f_187_new) = 0;
 		abst(f_202_initinvoke) = 0;
 
-		// Abstract binary opperations as per existing implementation.
+		// Abstract binary operations as per existing implementation.
 		abst(f_96_iadd) = vec(f_96_iadd) + vec(f_100_isub) + vec(f_104_imul) + vec(f_108_idiv);
 		abst(f_97_ladd) = vec(f_97_ladd) + vec(f_101_lsub) + vec(f_105_lmul) + vec(f_109_ldiv);
 		abst(f_98_fadd) = vec(f_98_fadd) + vec(f_102_fsub) + vec(f_106_fmul) + vec(f_110_fdiv);
@@ -556,14 +554,11 @@
 	#query veq;
 
 	#filters {
-		Exists(vi) inlinedInto(vec): {
+		exists vi in inlinedInto(vec): {
 			sumOfFeatures(vi, s_all_byc) - sumOfFeatures(veq, s_all_byc) ==
-				vi(f_180_getfield) + vi(f_181_putfield);
-
-			// Because magic:
-			sumOfFeatures(vec, s_all_byc) < 20;
-			vec(f_202_initinvoke) > 0;
-			vi(f_180_getfield) > 1;
+				vi(f_180_getfield) + vi(f_181_putfield)
+			&& vi(f_180_getfield) - veq(f_180_getfield) > 0
+			&& vec(f_187_new) - veq(f_187_new) > 0;
 		}
 	}
 }
