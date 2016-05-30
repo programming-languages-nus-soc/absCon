@@ -162,7 +162,7 @@ isValidImitation = false;
 #end
 
 #if($filter.class.simpleName =="InlinedInto")
-#if(${filter.getInlineCheckType()} =="ForAll" && ${filter.isCompare()})
+#if(${filter.getInlineCheckType()} =="ForAll" )
 isValidImitation = isValidImitation && checkInlinedInto(${filter.getVar()},$vectorNames.query,$vectorNames.clone,vectorindex);
 #end
 #end
