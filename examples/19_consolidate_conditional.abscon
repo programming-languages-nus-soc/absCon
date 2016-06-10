@@ -162,12 +162,33 @@
 		f_20_ldc2_w
 	);
 
+	// Compare opperations.
+	f_149_fcmpl = OP_fcmpl;
+	f_150_fcmpg = OP_fcmpg;
+	f_151_dcmpl = OP_dcmpl;
+	f_152_dcmpg = OP_dcmpg;
+	f_153_ifeq = OP_ifeq;
+	f_154_ifne = OP_ifne;
+	f_155_iflt = OP_iflt;
+	f_156_ifge = OP_ifge;
+	f_157_ifgt = OP_ifgt;
+	f_158_ifle = OP_ifle;
+	f_159_if_icmpeq = OP_if_icmpeq;
+	f_160_if_icmpne = OP_if_icmpne;
+	f_161_if_icmplt = OP_if_icmplt;
+	f_162_if_icmpge = OP_if_icmpge;
+	f_163_if_icmpgt = OP_if_icmpgt;
+	f_164_if_icmple = OP_if_icmple;
+	f_165_if_acmpeq = OP_if_acmpeq;
+	f_166_if_acmpne = OP_if_acmpne;
+
 	// Return opperations.
 	f_172_ireturn = OP_ireturn;
 	f_173_lreturn = OP_lreturn;
 	f_174_freturn = OP_freturn;
 	f_175_dreturn = OP_dreturn;
 	f_176_areturn = OP_areturn;
+	f_177_return = OP_return;
 
 	// Set of return operations.
 	s_return = setOf(
@@ -185,9 +206,44 @@
 	#abstVec abst;
 
 	#assigns {
+		// Ignore load-store access.
 		setFeatures(abst, s_load) = 0;
 		setFeatures(abst, s_store) = 0;
+
+		// Ignore bytecode constant.
 		setFeatures(abst, s_const) = 0;
+
+		// Ignore return.
+		setFeatures(abst, s_return) = 0;
+		abst(f_177_return) = 0;
+
+		// Abstract ignore conditional.
+		abst(f_149_fcmpl) = vec(f_149_fcmpl) + vec(f_150_fcmpg);
+		abst(f_150_fcmpg) = 0;
+
+		abst(f_151_dcmpl) = vec(f_151_dcmpl) + vec(f_152_dcmpg);
+		abst(f_152_dcmpg) = 0;
+
+		abst(f_153_ifeq) = vec(f_153_ifeq) + vec(f_154_ifne);
+		abst(f_154_ifne) = 0;
+
+		abst(f_155_iflt) = vec(f_155_iflt) + vec(f_156_ifge);
+		abst(f_156_ifge) = 0;
+
+		abst(f_157_ifgt) = vec(f_157_ifgt) + vec(f_158_ifle);
+		abst(f_158_ifle) = 0;
+
+		abst(f_159_if_icmpeq) = vec(f_159_if_icmpeq) + vec(f_160_if_icmpne);
+		abst(f_160_if_icmpne) = 0;
+
+		abst(f_161_if_icmplt) = vec(f_161_if_icmplt) + vec(f_162_if_icmpge);
+		abst(f_162_if_icmpge) = 0;
+
+		abst(f_163_if_icmpgt) = vec(f_163_if_icmpgt) + vec(f_164_if_icmple);
+		abst(f_164_if_icmple) = 0;
+
+		abst(f_165_if_acmpeq) = vec(f_165_if_acmpeq) + vec(f_166_if_acmpne);
+		abst(f_166_if_acmpne) = 0;
 	}
 }
 
@@ -212,17 +268,19 @@
 			sc_if_statement = 25;
 			sc_return_statement = 41;
 		} in {
-			sourceOfSize(veq)(1) > 0 && sourceOfSize(vec)(2) > 0;
-			sourceOf(veq)(sc_if_statement)(1) > 1 && sourceOf(vec)(sc_return_statement)(2) > 1;
-
-			sourceOf(veq)(sc_if_statement)(1) - sourceOf(vec)(sc_return_statement)(2) > 0;
-
+			sourceOfSize(veq)(1) > 0 && sourceOfSize(vec)(2) > 0 &&
+			sourceOf(veq)(sc_if_statement)(1) > 1 && sourceOf(vec)(sc_return_statement)(2) > 1 &&
+			sourceOf(veq)(sc_if_statement)(1) - sourceOf(vec)(sc_if_statement)(2) > 0 &&
 			sum_return_q - sum_return_c ==
-				sourceOf(veq)(sc_if_statement)(1) - sourceOf(vec)(sc_return_statement)(2);
+				sourceOf(veq)(sc_if_statement)(1) - sourceOf(vec)(sc_if_statement)(2);
+
+			sourceOfSize(veq)(1) > 0 && sourceOfSize(vec)(2) > 0 &&
 			sum_load_q - sum_load_c ==
-				sourceOf(veq)(sc_if_statement)(1) - sourceOf(vec)(sc_return_statement)(2)
-			|| sum_const_q - sum_const_c ==
-				sourceOf(veq)(sc_if_statement)(1) - sourceOf(vec)(sc_return_statement)(2);
+				sourceOf(veq)(sc_if_statement)(1) - sourceOf(vec)(sc_if_statement)(2)
+			||
+			sourceOfSize(veq)(1) > 0 && sourceOfSize(vec)(2) > 0 &&
+			sum_const_q - sum_const_c ==
+				sourceOf(veq)(sc_if_statement)(1) - sourceOf(vec)(sc_if_statement)(2);
 		}
 	}
 }
