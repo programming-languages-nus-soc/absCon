@@ -154,7 +154,7 @@
 		f_12_fconst_1,
 		f_13_fconst_2,
 		f_14_dconst_0,
-		f_15_dconst_1
+		f_15_dconst_1,
 		f_16_bipush,
 		f_17_sipush,
 		f_18_ldc,
