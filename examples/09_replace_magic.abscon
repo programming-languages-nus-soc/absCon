@@ -173,13 +173,14 @@
 
     	#filters {
     	            let{
-    	                query_literals = sourceOf(veq)(9)(1) + sourceOf(veq)(13)(1) +sourceOf(veq)(34)(1) + sourceOf(veq)(45)(1);
-    	                clone_literals = sourceOf(vec)(9)(2) + sourceOf(vec)(13)(2) + sourceOf(vec)(34)(2) + sourceOf(vec)(45)(2);
-    	                simple_name_diff = sourceOf(vec)(42)(2) - sourceOf(veq)(42)(1);
+    	                SIMPLE_NAME=42;
+    	                //query_literals = sourceOf(veq)(9)(1) + sourceOf(veq)(13)(1) +sourceOf(veq)(34)(1) + sourceOf(veq)(45)(1);
+    	                //clone_literals = sourceOf(vec)(9)(2) + sourceOf(vec)(13)(2) + sourceOf(vec)(34)(2) + sourceOf(vec)(45)(2);
+    	                //simple_name_diff = sourceOf(vec)(42)(2) - sourceOf(veq)(42)(1);
 
     	            }in{
-                        query_literals - clone_literals > 0;
-                        query_literals - clone_literals <= simple_name_diff;
+                        sourceOfSize(veq)(1) != 0 && sourceOfSize(vec)(2) != 0 && (sourceOf(veq)(9)(1) + sourceOf(veq)(13)(1) +sourceOf(veq)(34)(1) + sourceOf(veq)(45)(1) - sourceOf(vec)(9)(2) + sourceOf(vec)(13)(2) + sourceOf(vec)(34)(2) + sourceOf(vec)(45)(2) > 0);
+                        sourceOfSize(veq)(1) != 0 && sourceOfSize(vec)(2) != 0 && (sourceOf(veq)(9)(1) + sourceOf(veq)(13)(1) +sourceOf(veq)(34)(1) + sourceOf(veq)(45)(1) - sourceOf(vec)(9)(2) + sourceOf(vec)(13)(2) + sourceOf(vec)(34)(2) + sourceOf(vec)(45)(2) <= sourceOf(vec)(SIMPLE_NAME)(2) - sourceOf(veq)(SIMPLE_NAME)(1));
     	            }
         }
 }

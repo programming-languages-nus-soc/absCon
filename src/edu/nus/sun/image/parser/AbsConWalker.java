@@ -243,6 +243,7 @@ public class AbsConWalker implements   AbsConListener {
     boolean isNumRange;
     boolean isExistential;
     boolean isFeatureAccessor;
+    boolean isTotalCount;
 
 
     @Override public void enterProgram(AbsConParser.ProgramContext ctx) {
@@ -965,6 +966,7 @@ public class AbsConWalker implements   AbsConListener {
 
     @Override
     public void enterTotalCount(AbsConParser.TotalCountContext ctx) {
+        isTotalCount = true;
         for(int i=0;i<ctx.getChildCount();i++){
             expressionList.add(ctx.getChild(i));
         }
@@ -972,7 +974,7 @@ public class AbsConWalker implements   AbsConListener {
 
     @Override
     public void exitTotalCount(AbsConParser.TotalCountContext ctx) {
-
+        isTotalCount = false;
     }
 
 
@@ -1005,7 +1007,7 @@ public class AbsConWalker implements   AbsConListener {
 
         }
 
-        if(!isSourceSizeOf && !isSourceOf&& isBExpr && !isSumOfFeatures && !isFeatureAccessor){
+        if(!isSourceSizeOf && !isSourceOf&& isBExpr && !isSumOfFeatures && !isFeatureAccessor&& !isTotalCount){
             if(node.getText().equals("(") || node.getText().equals(")")){
                 expressionList.add(node.getText());
             }

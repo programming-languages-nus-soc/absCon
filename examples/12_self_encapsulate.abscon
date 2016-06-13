@@ -25,10 +25,10 @@
                     let{
                         return_ops = veq[172]+veq[173]+veq[174]+veq[175]+veq[176];
                     } in {
-                        return_ops != 1 || veq[180]!=1 || veq[42] != 1;
+                        return_ops != 1 || veq[180]!=1 || veq[42] != 1 || totalCount(veq) != 3;
                         veq[180] != 0 || vec[181] !=0;
                         exists vi in inlinedInto(vec):{
-                            (vi[172]+vi[173]+vi[174]+vi[175]+vi[176]) == 1  && vi[180]==1;
+                            (vi[172]+vi[173]+vi[174]+vi[175]+vi[176]) == 1  && vi[180]==1 && totalCount(vi) == 3;
                         }
                     }
             	}
