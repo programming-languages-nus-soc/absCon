@@ -173,12 +173,13 @@
 
     	#filters {
     	            let{
-                        iStoreDifference = sourceOf(vec)(60)(2) - sourceOf(veq)(60)(1);
-                        assignmentDifference = sourceOf(veq)(7)(1) - sourceOf(vec)(7)(2);
+    	               ASSIGNMENT = 7;
+                       // iStoreDifference = sourceOf(vec)(60)(2) - sourceOf(veq)(60)(1);
+                        //assignmentDifference = sourceOf(veq)(7)(1) - sourceOf(vec)(7)(2);
     	            }in{
     	                sourceOfSize(veq)(1) !=0 && sourceOfSize(vec)(2)!=0;
-                        sourceOfSize(veq)(1) !=0 && sourceOfSize(vec)(2)!=0 && iStoreDifference == 1;
-                        sourceOfSize(veq)(1) !=0 && sourceOfSize(vec)(2)!=0 && iStoreDifference == assignmentDifference;
+                        sourceOfSize(veq)(1) !=0 && sourceOfSize(vec)(2)!=0 && sourceOf(vec)(60)(2) - sourceOf(veq)(60)(1) == 1;
+                        sourceOfSize(veq)(1) !=0 && sourceOfSize(vec)(2)!=0 && sourceOf(vec)(60)(2) - sourceOf(veq)(60)(1) == sourceOf(veq)(ASSIGNMENT)(1) - sourceOf(vec)(ASSIGNMENT)(2);
     	            }
         }
 }

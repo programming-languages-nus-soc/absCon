@@ -180,7 +180,7 @@
 
 		} in {
 			sum_load_q - sum_load_c > 0 && sum_load_q - sum_load_c == sum_store_q - sum_store_c;
-            sourceOfSize(veq)(0) == 0 || sourceOfSize(vec)(0) == 0 || sourceOfSize(veq)(0) > 0 && sourceOfSize(vec)(0) > 0 && sourceOf(veq)(variable_declaration_statement)(0) - sourceOf(vec)(variable_declaration_statement)(0) == sum_load_q - sum_load_c;
+            sourceOfSize(veq)(0) == 0 || sourceOfSize(vec)(0) == 0 || (sourceOfSize(veq)(0) > 0 && sourceOfSize(vec)(0) > 0 && sourceOf(veq)(variable_declaration_statement)(0) - sourceOf(vec)(variable_declaration_statement)(0) == sum_load_q - sum_load_c);
 		}
 	}
 }

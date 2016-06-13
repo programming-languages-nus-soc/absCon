@@ -528,6 +528,46 @@ public interface AbsConListener extends ParseTreeListener {
 	 */
 	void exitBop(AbsConParser.BopContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AbsConParser#orExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterOrExpr(AbsConParser.OrExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AbsConParser#orExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitOrExpr(AbsConParser.OrExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AbsConParser#andExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterAndExpr(AbsConParser.AndExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AbsConParser#andExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitAndExpr(AbsConParser.AndExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AbsConParser#notExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterNotExpr(AbsConParser.NotExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AbsConParser#notExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitNotExpr(AbsConParser.NotExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AbsConParser#bAtom}.
+	 * @param ctx the parse tree
+	 */
+	void enterBAtom(AbsConParser.BAtomContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AbsConParser#bAtom}.
+	 * @param ctx the parse tree
+	 */
+	void exitBAtom(AbsConParser.BAtomContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AbsConParser#compareInlinedVec}.
 	 * @param ctx the parse tree
 	 */

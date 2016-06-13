@@ -323,6 +323,30 @@ public interface AbsConVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBop(AbsConParser.BopContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AbsConParser#orExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOrExpr(AbsConParser.OrExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AbsConParser#andExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAndExpr(AbsConParser.AndExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AbsConParser#notExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNotExpr(AbsConParser.NotExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AbsConParser#bAtom}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBAtom(AbsConParser.BAtomContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AbsConParser#compareInlinedVec}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

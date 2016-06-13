@@ -58,9 +58,14 @@ inlineInto: 'inlinedInto' OPENBRACE ID CLOSEBRACE;
 setOfIds: 'setOf' BLOCKOPEN ids BLOCKCLOSE;
 size:DIGITS | sizeOf;
 sizeOf: 'sizeOf' OPENBRACE ID CLOSEBRACE;
-bExpr: (bExp)+ SEMICOLON;
+//bExpr: (bExp)+ SEMICOLON;
+bExpr: orExpr SEMICOLON;
 bExp: rExp bop rExp | rExp bop rExp | bop rExp | rExp ;
 bop:'&&' | '||' | 'not';
+orExpr: OPENBRACE? andExpr CLOSEBRACE? ('||' OPENBRACE? andExpr CLOSEBRACE?)*;
+andExpr: OPENBRACE? notExpr CLOSEBRACE? ('&&'  OPENBRACE? notExpr CLOSEBRACE?)*;
+notExpr: ('not')? OPENBRACE? bAtom CLOSEBRACE?;
+bAtom: rExp | OPENBRACE rExp CLOSEBRACE;
 compareInlinedVec: 'compare' OPENBRACE ID COMMA ID CLOSEBRACE SEMICOLON ;
 totalCount:'totalCount' OPENBRACE ID CLOSEBRACE;
 //Common Statements

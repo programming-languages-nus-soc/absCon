@@ -242,6 +242,7 @@ public class AbsConWalker implements   AbsConListener {
     boolean isSizeOf;
     boolean isNumRange;
     boolean isExistential;
+    boolean isFeatureAccessor;
 
 
     @Override public void enterProgram(AbsConParser.ProgramContext ctx) {
@@ -393,6 +394,7 @@ public class AbsConWalker implements   AbsConListener {
     @Override public void exitAccessor(AbsConParser.AccessorContext ctx) { }
 
     @Override public void enterFeatureAccessor(AbsConParser.FeatureAccessorContext ctx) {
+        isFeatureAccessor = true;
         StringBuilder functionCall = new StringBuilder();
         if(isExp){
             functionCall.append("accessor(");
@@ -404,6 +406,7 @@ public class AbsConWalker implements   AbsConListener {
     }
 
     @Override public void exitFeatureAccessor(AbsConParser.FeatureAccessorContext ctx) {
+        isFeatureAccessor = false;
 
     }
 
@@ -543,7 +546,6 @@ public class AbsConWalker implements   AbsConListener {
         if(Integer.parseInt(ctx.getChild(5).getText())==4){
             exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"vectorindex"+")";
         }
-        System.out.println(exp);
         isSourceSizeOf = true;
         if(isCondition){
             expressionList.add(exp);
@@ -664,7 +666,6 @@ public class AbsConWalker implements   AbsConListener {
             }else{
                 if(!map.isEmpty()) {
                     filters.push(new HashMap<>(map));
-                    System.out.println("Added to filters in not of universal");
                 } else{
                     if(isExistential){
                         if(isInlinedInto){
@@ -911,6 +912,46 @@ public class AbsConWalker implements   AbsConListener {
     }
 
     @Override
+    public void enterOrExpr(AbsConParser.OrExprContext ctx) {
+
+    }
+
+    @Override
+    public void exitOrExpr(AbsConParser.OrExprContext ctx) {
+
+    }
+
+    @Override
+    public void enterAndExpr(AbsConParser.AndExprContext ctx) {
+
+    }
+
+    @Override
+    public void exitAndExpr(AbsConParser.AndExprContext ctx) {
+
+    }
+
+    @Override
+    public void enterNotExpr(AbsConParser.NotExprContext ctx) {
+
+    }
+
+    @Override
+    public void exitNotExpr(AbsConParser.NotExprContext ctx) {
+
+    }
+
+    @Override
+    public void enterBAtom(AbsConParser.BAtomContext ctx) {
+
+    }
+
+    @Override
+    public void exitBAtom(AbsConParser.BAtomContext ctx) {
+
+    }
+
+    @Override
     public void enterCompareInlinedVec(AbsConParser.CompareInlinedVecContext ctx) {
         if(isUniversal && isInlinedInto){
             inlinedInto.isCompare = true;
@@ -955,8 +996,19 @@ public class AbsConWalker implements   AbsConListener {
             case "+":
             case "-":
             case "*":
+            case "||":
+            case "&&":
             case "/":expressionList.add(node.getText());
             break;
+            case "not":expressionList.add("!");
+            break;
+
+        }
+
+        if(!isSourceSizeOf && !isSourceOf&& isBExpr && !isSumOfFeatures && !isFeatureAccessor){
+            if(node.getText().equals("(") || node.getText().equals(")")){
+                expressionList.add(node.getText());
+            }
         }
         if(node.getText().matches("^-?\\d+$")){
             if(isExp && !isIndexAccessor && !isSourceOf && !isSourceSizeOf){
