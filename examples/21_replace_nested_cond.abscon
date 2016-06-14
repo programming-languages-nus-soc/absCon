@@ -257,24 +257,26 @@
                 constqc= sumOfFeatures(vec,s_bytecodeconstant);
             } in {
                 sourceOfSize(veq)(1) !=0 && sourceOfSize(vec)(2) !=0;
-                veq[149]-vec[149]!=0 && veq[149]-vec[149] == vec[150]-veq[150]
-                            || veq[151]-vec[151]!=0 &&  veq[151]-vec[151] == vec[152]-veq[152]
-                            || veq[153]-vec[153]!=0 &&  veq[153]-vec[153] == vec[154]-veq[154]
-                            || veq[155]-vec[155]!=0 &&  veq[155]-vec[155] == vec[156]-veq[156]
-                            || veq[157]-vec[157]!=0 &&  veq[157]-vec[157] == vec[158]-veq[158]
-                            || veq[159]-vec[159]!=0 &&  veq[159]-vec[159] == vec[160]-veq[160]
-                            || veq[161]-vec[161]!=0 &&  veq[161]-vec[161] == vec[162]-veq[162]
-                            || veq[163]-vec[163]!=0 &&  veq[163]-vec[163] == vec[164]-veq[164]
-                            || veq[165]-vec[165]!=0 &&  veq[165]-vec[165] == vec[166]-veq[166]
-                && sourceOfSize(veq)(1) !=0 && sourceOfSize(vec)(2) !=0 && sourceOf(veq)(25)(1) - sourceOf(vec)(25)(2) == 0
-                && sourceOfSize(vec)(2) !=0 && sourceOf(vec)(41)(2) > 1
-                && sourceOfSize(veq)(1) !=0 && sourceOf(veq)(25)(1) > 1
+                (sourceOfSize(veq)(1) !=0 && sourceOfSize(vec)(2) !=0
+                && ((veq[149]-vec[149]!=0 && veq[149]-vec[149] == vec[150]-veq[150])
+                    || (veq[151]-vec[151]!=0 &&  veq[151]-vec[151] == vec[152]-veq[152])
+                    || (veq[153]-vec[153]!=0 &&  veq[153]-vec[153] == vec[154]-veq[154])
+                    || (veq[155]-vec[155]!=0 &&  veq[155]-vec[155] == vec[156]-veq[156])
+                    || (veq[157]-vec[157]!=0 &&  veq[157]-vec[157] == vec[158]-veq[158])
+                    || (veq[159]-vec[159]!=0 &&  veq[159]-vec[159] == vec[160]-veq[160])
+                    || (veq[161]-vec[161]!=0 &&  veq[161]-vec[161] == vec[162]-veq[162])
+                    || (veq[163]-vec[163]!=0 &&  veq[163]-vec[163] == vec[164]-veq[164])
+                    || (veq[165]-vec[165]!=0 &&  veq[165]-vec[165] == vec[166]-veq[166]))
+                && sourceOf(veq)(25)(1) - sourceOf(vec)(25)(2) == 0
+                && sourceOf(vec)(41)(2) > 1
+                && sourceOf(veq)(25)(1) > 1
+                && return_ops_c - return_ops_q > 0)
+                || (sourceOfSize(veq)(1) !=0 && sourceOfSize(vec)(2) !=0
+                && sourceOf(veq)(25)(1) - sourceOf(vec)(25)(2) == 0
+                && sourceOf(vec)(41)(2) > 1
+                && sourceOf(veq)(25)(1) > 1
                 && return_ops_c - return_ops_q > 0
-                || sourceOfSize(veq)(1) !=0 && sourceOfSize(vec)(2) !=0 && sourceOf(veq)(25)(1) - sourceOf(vec)(25)(2) == 0
-                && sourceOfSize(vec)(2) !=0 && sourceOf(vec)(41)(2) > 1
-                && sourceOfSize(veq)(1) !=0 && sourceOf(veq)(25)(1) > 1
-                && return_ops_c - return_ops_q > 0
-                && return_ops_c - return_ops_q - veq[167] == 0;
+                && return_ops_c - return_ops_q - veq[167] == 0);
 
             }
     	}
