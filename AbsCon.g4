@@ -48,12 +48,13 @@ letBlk: 'let' BLOCKOPEN (simpAssign)+ BLOCKCLOSE 'in' BLOCKOPEN (conditions)+ BL
 rExpr: rExp SEMICOLON;
 rExp:(expr rop)+ expr;
 rop: DOUBLEEQUAL | LESSTHAN | GREATERTHAN | NOTEQUAL | LESSTHANEQUAL | GREATERTHANEQUAL;
-existl:  'exists' eltChk COLON BLOCKOPEN bExpr BLOCKCLOSE ;
-univsl: 'forall' OPENBRACE eltChk CLOSEBRACE COLON BLOCKOPEN (bExpr|compareInlinedVec) BLOCKCLOSE SEMICOLON;
+existl:  'exists' eltChk COLON BLOCKOPEN (bExpr|conditionalExpression) BLOCKCLOSE ;
+univsl: 'forall' OPENBRACE eltChk CLOSEBRACE COLON BLOCKOPEN (bExpr|compareInlinedVec|simpAssign) BLOCKCLOSE SEMICOLON;
 eltChk: elt 'in' set;
 elt: ID | OPENBRACE ids CLOSEBRACE;
 set: ID |setOfIds| inlineInto | numRange;
 numRange: DIGITS '..' size;
+conditionalExpression: orExpr BLOCKOPEN simpAssign BLOCKCLOSE;
 inlineInto: 'inlinedInto' OPENBRACE ID CLOSEBRACE;
 setOfIds: 'setOf' BLOCKOPEN ids BLOCKCLOSE;
 size:DIGITS | sizeOf;

@@ -1,0 +1,186 @@
+// Abstractions and concretization rules for "Extract Var" refactoring.
+
+
+#declares
+{
+   // Load operations.
+   	f_21_iload = OP_iload;
+   	f_22_lload = OP_lload;
+   	f_23_fload = OP_fload;
+   	f_24_dload = OP_dload;
+   	f_25_aload = OP_aload;
+   	f_26_iload_0 = OP_iload_0;
+   	f_27_iload_1 = OP_iload_1;
+   	f_28_iload_2 = OP_iload_2;
+   	f_29_iload_3 = OP_iload_3;
+   	f_30_lload_0 = OP_lload_0;
+   	f_31_lload_1 = OP_lload_1;
+   	f_32_lload_2 = OP_lload_2;
+   	f_33_lload_3 = OP_lload_3;
+   	f_34_fload_0 = OP_fload_0;
+   	f_35_fload_1 = OP_fload_1;
+   	f_36_fload_2 = OP_fload_2;
+   	f_37_fload_3 = OP_fload_3;
+   	f_38_dload_0 = OP_dload_0;
+   	f_39_dload_1 = OP_dload_1;
+   	f_40_dload_2 = OP_dload_2;
+   	f_41_dload_3 = OP_dload_3;
+   	f_42_aload_0 = OP_aload_0;
+   	f_43_aload_1 = OP_aload_1;
+   	f_44_aload_2 = OP_aload_2;
+   	f_45_aload_3 = OP_aload_3;
+   	f_46_iaload = OP_iaload;
+   	f_47_laload = OP_laload;
+   	f_48_faload = OP_faload;
+   	f_49_daload = OP_daload;
+   	f_50_aaload = OP_aaload;
+   	f_51_baload = OP_baload;
+   	f_52_caload = OP_caload;
+   	f_53_saload = OP_saload;
+
+   	// Set of load operations.
+   	s_load = setOf(
+   		f_21_iload,
+   		f_22_lload,
+   		f_23_fload,
+   		f_24_dload,
+   		f_25_aload,
+   		f_26_iload_0,
+   		f_27_iload_1,
+   		f_28_iload_2,
+   		f_29_iload_3,
+   		f_30_lload_0,
+   		f_31_lload_1,
+   		f_32_lload_2,
+   		f_33_lload_3,
+   		f_34_fload_0,
+   		f_35_fload_1,
+   		f_36_fload_2,
+   		f_37_fload_3,
+   		f_38_dload_0,
+   		f_39_dload_1,
+   		f_40_dload_2,
+   		f_41_dload_3,
+   		f_42_aload_0,
+   		f_43_aload_1,
+   		f_44_aload_2,
+   		f_45_aload_3,
+   		f_46_iaload,
+   		f_47_laload,
+   		f_48_faload,
+   		f_49_daload,
+   		f_50_aaload,
+   		f_51_baload,
+   		f_52_caload,
+   		f_53_saload
+   	);
+
+   	// Store operations.
+   	f_54_istore = OP_istore;
+   	f_55_lstore = OP_lstore;
+   	f_56_fstore = OP_fstore;
+   	f_57_dstore = OP_dstore;
+   	f_58_astore = OP_astore;
+   	f_59_istore_0 = OP_istore_0;
+   	f_60_istore_1 = OP_istore_1;
+   	f_61_istore_2 = OP_istore_2;
+   	f_62_istore_3 = OP_istore_3;
+   	f_63_lstore_0 = OP_lstore_0;
+   	f_64_lstore_1 = OP_lstore_1;
+   	f_65_lstore_2 = OP_lstore_2;
+   	f_66_lstore_3 = OP_lstore_3;
+   	f_67_fstore_0 = OP_fstore_0;
+   	f_68_fstore_1 = OP_fstore_1;
+   	f_69_fstore_2 = OP_fstore_2;
+   	f_70_fstore_3 = OP_fstore_3;
+   	f_71_dstore_0 = OP_dstore_0;
+   	f_72_dstore_1 = OP_dstore_1;
+   	f_73_dstore_2 = OP_dstore_2;
+   	f_74_dstore_3 = OP_dstore_3;
+   	f_75_astore_0 = OP_astore_0;
+   	f_76_astore_1 = OP_astore_1;
+   	f_77_astore_2 = OP_astore_2;
+   	f_78_astore_3 = OP_astore_3;
+   	f_79_iastore = OP_iastore;
+   	f_80_lastore = OP_lastore;
+   	f_81_fastore = OP_fastore;
+   	f_82_dastore = OP_dastore;
+   	f_83_aastore = OP_aastore;
+   	f_84_bastore = OP_bastore;
+   	f_85_castore = OP_castore;
+   	f_86_sastore = OP_sastore;
+
+   	// Set of store operations.
+   	s_store = setOf(
+   		f_54_istore,
+   		f_55_lstore,
+   		f_56_fstore,
+   		f_57_dstore,
+   		f_58_astore,
+   		f_59_istore_0,
+   		f_60_istore_1,
+   		f_61_istore_2,
+   		f_62_istore_3,
+   		f_63_lstore_0,
+   		f_64_lstore_1,
+   		f_65_lstore_2,
+   		f_66_lstore_3,
+   		f_67_fstore_0,
+   		f_68_fstore_1,
+   		f_69_fstore_2,
+   		f_70_fstore_3,
+   		f_71_dstore_0,
+   		f_72_dstore_1,
+   		f_73_dstore_2,
+   		f_74_dstore_3,
+   		f_75_astore_0,
+   		f_76_astore_1,
+   		f_77_astore_2,
+   		f_78_astore_3,
+   		f_79_iastore,
+   		f_80_lastore,
+   		f_81_fastore,
+   		f_82_dastore,
+   		f_83_aastore,
+   		f_84_bastore,
+   		f_85_castore,
+   		f_86_sastore
+   	);
+}
+#abstract
+{
+	#concVec vec;
+	#abstVec abst;
+
+	#assigns {
+        setFeatures(abst, s_load) = 0;
+        setFeatures(abst, s_store) = 0;
+        abst[204]=0;
+        abst[180]=0;
+	}
+}
+
+
+#concrete{
+    #clone vec;
+    #query veq;
+    	#filters{
+            let{
+                r_getters =0;
+                q_getters=0;
+            }in{
+                exists vi in inlinedInto(veq):{
+                    vi[172]+vi[173]+vi[174]+vi[175]+vi[176] == 1 && (vi[42]==1 || vi[43]==1 || vi[44]==1 || vi[45]==1) && vi[180]==1
+                    && vi[204]==1 && totalCount(vi)==4
+                    {q_getters=q_getters+1;}
+                }
+
+                exists vi in inlinedInto(vec):{
+                    vi[172]+vi[173]+vi[174]+vi[175]+vi[176] == 1 && vi[180]==1 && totalCount(vi)==3
+                    {r_getters=r_getters+1;}
+                }
+
+                veq[204]-vec[204]==1 && veq[180]-vec[180] < 0 && q_getters >0 && r_getters>0 && q_getters-r_getters < 0;
+            }
+    	}
+}

@@ -59,23 +59,12 @@ public class AbsConWalker implements   AbsConListener {
     }
 
     public class ForAll{
-        public String getCondition() {
-            return condition;
-        }
-
-        public String getVar() {
-            return var;
-        }
-
-        public String getExpression() {
-            return expression;
-        }
-
         String condition;
         String var;
         String expression;
         NumberRange numberRange;
         boolean isNumberRange;
+        Object blockObject;
 
         public void assignVariables(String condition,String var,String expression,NumberRange numberRange){
             this.var = var;
@@ -92,10 +81,30 @@ public class AbsConWalker implements   AbsConListener {
             return numberRange;
         }
 
+
         public void setExpression(String expression) {
             this.expression = expression;
         }
 
+        public String getCondition() {
+            return condition;
+        }
+
+        public String getVar() {
+            return var;
+        }
+
+        public String getExpression() {
+            return expression;
+        }
+
+        public Object getBlockObject() {
+            return blockObject;
+        }
+
+        public void setBlockObject(Object blockObject) {
+            this.blockObject = blockObject;
+        }
     }
 
     public class Exists{
@@ -104,6 +113,10 @@ public class AbsConWalker implements   AbsConListener {
         String expression;
         NumberRange numberRange;
         boolean isNumberRange;
+        boolean isConditionalExpression;
+        boolean isInlinedInto;
+        Object inlineObject;
+        Object blockObject;
 
         public String getVar() {
             return var;
@@ -143,6 +156,38 @@ public class AbsConWalker implements   AbsConListener {
 
         public void setCondition(String condition) {
             this.condition = condition;
+        }
+
+        public Object getBlockObject() {
+            return blockObject;
+        }
+
+        public void setBlockObject(Object blockObject) {
+            this.blockObject = blockObject;
+        }
+
+        public boolean isConditionalExpression() {
+            return isConditionalExpression;
+        }
+
+        public void setConditionalExpression(boolean conditionalExpression) {
+            isConditionalExpression = conditionalExpression;
+        }
+
+        public boolean isInlinedInto() {
+            return isInlinedInto;
+        }
+
+        public void setInlinedInto(boolean inlinedInto) {
+            isInlinedInto = inlinedInto;
+        }
+
+        public Object getInlineObject() {
+            return inlineObject;
+        }
+
+        public void setInlineObject(Object inlineObject) {
+            this.inlineObject = inlineObject;
         }
     }
 
@@ -193,6 +238,31 @@ public class AbsConWalker implements   AbsConListener {
             this.inlineVar = inlineVar;
         }
     }
+
+    public class ConditionalExpression{
+        String binaryExpression;
+        ArrayList assignmentExpressions;
+
+        public ArrayList getAssignmentExpressions() {
+            return assignmentExpressions;
+        }
+
+        public void setAssignmentExpressions(ArrayList assignmentExpressions) {
+            this.assignmentExpressions = assignmentExpressions;
+        }
+
+        public String getBinaryExpression() {
+            return binaryExpression;
+        }
+
+        public void setBinaryExpression(String binaryExpression) {
+            this.binaryExpression = binaryExpression;
+        }
+
+        public void addRecordToAssignmentExpressions(HashMap map){
+            assignmentExpressions.add(map);
+        }
+    }
     //for concerete, abstract, clone, query vector
     HashMap<String,String> typeOfVariableAndName;
 
@@ -219,6 +289,7 @@ public class AbsConWalker implements   AbsConListener {
     InlinedInto inlinedInto;
     NumberRange numberRange;
     Exists exists;
+    ConditionalExpression condExpr;
 
     Map map;
     int letBlockCount;
@@ -244,6 +315,8 @@ public class AbsConWalker implements   AbsConListener {
     boolean isExistential;
     boolean isFeatureAccessor;
     boolean isTotalCount;
+    boolean isConditionalExpression;
+    boolean isOrExpr;
 
 
     @Override public void enterProgram(AbsConParser.ProgramContext ctx) {
@@ -264,6 +337,8 @@ public class AbsConWalker implements   AbsConListener {
         setFeaturesByRangeList = new ArrayList();
         numberRange = new NumberRange();
         exists = new Exists();
+        condExpr = new ConditionalExpression();
+
     }
 
     @Override public void exitProgram(AbsConParser.ProgramContext ctx) {
@@ -461,7 +536,7 @@ public class AbsConWalker implements   AbsConListener {
     }
 
     @Override public void exitExpr(AbsConParser.ExprContext ctx) {
-        if(!isRExpr && !isBExpr){
+        if(!isRExpr && !isBExpr && !isOrExpr){
             map.put("expr",new ArrayList(expressionList));
             expressionList.clear();
         }
@@ -670,7 +745,14 @@ public class AbsConWalker implements   AbsConListener {
                 } else{
                     if(isExistential){
                         if(isInlinedInto){
-                            filters.push(inlinedInto);
+                            if(exists.isConditionalExpression){
+                                filters.push(exists);
+                            } else{
+                                 filters.push(inlinedInto);
+                                //TODO:need to look into this logic again
+                            }
+
+
                         } else{
                             filters.push(exists);
                         }
@@ -688,6 +770,10 @@ public class AbsConWalker implements   AbsConListener {
         isLetBlock = false;
         map.clear();
         expressionList.clear();
+        exists = new Exists();
+        inlinedInto = new InlinedInto();
+        condExpr = new ConditionalExpression();
+
     }
 
     @Override
@@ -829,6 +915,25 @@ public class AbsConWalker implements   AbsConListener {
     }
 
     @Override
+    public void enterConditionalExpression(AbsConParser.ConditionalExpressionContext ctx) {
+        isConditionalExpression = true;
+        condExpr.setAssignmentExpressions(new ArrayList());
+    }
+
+    @Override
+    public void exitConditionalExpression(AbsConParser.ConditionalExpressionContext ctx) {
+        if(isUniversal){
+            forAll.setBlockObject(condExpr);
+        }
+        if(isExistential){
+           exists.setConditionalExpression(isConditionalExpression);
+           exists.setBlockObject(condExpr);
+        }
+
+        isConditionalExpression = false;
+    }
+
+    @Override
     public void enterInlineInto(AbsConParser.InlineIntoContext ctx) {
         isInlinedInto = true;
         inlinedInto.setVar(ctx.getChild(2).getText());
@@ -839,12 +944,15 @@ public class AbsConWalker implements   AbsConListener {
         if(isExistential){
             inlinedInto.setInlineCheckType("Exists");
             inlinedInto.setInlineVar(exists.getVar());
+            exists.setInlinedInto(isInlinedInto);
         }
     }
 
     @Override
     public void exitInlineInto(AbsConParser.InlineIntoContext ctx) {
-
+        if(isExistential){
+            exists.setInlineObject(inlinedInto);
+        }
     }
 
     @Override
@@ -914,12 +1022,16 @@ public class AbsConWalker implements   AbsConListener {
 
     @Override
     public void enterOrExpr(AbsConParser.OrExprContext ctx) {
-
+        isOrExpr = true;
     }
 
     @Override
     public void exitOrExpr(AbsConParser.OrExprContext ctx) {
-
+        isOrExpr = false;
+        if(isConditionalExpression){
+            condExpr.setBinaryExpression(convertArrayListToString(expressionList));
+            expressionList.clear();
+        }
     }
 
     @Override
@@ -985,7 +1097,12 @@ public class AbsConWalker implements   AbsConListener {
 
     @Override
     public void exitSimpAssign(AbsConParser.SimpAssignContext ctx) {
-        simpleAssignList.add(new HashMap<>(map));
+        if(!isConditionalExpression){
+            simpleAssignList.add(new HashMap<>(map));
+        } else{
+            condExpr.addRecordToAssignmentExpressions(new HashMap(map));
+        }
+
         map.clear();
     }
 
@@ -1007,7 +1124,7 @@ public class AbsConWalker implements   AbsConListener {
 
         }
 
-        if(!isSourceSizeOf && !isSourceOf&& isBExpr && !isSumOfFeatures && !isFeatureAccessor&& !isTotalCount){
+        if((!isSourceSizeOf && !isSourceOf && !isSumOfFeatures && !isFeatureAccessor&& !isTotalCount) &&( isBExpr || isOrExpr)){
             if(node.getText().equals("(") || node.getText().equals(")")){
                 expressionList.add(node.getText());
             }

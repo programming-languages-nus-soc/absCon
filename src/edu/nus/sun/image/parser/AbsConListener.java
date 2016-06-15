@@ -458,6 +458,16 @@ public interface AbsConListener extends ParseTreeListener {
 	 */
 	void exitNumRange(AbsConParser.NumRangeContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AbsConParser#conditionalExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterConditionalExpression(AbsConParser.ConditionalExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AbsConParser#conditionalExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitConditionalExpression(AbsConParser.ConditionalExpressionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AbsConParser#inlineInto}.
 	 * @param ctx the parse tree
 	 */

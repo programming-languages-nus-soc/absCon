@@ -281,6 +281,12 @@ public interface AbsConVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNumRange(AbsConParser.NumRangeContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AbsConParser#conditionalExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConditionalExpression(AbsConParser.ConditionalExpressionContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AbsConParser#inlineInto}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

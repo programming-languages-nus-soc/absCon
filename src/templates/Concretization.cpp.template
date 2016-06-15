@@ -194,6 +194,24 @@ for (int ${filter.getVar()} = ${filter.getNumberRange().getStartIndex()}; ${filt
 }
 isValidImitation&= isFound_$foreach.count;
 #end
+#if($filter.class.simpleName == "Exists" && ${filter.isInlinedInto()} && ${filter.isConditionalExpression()})
+for (int i = 1; i < ${filter.getInlineObject().getVar()}->methodIDs.size(); i++) {
+    vector<VectorReader*>* clone_target_vectors =
+    			VectorReader::getMethodVectorsFromIndex(vectorindex,
+    					${filter.getInlineObject().getVar()}->methodIDs[i]);
+    if(	(*clone_target_vectors).size() == 0){
+        break;
+    }
+    VectorReader* ${filter.getInlineObject().getInlineVar()} = new VectorReader(
+    			*(*clone_target_vectors)[0]);
+    if (${filter.getBlockObject().getBinaryExpression()}){
+    #foreach ($assign in ${filter.getBlockObject().getAssignmentExpressions()})
+    $assign.ID = #foreach ($expr in $assign.expr) $expr #end;
+    #end
+    }
+}
+#end
+
 #end
 return isValidImitation;
 }

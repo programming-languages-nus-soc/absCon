@@ -165,7 +165,7 @@
     	#filters{
             exists vi in inlinedInto(vec):{
                 sourceOfSize(vi)(2) != 0 && (sourceOf(vi)(9)(2) + sourceOf(vi)(13)(2)+sourceOf(vi)(34)(2)+sourceOf(vi)(45)(2)) == 1
-                && sourceOf(vi)(41)(2) == 1;
+                && sourceOf(vi)(41)(2) == 1 && totalCount(vi) < 5;
             }
     	}
 }
