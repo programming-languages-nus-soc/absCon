@@ -162,7 +162,7 @@
 {
 	#clone vec;
     	#query veq;
-
+}
     	#filters {
             let {
                 // Compute the total values for the load and store groups

@@ -28,23 +28,25 @@ gAssign:'setFeatures' OPENBRACE ID COMMA ID CLOSEBRACE ASSIGN expr SEMICOLON ;
 dAssign:'setFeaturesByRange' OPENBRACE numRange CLOSEBRACE ASSIGN expr SEMICOLON;
 expr: exp+;
 exp: paranthesizedExp | exp MULDIV exp | exp ADDSUB exp | accessor |DIGITS | sumOfFeatures  | sourceOf | sourceOfSize|totalCount|absFeature |id;
-id:ID;
 paranthesizedExp: OPENBRACE exp CLOSEBRACE;
 sumOfFeatures :'sumOfFeatures' OPENBRACE (ID | sourceOf) COMMA (ID|sourceOf) CLOSEBRACE;
-sourceOf:'sourceOf' OPENBRACE ID CLOSEBRACE OPENBRACE (ID|DIGITS) CLOSEBRACE OPENBRACE DIGITS CLOSEBRACE;
-sourceOfSize:'sourceOfSize' OPENBRACE ID CLOSEBRACE OPENBRACE (ID|DIGITS) CLOSEBRACE;
+sourceOf:'sourceOf' OPENBRACE ID CLOSEBRACE OPENBRACE (ID|DIGITS) CLOSEBRACE;
+sourceOfSize:'sourceOfSize' OPENBRACE ID CLOSEBRACE;
 absFeature:'abs' OPENBRACE ID CLOSEBRACE;
 
 //Concretization Declarations
 conDecl: cloneVector queryVector concFtrDecl;
-cloneVector:'#clone' ID SEMICOLON;
-queryVector:'#query' ID SEMICOLON;
+queryVector:'#query' ID ASSIGN vectorType SEMICOLON;
+cloneVector:'#clone' ID ASSIGN vectorType SEMICOLON;
+
+vectorType: 'VT_SOURCECODE'|'VT_BYTECODE'|'VT_BYTECODE_INLINED';
 
 concFtrDecl: '#filters' BLOCKOPEN filters BLOCKCLOSE;
 filters: (filter)+ | '' ;
 filter:letBlk | conditions;
 conditions:existl| univsl| rExpr | bExpr;
-letBlk: 'let' BLOCKOPEN (simpAssign)+ BLOCKCLOSE 'in' BLOCKOPEN (conditions)+ BLOCKCLOSE;
+letBlk: 'let' BLOCKOPEN (simpAssign|enumerate)+ BLOCKCLOSE 'in' BLOCKOPEN (conditions)+ BLOCKCLOSE;
+enumerate:ID ASSIGN 'enumerateWhenTrue' OPENBRACE existl CLOSEBRACE SEMICOLON;
 rExpr: rExp SEMICOLON;
 rExp:(expr rop)+ expr;
 rop: DOUBLEEQUAL | LESSTHAN | GREATERTHAN | NOTEQUAL | LESSTHANEQUAL | GREATERTHANEQUAL;
@@ -59,18 +61,15 @@ inlineInto: 'inlinedInto' OPENBRACE ID CLOSEBRACE;
 setOfIds: 'setOf' BLOCKOPEN ids BLOCKCLOSE;
 size:DIGITS | sizeOf;
 sizeOf: 'sizeOf' OPENBRACE ID CLOSEBRACE;
-//bExpr: (bExp)+ SEMICOLON;
 bExpr: orExpr SEMICOLON;
-bExp: rExp bop rExp | rExp bop rExp | bop rExp | rExp ;
-bop:'&&' | '||' | 'not';
 orExpr: OPENBRACE? andExpr CLOSEBRACE? ('||' OPENBRACE? andExpr CLOSEBRACE?)*;
 andExpr: OPENBRACE? notExpr CLOSEBRACE? ('&&'  OPENBRACE? notExpr CLOSEBRACE?)*;
 notExpr: ('not')? OPENBRACE? bAtom CLOSEBRACE?;
 bAtom: rExp | OPENBRACE rExp CLOSEBRACE;
 compareInlinedVec: 'compare' OPENBRACE ID COMMA ID CLOSEBRACE SEMICOLON ;
 totalCount:'totalCount' OPENBRACE ID CLOSEBRACE;
-//Common Statements
 simpAssign: ID ASSIGN expr SEMICOLON;
+id:ID;
 
 //CONSTANTS
 MULDIV:'*'|'/';

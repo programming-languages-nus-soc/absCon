@@ -143,12 +143,6 @@ public interface AbsConVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExp(AbsConParser.ExpContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link AbsConParser#id}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitId(AbsConParser.IdContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link AbsConParser#paranthesizedExp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -185,17 +179,23 @@ public interface AbsConVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitConDecl(AbsConParser.ConDeclContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AbsConParser#queryVector}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitQueryVector(AbsConParser.QueryVectorContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AbsConParser#cloneVector}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitCloneVector(AbsConParser.CloneVectorContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link AbsConParser#queryVector}.
+	 * Visit a parse tree produced by {@link AbsConParser#vectorType}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitQueryVector(AbsConParser.QueryVectorContext ctx);
+	T visitVectorType(AbsConParser.VectorTypeContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link AbsConParser#concFtrDecl}.
 	 * @param ctx the parse tree
@@ -226,6 +226,12 @@ public interface AbsConVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitLetBlk(AbsConParser.LetBlkContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AbsConParser#enumerate}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEnumerate(AbsConParser.EnumerateContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link AbsConParser#rExpr}.
 	 * @param ctx the parse tree
@@ -317,18 +323,6 @@ public interface AbsConVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBExpr(AbsConParser.BExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link AbsConParser#bExp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBExp(AbsConParser.BExpContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link AbsConParser#bop}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBop(AbsConParser.BopContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link AbsConParser#orExpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -370,4 +364,10 @@ public interface AbsConVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitSimpAssign(AbsConParser.SimpAssignContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AbsConParser#id}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitId(AbsConParser.IdContext ctx);
 }

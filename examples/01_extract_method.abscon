@@ -177,8 +177,8 @@
 
 #concrete
 {
-	#clone vec;
-	#query veq;
+	#clone vec = VT_BYTECODE_INLINED;
+	#query veq = VT_BYTECODE;
 
 	#filters {
 		forall (vi in inlinedInto(vec)): {

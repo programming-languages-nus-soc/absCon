@@ -228,16 +228,6 @@ public interface AbsConListener extends ParseTreeListener {
 	 */
 	void exitExp(AbsConParser.ExpContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link AbsConParser#id}.
-	 * @param ctx the parse tree
-	 */
-	void enterId(AbsConParser.IdContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AbsConParser#id}.
-	 * @param ctx the parse tree
-	 */
-	void exitId(AbsConParser.IdContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link AbsConParser#paranthesizedExp}.
 	 * @param ctx the parse tree
 	 */
@@ -298,6 +288,16 @@ public interface AbsConListener extends ParseTreeListener {
 	 */
 	void exitConDecl(AbsConParser.ConDeclContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AbsConParser#queryVector}.
+	 * @param ctx the parse tree
+	 */
+	void enterQueryVector(AbsConParser.QueryVectorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AbsConParser#queryVector}.
+	 * @param ctx the parse tree
+	 */
+	void exitQueryVector(AbsConParser.QueryVectorContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AbsConParser#cloneVector}.
 	 * @param ctx the parse tree
 	 */
@@ -308,15 +308,15 @@ public interface AbsConListener extends ParseTreeListener {
 	 */
 	void exitCloneVector(AbsConParser.CloneVectorContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link AbsConParser#queryVector}.
+	 * Enter a parse tree produced by {@link AbsConParser#vectorType}.
 	 * @param ctx the parse tree
 	 */
-	void enterQueryVector(AbsConParser.QueryVectorContext ctx);
+	void enterVectorType(AbsConParser.VectorTypeContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link AbsConParser#queryVector}.
+	 * Exit a parse tree produced by {@link AbsConParser#vectorType}.
 	 * @param ctx the parse tree
 	 */
-	void exitQueryVector(AbsConParser.QueryVectorContext ctx);
+	void exitVectorType(AbsConParser.VectorTypeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AbsConParser#concFtrDecl}.
 	 * @param ctx the parse tree
@@ -367,6 +367,16 @@ public interface AbsConListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitLetBlk(AbsConParser.LetBlkContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AbsConParser#enumerate}.
+	 * @param ctx the parse tree
+	 */
+	void enterEnumerate(AbsConParser.EnumerateContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AbsConParser#enumerate}.
+	 * @param ctx the parse tree
+	 */
+	void exitEnumerate(AbsConParser.EnumerateContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AbsConParser#rExpr}.
 	 * @param ctx the parse tree
@@ -518,26 +528,6 @@ public interface AbsConListener extends ParseTreeListener {
 	 */
 	void exitBExpr(AbsConParser.BExprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link AbsConParser#bExp}.
-	 * @param ctx the parse tree
-	 */
-	void enterBExp(AbsConParser.BExpContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AbsConParser#bExp}.
-	 * @param ctx the parse tree
-	 */
-	void exitBExp(AbsConParser.BExpContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link AbsConParser#bop}.
-	 * @param ctx the parse tree
-	 */
-	void enterBop(AbsConParser.BopContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AbsConParser#bop}.
-	 * @param ctx the parse tree
-	 */
-	void exitBop(AbsConParser.BopContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link AbsConParser#orExpr}.
 	 * @param ctx the parse tree
 	 */
@@ -607,4 +597,14 @@ public interface AbsConListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitSimpAssign(AbsConParser.SimpAssignContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AbsConParser#id}.
+	 * @param ctx the parse tree
+	 */
+	void enterId(AbsConParser.IdContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AbsConParser#id}.
+	 * @param ctx the parse tree
+	 */
+	void exitId(AbsConParser.IdContext ctx);
 }

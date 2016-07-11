@@ -280,18 +280,6 @@ public class AbsConBaseListener implements AbsConListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterId(AbsConParser.IdContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitId(AbsConParser.IdContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterParanthesizedExp(AbsConParser.ParanthesizedExpContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -364,6 +352,18 @@ public class AbsConBaseListener implements AbsConListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterQueryVector(AbsConParser.QueryVectorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitQueryVector(AbsConParser.QueryVectorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterCloneVector(AbsConParser.CloneVectorContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -376,13 +376,13 @@ public class AbsConBaseListener implements AbsConListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterQueryVector(AbsConParser.QueryVectorContext ctx) { }
+	@Override public void enterVectorType(AbsConParser.VectorTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitQueryVector(AbsConParser.QueryVectorContext ctx) { }
+	@Override public void exitVectorType(AbsConParser.VectorTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -443,6 +443,18 @@ public class AbsConBaseListener implements AbsConListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitLetBlk(AbsConParser.LetBlkContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterEnumerate(AbsConParser.EnumerateContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEnumerate(AbsConParser.EnumerateContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -628,30 +640,6 @@ public class AbsConBaseListener implements AbsConListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBExp(AbsConParser.BExpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBExp(AbsConParser.BExpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterBop(AbsConParser.BopContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBop(AbsConParser.BopContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterOrExpr(AbsConParser.OrExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -731,6 +719,18 @@ public class AbsConBaseListener implements AbsConListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitSimpAssign(AbsConParser.SimpAssignContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterId(AbsConParser.IdContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitId(AbsConParser.IdContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

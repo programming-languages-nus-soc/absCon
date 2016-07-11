@@ -1,4 +1,4 @@
-// Abstractions and concretization rules for "Extract Var" refactoring.
+// Abstractions and concretization rules for "Remove Middleman" refactoring.
 
 
 #declares
@@ -166,20 +166,22 @@
     #query veq;
     	#filters{
             let{
-                r_getters =0;
-                q_getters=0;
+
+                r_getters = enumerateWhenTrue(
+                    exists vi in inlinedInto(vec):{
+                        vi[172]+vi[173]+vi[174]+vi[175]+vi[176] == 1 && vi[180]==1 && totalCount(vi)==3
+                        {r_getters=r_getters+1;}
+                    }
+                );
+                q_getters=enumerateWhenTrue(
+                    exists vi in inlinedInto(veq):{
+                        vi[172]+vi[173]+vi[174]+vi[175]+vi[176] == 1 && (vi[42]==1 || vi[43]==1 || vi[44]==1 || vi[45]==1) && vi[180]==1
+                        && vi[204]==1 && totalCount(vi)==4
+                        {q_getters=q_getters+1;}
+                    }
+                );
+
             }in{
-                exists vi in inlinedInto(veq):{
-                    vi[172]+vi[173]+vi[174]+vi[175]+vi[176] == 1 && (vi[42]==1 || vi[43]==1 || vi[44]==1 || vi[45]==1) && vi[180]==1
-                    && vi[204]==1 && totalCount(vi)==4
-                    {q_getters=q_getters+1;}
-                }
-
-                exists vi in inlinedInto(vec):{
-                    vi[172]+vi[173]+vi[174]+vi[175]+vi[176] == 1 && vi[180]==1 && totalCount(vi)==3
-                    {r_getters=r_getters+1;}
-                }
-
                 veq[204]-vec[204]==1 && veq[180]-vec[180] < 0 && q_getters >0 && r_getters>0 && q_getters-r_getters < 0;
             }
     	}

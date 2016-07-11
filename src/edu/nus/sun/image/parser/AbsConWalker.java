@@ -263,6 +263,7 @@ public class AbsConWalker implements   AbsConListener {
             assignmentExpressions.add(map);
         }
     }
+
     //for concerete, abstract, clone, query vector
     HashMap<String,String> typeOfVariableAndName;
 
@@ -283,6 +284,7 @@ public class AbsConWalker implements   AbsConListener {
     //expression as array
     ArrayList expressionList;
     ArrayList simpleAssignList;
+    ArrayList vectorTypes;
     ArrayList filterList;
     LetBlock letBlock;
     ForAll forAll;
@@ -317,6 +319,7 @@ public class AbsConWalker implements   AbsConListener {
     boolean isTotalCount;
     boolean isConditionalExpression;
     boolean isOrExpr;
+    boolean isEnumerate;
 
 
     @Override public void enterProgram(AbsConParser.ProgramContext ctx) {
@@ -338,6 +341,7 @@ public class AbsConWalker implements   AbsConListener {
         numberRange = new NumberRange();
         exists = new Exists();
         condExpr = new ConditionalExpression();
+        vectorTypes = new ArrayList();
 
     }
 
@@ -593,14 +597,15 @@ public class AbsConWalker implements   AbsConListener {
     @Override public void enterSourceOf(AbsConParser.SourceOfContext ctx) {
         isSourceOf = true;
         String exp;
-        if(Integer.parseInt(ctx.getChild(8).getText())==0) {
-            exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"sourcecode_vectorindex"+","+ctx.getChild(5) +")";
-        } else{
-            exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"sourcecode_vectorindex"+ctx.getChild(8)+ ","+ctx.getChild(5) +")";
-        }
-        if(Integer.parseInt(ctx.getChild(8).getText())==4){
-            exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"vectorindex"+ ","+ctx.getChild(5) +")";
-        }
+        exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+ctx.getChild(5) +")";
+//        if(Integer.parseInt(ctx.getChild(8).getText())==0) {
+//            exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"sourcecode_vectorindex"+","+ctx.getChild(5) +")";
+//        } else{
+//            exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"sourcecode_vectorindex"+ctx.getChild(8)+ ","+ctx.getChild(5) +")";
+//        }
+//        if(Integer.parseInt(ctx.getChild(8).getText())==4){
+//            exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"vectorindex"+ ","+ctx.getChild(5) +")";
+//        }
         if(!isSumOfFeatures){
             expressionList.add(exp);
         }
@@ -614,14 +619,15 @@ public class AbsConWalker implements   AbsConListener {
     @Override
     public void enterSourceOfSize(AbsConParser.SourceOfSizeContext ctx) {
         String exp;
-        if(Integer.parseInt(ctx.getChild(5).getText())==0){
-             exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"sourcecode_vectorindex"+")";
-        } else{
-             exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"sourcecode_vectorindex"+ctx.getChild(5)+")";
-        }
-        if(Integer.parseInt(ctx.getChild(5).getText())==4){
-            exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"vectorindex"+")";
-        }
+        exp = ctx.getChild(0)+"("+ ctx.getChild(2) +")";
+//        if(Integer.parseInt(ctx.getChild(5).getText())==0){
+//             exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"sourcecode_vectorindex"+")";
+//        } else{
+//             exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"sourcecode_vectorindex"+ctx.getChild(5)+")";
+//        }
+//        if(Integer.parseInt(ctx.getChild(5).getText())==4){
+//            exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"vectorindex"+")";
+//        }
         isSourceSizeOf = true;
         if(isCondition){
             expressionList.add(exp);
@@ -650,6 +656,11 @@ public class AbsConWalker implements   AbsConListener {
     @Override
     public void enterCloneVector(AbsConParser.CloneVectorContext ctx) {
         typeOfVariableAndName.put("clone",ctx.getChild(1).getText());
+        Map vType = new HashMap<>();
+        vType.put("ID","target_vectors");
+        vType.put("TYPE",ctx.getChild(3).getText());
+        vectorTypes.add(vType);
+        System.out.println("THe clone 3 is "+ctx.getChild(3).getText());
     }
 
     @Override
@@ -658,8 +669,23 @@ public class AbsConWalker implements   AbsConListener {
     }
 
     @Override
+    public void enterVectorType(AbsConParser.VectorTypeContext ctx) {
+
+    }
+
+    @Override
+    public void exitVectorType(AbsConParser.VectorTypeContext ctx) {
+
+    }
+
+    @Override
     public void enterQueryVector(AbsConParser.QueryVectorContext ctx) {
         typeOfVariableAndName.put("query",ctx.getChild(1).getText());
+        Map vType = new HashMap<>();
+        vType.put("ID","query_vectors");
+        vType.put("TYPE",ctx.getChild(3).getText());
+        vectorTypes.add(vType);
+        System.out.println("THe query 3 is "+ctx.getChild(3).getText());
     }
 
     @Override
@@ -789,6 +815,29 @@ public class AbsConWalker implements   AbsConListener {
         filters.push(letBlock);
         filterList.clear();
         letBlock = new LetBlock();
+    }
+
+    @Override
+    public void enterEnumerate(AbsConParser.EnumerateContext ctx) {
+        isEnumerate = true;
+        map.put("ID",ctx.getChild(0));
+        map.put("expr",0);
+        simpleAssignList.add(new HashMap<>(map));
+        map.clear();
+    }
+
+    @Override
+    public void exitEnumerate(AbsConParser.EnumerateContext ctx) {
+        if(isEnumerate){
+
+            map.put("expr",exists);
+            simpleAssignList.add(new HashMap<>(map));
+            map.clear();
+        }
+        exists = new Exists();
+        condExpr = new ConditionalExpression();
+        inlinedInto = new InlinedInto();
+        isEnumerate = false;
     }
 
     @Override
@@ -1002,25 +1051,6 @@ public class AbsConWalker implements   AbsConListener {
     }
 
     @Override
-    public void enterBExp(AbsConParser.BExpContext ctx) {
-
-    }
-
-    @Override
-    public void exitBExp(AbsConParser.BExpContext ctx) {
-    }
-
-    @Override
-    public void enterBop(AbsConParser.BopContext ctx) {
-
-    }
-
-    @Override
-    public void exitBop(AbsConParser.BopContext ctx) {
-        expressionList.add(ctx.getChild(0).getText());
-    }
-
-    @Override
     public void enterOrExpr(AbsConParser.OrExprContext ctx) {
         isOrExpr = true;
     }
@@ -1099,11 +1129,12 @@ public class AbsConWalker implements   AbsConListener {
     public void exitSimpAssign(AbsConParser.SimpAssignContext ctx) {
         if(!isConditionalExpression){
             simpleAssignList.add(new HashMap<>(map));
+            map.clear();
         } else{
             condExpr.addRecordToAssignmentExpressions(new HashMap(map));
+            map.clear();
         }
 
-        map.clear();
     }
 
     @Override public void enterEveryRule(ParserRuleContext ctx) { }
@@ -1168,7 +1199,7 @@ public class AbsConWalker implements   AbsConListener {
         VelocityContext context = new VelocityContext();
         context.put("declList",declarationList);
         context.put("setDeclList",setDeclarationList);
-//        context.put("filtersList",filterList);
+        context.put("vectortypes",vectorTypes);
         context.put("vectorNames",typeOfVariableAndName);
         context.put("filterList",filters);
         context.put("assignList",simpleAssignList);

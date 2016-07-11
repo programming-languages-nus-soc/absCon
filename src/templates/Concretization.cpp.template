@@ -12,11 +12,15 @@
 #[[#include]]# <time.h>
 #[[#include]]# <set>
 
+#[[#include]]# "abscon.h"
 #[[#include]]# "refactorings.h"
-#[[#include]]# "include/location.h"
 #[[#include]]# "vinline/vector-reader.h"
 
 using namespace std;
+
+#foreach ($type in $vectortypes)
+    VectorType $type.ID = $type.TYPE;
+#end
 
 #foreach ($decl in $declList)
     static int $decl.id = $decl.index;
@@ -43,18 +47,35 @@ static int accessor(VectorReader* conc,int index) {
     return conc->counters[index];
 }
 
-static int sourceOfSize(VectorReader* q,std::map<std::string, VectorReader::VectorSet>* vectorindex){
+static int sourceOfSize(VectorReader* q){
 vector<VectorReader*>* sourceVector =
-				VectorReader::getMethodVectorsFromIndex(vectorindex,
+				VectorReader::getMethodVectorsFromIndex(sourcecode_vidx,
 						q->methodIDs[0]);
 
 return (*sourceVector).size();
 }
 
 
-static int sourceOf(VectorReader* q,std::map<std::string, VectorReader::VectorSet>* vectorindex,int index){
+static int sourceOf(VectorReader* q,int index){
 vector<VectorReader*>* sourceVector =
-				VectorReader::getMethodVectorsFromIndex(vectorindex,
+				VectorReader::getMethodVectorsFromIndex(sourcecode_vidx,
+						q->methodIDs[0]);
+
+return (*sourceVector)[0]->counters[index];
+}
+
+static int byteCodeSizeOf(VectorReader* q){
+vector<VectorReader*>* sourceVector =
+				VectorReader::getMethodVectorsFromIndex(bytecode_vidx,
+						q->methodIDs[0]);
+
+return (*sourceVector).size();
+}
+
+
+static int byteCodeOf(VectorReader* q,int index){
+vector<VectorReader*>* sourceVector =
+				VectorReader::getMethodVectorsFromIndex(bytecode_vidx,
 						q->methodIDs[0]);
 
 return (*sourceVector)[0]->counters[index];
@@ -135,7 +156,32 @@ bool getFilterResult(VectorReader* $vectorNames.query, VectorReader* $vectorName
 //var declarations
 bool isValidImitation= true;
 #foreach ($assign in ${assignList})
+
+#if($assign.expr.class.simpleName=="Exists")
+#if(${assign.expr.isInlinedInto()} && ${assign.expr.isConditionalExpression()})
+for (int i = 1; i < ${assign.expr.getInlineObject().getVar()}->methodIDs.size(); i++) {
+    vector<VectorReader*>* clone_target_vectors =
+    			VectorReader::getMethodVectorsFromIndex(vectorindex,
+    					${assign.expr.getInlineObject().getVar()}->methodIDs[i]);
+    if(	(*clone_target_vectors).size() == 0){
+        break;
+    }
+    VectorReader* ${assign.expr.getInlineObject().getInlineVar()} = new VectorReader(
+    			*(*clone_target_vectors)[0]);
+    if (${assign.expr.getBlockObject().getBinaryExpression()}){
+    #foreach ($assigns in ${assign.expr.getBlockObject().getAssignmentExpressions()})
+    $assigns.ID = #foreach ($expr in $assigns.expr) $expr #end;
+    #end
+    }
+}
+#end
+#else
+#if($assign.expr.class.simpleName=="ArrayList")
 int $assign.ID = #foreach ($expr in $assign.expr) $expr #end;
+#else
+int $assign.ID = $assign.expr;
+#end
+#end
 #end
 
 #foreach ($filter in $filterList)
@@ -163,7 +209,7 @@ isValidImitation = false;
 
 #if($filter.class.simpleName =="InlinedInto")
 #if(${filter.getInlineCheckType()} =="ForAll" )
-isValidImitation = isValidImitation && checkInlinedInto(${filter.getVar()},$vectorNames.query,$vectorNames.clone,vectorindex);
+isValidImitation = isValidImitation && checkInlinedInto(${filter.getVar()},$vectorNames.query,$vectorNames.clone,query_vidx);
 #end
 #end
 #if(${filter.getInlineCheckType()} =="Exists" && !${filter.isCompare()})
@@ -193,23 +239,6 @@ for (int ${filter.getVar()} = ${filter.getNumberRange().getStartIndex()}; ${filt
    }
 }
 isValidImitation&= isFound_$foreach.count;
-#end
-#if($filter.class.simpleName == "Exists" && ${filter.isInlinedInto()} && ${filter.isConditionalExpression()})
-for (int i = 1; i < ${filter.getInlineObject().getVar()}->methodIDs.size(); i++) {
-    vector<VectorReader*>* clone_target_vectors =
-    			VectorReader::getMethodVectorsFromIndex(vectorindex,
-    					${filter.getInlineObject().getVar()}->methodIDs[i]);
-    if(	(*clone_target_vectors).size() == 0){
-        break;
-    }
-    VectorReader* ${filter.getInlineObject().getInlineVar()} = new VectorReader(
-    			*(*clone_target_vectors)[0]);
-    if (${filter.getBlockObject().getBinaryExpression()}){
-    #foreach ($assign in ${filter.getBlockObject().getAssignmentExpressions()})
-    $assign.ID = #foreach ($expr in $assign.expr) $expr #end;
-    #end
-    }
-}
 #end
 
 #end
