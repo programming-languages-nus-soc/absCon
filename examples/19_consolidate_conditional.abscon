@@ -268,19 +268,19 @@
 			sc_if_statement = 25;
 			sc_return_statement = 41;
 		} in {
-			sourceOfSize(veq)(1) > 0 && sourceOfSize(vec)(2) > 0 &&
-			sourceOf(veq)(sc_if_statement)(1) > 1 && sourceOf(vec)(sc_return_statement)(2) > 1 &&
-			sourceOf(veq)(sc_if_statement)(1) - sourceOf(vec)(sc_if_statement)(2) > 0 &&
+			sourceOfSize(veq) > 0 && sourceOfSize(vec) > 0 &&
+			sourceOf(veq)(sc_if_statement) > 1 && sourceOf(vec)(sc_return_statement) > 1 &&
+			sourceOf(veq)(sc_if_statement) - sourceOf(vec)(sc_if_statement) > 0 &&
 			sum_return_q - sum_return_c ==
-				sourceOf(veq)(sc_if_statement)(1) - sourceOf(vec)(sc_if_statement)(2);
+				sourceOf(veq)(sc_if_statement) - sourceOf(vec)(sc_if_statement);
 
-			sourceOfSize(veq)(1) > 0 && sourceOfSize(vec)(2) > 0 &&
+			sourceOfSize(veq) > 0 && sourceOfSize(vec) > 0 &&
 			sum_load_q - sum_load_c ==
-				sourceOf(veq)(sc_if_statement)(1) - sourceOf(vec)(sc_if_statement)(2)
+				sourceOf(veq)(sc_if_statement) - sourceOf(vec)(sc_if_statement)
 			||
-			sourceOfSize(veq)(1) > 0 && sourceOfSize(vec)(2) > 0 &&
+			sourceOfSize(veq) > 0 && sourceOfSize(vec) > 0 &&
 			sum_const_q - sum_const_c ==
-				sourceOf(veq)(sc_if_statement)(1) - sourceOf(vec)(sc_if_statement)(2);
+				sourceOf(veq)(sc_if_statement) - sourceOf(vec)(sc_if_statement);
 		}
 	}
 }

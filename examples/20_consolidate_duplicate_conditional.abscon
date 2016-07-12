@@ -67,6 +67,6 @@
 			ifClone != 0 && ifQuery != 0;
 		}
 
-		sourceOfSize(veq)(1) !=0 && sourceOf(veq)(167)(1) > 0 && sourceOf(veq)(25)(1) > 0 && sourceOfSize(vec)(2) !=0 && sourceOf(vec)(25)(2) > 0;
+		sourceOfSize(veq) !=0 && sourceOf(veq)(167) > 0 && sourceOf(veq)(25) > 0 && sourceOfSize(vec) !=0 && sourceOf(vec)(25) > 0;
 	}
 }

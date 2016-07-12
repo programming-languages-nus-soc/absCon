@@ -134,6 +134,6 @@
 	#query veq = VT_BYTECODE;
 
 	#filters {
-		sourceOfSize(veq)(1) !=0 && sourceOf(veq)(167)(1) > 0 && sourceOf(veq)(25)(1) > 0;
+		sourceOfSize(veq) !=0 && sourceOf(veq)(167) > 0 && sourceOf(veq)(25) > 0;
 	}
 }

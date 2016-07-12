@@ -174,10 +174,11 @@
 			sum_store_c = sumOfFeatures(vec, s_store);
 			sum_store_q = sumOfFeatures(veq, s_store);
 			variable_declaration = 60;
-			//difference_source_variable_declaration = sourceOf(veq)(variable_declaration)(1) - sourceOf(veq)(variable_declaration)(2);
 		} in {
 			sum_load_q - sum_load_c < 0 && sum_load_q - sum_load_c == sum_store_q - sum_store_c;
-			sourceOfSize(veq)(1) == 0 || sourceOfSize(vec)(2) == 0 || ( sourceOfSize(veq)(1) != 0 && sourceOfSize(vec)(2) != 0 && sourceOf(veq)(variable_declaration)(1) - sourceOf(vec)(variable_declaration)(2) == sum_load_q - sum_load_c);
+			sourceOfSize(veq) == 0 || sourceOfSize(vec) == 0
+			|| (sourceOfSize(veq) != 0 && sourceOfSize(vec) != 0
+			    && sourceOf(veq)(variable_declaration) - sourceOf(vec)(variable_declaration) == sum_load_q - sum_load_c);
 		}
 	}
 }
