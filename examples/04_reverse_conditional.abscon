@@ -1,3 +1,4 @@
+
 // Abstractions rules for “Reverse Conditional” refactoring.
 
 
@@ -218,19 +219,19 @@
 
 #concrete
 {
-	#clone vec;
-	#query veq;
+	#clone vec = VT_BYTECODE;
+	#query veq = VT_BYTECODE;
 
 	#filters {
 		// Equivalent implementation of the one in the current system.
 		(veq[149]-vec[149]!=0 && veq[149]-vec[149] == vec[150]-veq[150])
-        || (veq[151]-vec[151]!=0 &&  veq[151]-vec[151] == vec[152]-veq[152])
-        || (veq[153]-vec[153]!=0 &&  veq[153]-vec[153] == vec[154]-veq[154])
-        || (veq[155]-vec[155]!=0 &&  veq[155]-vec[155] == vec[156]-veq[156])
-        || (veq[157]-vec[157]!=0 &&  veq[157]-vec[157] == vec[158]-veq[158])
-        || (veq[159]-vec[159]!=0 &&  veq[159]-vec[159] == vec[160]-veq[160])
-        || (veq[161]-vec[161]!=0 &&  veq[161]-vec[161] == vec[162]-veq[162])
-        || (veq[163]-vec[163]!=0 &&  veq[163]-vec[163] == vec[164]-veq[164])
-        || (veq[165]-vec[165]!=0 &&  veq[165]-vec[165] == vec[166]-veq[166]);
+			|| (veq[151]-vec[151]!=0 &&  veq[151]-vec[151] == vec[152]-veq[152])
+			|| (veq[153]-vec[153]!=0 &&  veq[153]-vec[153] == vec[154]-veq[154])
+			|| (veq[155]-vec[155]!=0 &&  veq[155]-vec[155] == vec[156]-veq[156])
+			|| (veq[157]-vec[157]!=0 &&  veq[157]-vec[157] == vec[158]-veq[158])
+			|| (veq[159]-vec[159]!=0 &&  veq[159]-vec[159] == vec[160]-veq[160])
+			|| (veq[161]-vec[161]!=0 &&  veq[161]-vec[161] == vec[162]-veq[162])
+			|| (veq[163]-vec[163]!=0 &&  veq[163]-vec[163] == vec[164]-veq[164])
+			|| (veq[165]-vec[165]!=0 &&  veq[165]-vec[165] == vec[166]-veq[166]);
 	}
 }

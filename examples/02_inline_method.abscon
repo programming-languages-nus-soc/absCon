@@ -201,12 +201,12 @@
 
 #concrete
 {
-	#clone vec;
-    	#query veq;
+	#clone vec = VT_BYTECODE;
+	#query veq = VT_BYTECODE_INLINED;
 
-    	#filters {
-    		forall (vi in inlinedInto(veq)): {
-    			veq == vi;
-    		};
-    	}
+	#filters {
+		forall (vi in inlinedInto(veq)): {
+			veq == vi;
+		};
+	}
 }

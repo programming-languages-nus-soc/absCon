@@ -1,7 +1,10 @@
+
 // Abstractions and concretization rules for "Introduce Param Object" refactoring.
 
-#declares{
-// Bytecode features and groups.
+
+#declares
+{
+	// Bytecode features and groups.
 
 	// Load operations.
 	f_21_iload = OP_iload;
@@ -120,7 +123,7 @@
 }
 
 #abstract{
-    #concVec vec;
+	#concVec vec;
 	#abstVec abst;
 
 	#assigns {
@@ -129,15 +132,14 @@
 		abst(f_180_OP_getfield) = 0;
 		abst(f_181_OP_putfield) = 0;
 	}
-
 }
 
 #concrete{
-    #clone vec;
-    #query veq;
+	#clone vec = VT_BYTECODE_INLINED;
+	#query veq = VT_BYTECODE_INLINED;
 
-    #filters{
-        // TODO: perform metadata checks.
+	#filters{
+		// TODO: perform metadata checks.
 
-    }
+	}
 }

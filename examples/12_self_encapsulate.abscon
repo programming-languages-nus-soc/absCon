@@ -1,35 +1,36 @@
+
 // Abstractions and concretization rules for "Self Encapsulate" refactoring.
 
 
 #declares
 {
-    f_42_OP_aload_0 = OP_aload_0;
-
+	f_42_OP_aload_0 = OP_aload_0;
 }
+
 #abstract
 {
 	#concVec vec;
 	#abstVec abst;
 
 	#assigns {
-        abst(f_42_OP_aload_0) = 0;
+		abst(f_42_OP_aload_0) = 0;
 	}
 }
 
 #concrete
 {
-	#clone vec;
-    #query veq;
+	#clone vec = VT_BYTECODE_INLINED;
+	#query veq = VT_BYTECODE;
 
-    	#filters {
-                    let{
-                        return_ops = veq[172]+veq[173]+veq[174]+veq[175]+veq[176];
-                    } in {
-                        return_ops != 1 || veq[180]!=1 || veq[42] != 1 || totalCount(veq) != 3;
-                        veq[180] != 0 || vec[181] !=0;
-                        exists vi in inlinedInto(vec):{
-                            (vi[172]+vi[173]+vi[174]+vi[175]+vi[176]) == 1  && vi[180]==1 && totalCount(vi) == 3;
-                        }
-                    }
-            	}
+	#filters {
+		let {
+			return_ops = veq[172]+veq[173]+veq[174]+veq[175]+veq[176];
+		} in {
+			return_ops != 1 || veq[180]!=1 || veq[42] != 1 || totalCount(veq) != 3;
+			veq[180] != 0 || vec[181] !=0;
+			exists vi in inlinedInto(vec):{
+				(vi[172]+vi[173]+vi[174]+vi[175]+vi[176]) == 1  && vi[180]==1 && totalCount(vi) == 3;
+			}
+		}
+	}
 }

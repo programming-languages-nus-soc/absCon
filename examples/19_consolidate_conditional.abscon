@@ -249,8 +249,8 @@
 
 #concrete
 {
-	#clone vec;
-	#query veq;
+	#clone vec = VT_BYTECODE;
+	#query veq = VT_BYTECODE;
 
 	#filters {
 		let {

@@ -1,41 +1,43 @@
+
 // Abstractions and concretization rules for "Encapsulate Field" refactoring.
 
 
 #declares
 {
-    f_43_OP_aload_1 = OP_aload_1;
-    f_44_OP_aload_2 = OP_aload_2;
-    f_45_OP_aload_3 = OP_aload_3;
+	f_43_OP_aload_1 = OP_aload_1;
+	f_44_OP_aload_2 = OP_aload_2;
+	f_45_OP_aload_3 = OP_aload_3;
 }
+
 #abstract
 {
 	#concVec vec;
 	#abstVec abst;
 
 	#assigns {
-        abst(f_43_OP_aload_1) = 0;
-        abst(f_44_OP_aload_2) = 0;
-        abst(f_45_OP_aload_3) = 0;
+		abst(f_43_OP_aload_1) = 0;
+		abst(f_44_OP_aload_2) = 0;
+		abst(f_45_OP_aload_3) = 0;
 	}
 }
 
 #concrete
 {
-	#clone vec;
-    	#query veq;
+	#clone vec = VT_BYTECODE_INLINED;
+	#query veq = VT_BYTECODE;
 
-    	#filters {
-            let{
-                return_ops = veq[172]+veq[173]+veq[174]+veq[175]+veq[176];
-            } in {
-                return_ops != 1 || veq[180]!=1 || veq[42] != 1 || totalCount(veq)!=3;
-                veq[180] != 0 || vec[181] !=0;
-                exists vi in inlinedInto(vec):{
-                    (vi[172]+vi[173]+vi[174]+vi[175]+vi[176]) == 1  && vi[180]==1 && totalCount(vi) == 3
-                    && sourceOfSize(vec)(4) > 0 && (veq[43]!=sourceOf(vec)(43)(4)
-                    ||  veq[44]!=sourceOf(vec)(44)(4)
-                    ||  veq[45]!=sourceOf(vec)(45)(4)) ;
-                }
-            }
-    	}
+	#filters {
+		let{
+			return_ops = veq[172]+veq[173]+veq[174]+veq[175]+veq[176];
+		} in {
+			return_ops != 1 || veq[180]!=1 || veq[42] != 1 || totalCount(veq)!=3;
+			veq[180] != 0 || vec[181] !=0;
+			exists vi in inlinedInto(vec):{
+				(vi[172]+vi[173]+vi[174]+vi[175]+vi[176]) == 1  && vi[180]==1 && totalCount(vi) == 3
+					&& sourceOfSize(vec)(4) > 0 && (veq[43]!=sourceOf(vec)(43)(4)
+							||  veq[44]!=sourceOf(vec)(44)(4)
+							||  veq[45]!=sourceOf(vec)(45)(4)) ;
+			}
+		}
+	}
 }

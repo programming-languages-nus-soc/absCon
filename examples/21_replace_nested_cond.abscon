@@ -1,283 +1,286 @@
+
 // Abstractions and concretization rules for "Decompose Conditional" refactoring.
 
 
 #declares
 {
-   // Load operations.
-   	f_21_iload = OP_iload;
-   	f_22_lload = OP_lload;
-   	f_23_fload = OP_fload;
-   	f_24_dload = OP_dload;
-   	f_25_aload = OP_aload;
-   	f_26_iload_0 = OP_iload_0;
-   	f_27_iload_1 = OP_iload_1;
-   	f_28_iload_2 = OP_iload_2;
-   	f_29_iload_3 = OP_iload_3;
-   	f_30_lload_0 = OP_lload_0;
-   	f_31_lload_1 = OP_lload_1;
-   	f_32_lload_2 = OP_lload_2;
-   	f_33_lload_3 = OP_lload_3;
-   	f_34_fload_0 = OP_fload_0;
-   	f_35_fload_1 = OP_fload_1;
-   	f_36_fload_2 = OP_fload_2;
-   	f_37_fload_3 = OP_fload_3;
-   	f_38_dload_0 = OP_dload_0;
-   	f_39_dload_1 = OP_dload_1;
-   	f_40_dload_2 = OP_dload_2;
-   	f_41_dload_3 = OP_dload_3;
-   	f_42_aload_0 = OP_aload_0;
-   	f_43_aload_1 = OP_aload_1;
-   	f_44_aload_2 = OP_aload_2;
-   	f_45_aload_3 = OP_aload_3;
+	// Load operations.
+	f_21_iload = OP_iload;
+	f_22_lload = OP_lload;
+	f_23_fload = OP_fload;
+	f_24_dload = OP_dload;
+	f_25_aload = OP_aload;
+	f_26_iload_0 = OP_iload_0;
+	f_27_iload_1 = OP_iload_1;
+	f_28_iload_2 = OP_iload_2;
+	f_29_iload_3 = OP_iload_3;
+	f_30_lload_0 = OP_lload_0;
+	f_31_lload_1 = OP_lload_1;
+	f_32_lload_2 = OP_lload_2;
+	f_33_lload_3 = OP_lload_3;
+	f_34_fload_0 = OP_fload_0;
+	f_35_fload_1 = OP_fload_1;
+	f_36_fload_2 = OP_fload_2;
+	f_37_fload_3 = OP_fload_3;
+	f_38_dload_0 = OP_dload_0;
+	f_39_dload_1 = OP_dload_1;
+	f_40_dload_2 = OP_dload_2;
+	f_41_dload_3 = OP_dload_3;
+	f_42_aload_0 = OP_aload_0;
+	f_43_aload_1 = OP_aload_1;
+	f_44_aload_2 = OP_aload_2;
+	f_45_aload_3 = OP_aload_3;
 
 
-   	// Set of load operations.
-   	s_load = setOf(
-   		f_21_iload,
-   		f_22_lload,
-   		f_23_fload,
-   		f_24_dload,
-   		f_25_aload,
-   		f_26_iload_0,
-   		f_27_iload_1,
-   		f_28_iload_2,
-   		f_29_iload_3,
-   		f_30_lload_0,
-   		f_31_lload_1,
-   		f_32_lload_2,
-   		f_33_lload_3,
-   		f_34_fload_0,
-   		f_35_fload_1,
-   		f_36_fload_2,
-   		f_37_fload_3,
-   		f_38_dload_0,
-   		f_39_dload_1,
-   		f_40_dload_2,
-   		f_41_dload_3,
-   		f_42_aload_0,
-   		f_43_aload_1,
-   		f_44_aload_2,
-   		f_45_aload_3
-   	);
+	// Set of load operations.
+	s_load = setOf(
+		f_21_iload,
+		f_22_lload,
+		f_23_fload,
+		f_24_dload,
+		f_25_aload,
+		f_26_iload_0,
+		f_27_iload_1,
+		f_28_iload_2,
+		f_29_iload_3,
+		f_30_lload_0,
+		f_31_lload_1,
+		f_32_lload_2,
+		f_33_lload_3,
+		f_34_fload_0,
+		f_35_fload_1,
+		f_36_fload_2,
+		f_37_fload_3,
+		f_38_dload_0,
+		f_39_dload_1,
+		f_40_dload_2,
+		f_41_dload_3,
+		f_42_aload_0,
+		f_43_aload_1,
+		f_44_aload_2,
+		f_45_aload_3
+	);
 
-   	// Store operations.
-   	f_54_istore = OP_istore;
-   	f_55_lstore = OP_lstore;
-   	f_56_fstore = OP_fstore;
-   	f_57_dstore = OP_dstore;
-   	f_58_astore = OP_astore;
-   	f_59_istore_0 = OP_istore_0;
-   	f_60_istore_1 = OP_istore_1;
-   	f_61_istore_2 = OP_istore_2;
-   	f_62_istore_3 = OP_istore_3;
-   	f_63_lstore_0 = OP_lstore_0;
-   	f_64_lstore_1 = OP_lstore_1;
-   	f_65_lstore_2 = OP_lstore_2;
-   	f_66_lstore_3 = OP_lstore_3;
-   	f_67_fstore_0 = OP_fstore_0;
-   	f_68_fstore_1 = OP_fstore_1;
-   	f_69_fstore_2 = OP_fstore_2;
-   	f_70_fstore_3 = OP_fstore_3;
-   	f_71_dstore_0 = OP_dstore_0;
-   	f_72_dstore_1 = OP_dstore_1;
-   	f_73_dstore_2 = OP_dstore_2;
-   	f_74_dstore_3 = OP_dstore_3;
-   	f_75_astore_0 = OP_astore_0;
-   	f_76_astore_1 = OP_astore_1;
-   	f_77_astore_2 = OP_astore_2;
-   	f_78_astore_3 = OP_astore_3;
+	// Store operations.
+	f_54_istore = OP_istore;
+	f_55_lstore = OP_lstore;
+	f_56_fstore = OP_fstore;
+	f_57_dstore = OP_dstore;
+	f_58_astore = OP_astore;
+	f_59_istore_0 = OP_istore_0;
+	f_60_istore_1 = OP_istore_1;
+	f_61_istore_2 = OP_istore_2;
+	f_62_istore_3 = OP_istore_3;
+	f_63_lstore_0 = OP_lstore_0;
+	f_64_lstore_1 = OP_lstore_1;
+	f_65_lstore_2 = OP_lstore_2;
+	f_66_lstore_3 = OP_lstore_3;
+	f_67_fstore_0 = OP_fstore_0;
+	f_68_fstore_1 = OP_fstore_1;
+	f_69_fstore_2 = OP_fstore_2;
+	f_70_fstore_3 = OP_fstore_3;
+	f_71_dstore_0 = OP_dstore_0;
+	f_72_dstore_1 = OP_dstore_1;
+	f_73_dstore_2 = OP_dstore_2;
+	f_74_dstore_3 = OP_dstore_3;
+	f_75_astore_0 = OP_astore_0;
+	f_76_astore_1 = OP_astore_1;
+	f_77_astore_2 = OP_astore_2;
+	f_78_astore_3 = OP_astore_3;
 
-   	// Set of store operations.
-   	s_store = setOf(
-   		f_54_istore,
-   		f_55_lstore,
-   		f_56_fstore,
-   		f_57_dstore,
-   		f_58_astore,
-   		f_59_istore_0,
-   		f_60_istore_1,
-   		f_61_istore_2,
-   		f_62_istore_3,
-   		f_63_lstore_0,
-   		f_64_lstore_1,
-   		f_65_lstore_2,
-   		f_66_lstore_3,
-   		f_67_fstore_0,
-   		f_68_fstore_1,
-   		f_69_fstore_2,
-   		f_70_fstore_3,
-   		f_71_dstore_0,
-   		f_72_dstore_1,
-   		f_73_dstore_2,
-   		f_74_dstore_3,
-   		f_75_astore_0,
-   		f_76_astore_1,
-   		f_77_astore_2,
-   		f_78_astore_3
-   	);
-   	f_2_OP_iconst_m1= OP_iconst_m1;
-    f_3_OP_iconst_0 = OP_iconst_0;
-    f_4_OP_iconst_1 = OP_iconst_1;
-    f_5_OP_iconst_2 = OP_iconst_2;
-    f_6_OP_iconst_3 = OP_iconst_3;
-    f_7_OP_iconst_4 = OP_iconst_4;
-    f_8_OP_iconst_5 = OP_iconst_5;
-    f_9_OP_lconst_0 = OP_lconst_0;
-    f_10_OP_lconst_1 = OP_lconst_1;
-    f_11_OP_fconst_0 = OP_fconst_0;
-    f_12_OP_fconst_1 = OP_fconst_1;
-    f_13_OP_fconst_2 = OP_fconst_2;
-    f_14_OP_dconst_0 = OP_dconst_0;
-    f_15_OP_dconst_1 = OP_dconst_1;
-    f_16_OP_bipush = OP_bipush;
-    f_17_OP_sipush = OP_sipush;
-    f_18_OP_ldc = OP_ldc;
-    f_19_OP_ldc_w = OP_ldc_w;
-    f_20_OP_ldc2_w = OP_ldc2_w;
+	// Set of store operations.
+	s_store = setOf(
+		f_54_istore,
+		f_55_lstore,
+		f_56_fstore,
+		f_57_dstore,
+		f_58_astore,
+		f_59_istore_0,
+		f_60_istore_1,
+		f_61_istore_2,
+		f_62_istore_3,
+		f_63_lstore_0,
+		f_64_lstore_1,
+		f_65_lstore_2,
+		f_66_lstore_3,
+		f_67_fstore_0,
+		f_68_fstore_1,
+		f_69_fstore_2,
+		f_70_fstore_3,
+		f_71_dstore_0,
+		f_72_dstore_1,
+		f_73_dstore_2,
+		f_74_dstore_3,
+		f_75_astore_0,
+		f_76_astore_1,
+		f_77_astore_2,
+		f_78_astore_3
+	);
 
-    //set of bytecodeconstants
-    s_bytecodeconstant = setOf(
-        f_2_OP_iconst_m1,
-        f_3_OP_iconst_0 ,
-        f_4_OP_iconst_1 ,
-        f_5_OP_iconst_2 ,
-        f_6_OP_iconst_3 ,
-        f_7_OP_iconst_4 ,
-        f_8_OP_iconst_5,
-        f_9_OP_lconst_0,
-        f_10_OP_lconst_1,
-        f_11_OP_fconst_0,
-        f_12_OP_fconst_1,
-        f_13_OP_fconst_2,
-        f_14_OP_dconst_0,
-        f_15_OP_dconst_1,
-        f_16_OP_bipush,
-        f_17_OP_sipush,
-        f_18_OP_ldc,
-        f_19_OP_ldc_w,
-        f_20_OP_ldc2_w
-    );
-    f_172_OP_ireturn = OP_ireturn;
-    f_173_OP_lreturn = OP_lreturn;
-    f_174_OP_freturn = OP_freturn;
-    f_175_OP_dreturn = OP_dreturn;
-    f_176_OP_areturn = OP_areturn;
-    f_177_OP_return = OP_return;
+	f_2_OP_iconst_m1= OP_iconst_m1;
+	f_3_OP_iconst_0 = OP_iconst_0;
+	f_4_OP_iconst_1 = OP_iconst_1;
+	f_5_OP_iconst_2 = OP_iconst_2;
+	f_6_OP_iconst_3 = OP_iconst_3;
+	f_7_OP_iconst_4 = OP_iconst_4;
+	f_8_OP_iconst_5 = OP_iconst_5;
+	f_9_OP_lconst_0 = OP_lconst_0;
+	f_10_OP_lconst_1 = OP_lconst_1;
+	f_11_OP_fconst_0 = OP_fconst_0;
+	f_12_OP_fconst_1 = OP_fconst_1;
+	f_13_OP_fconst_2 = OP_fconst_2;
+	f_14_OP_dconst_0 = OP_dconst_0;
+	f_15_OP_dconst_1 = OP_dconst_1;
+	f_16_OP_bipush = OP_bipush;
+	f_17_OP_sipush = OP_sipush;
+	f_18_OP_ldc = OP_ldc;
+	f_19_OP_ldc_w = OP_ldc_w;
+	f_20_OP_ldc2_w = OP_ldc2_w;
 
-    //set of return statements
-    s_return = setOf(
-        f_172_OP_ireturn,
-        f_173_OP_lreturn,
-        f_174_OP_freturn,
-        f_175_OP_dreturn,
-        f_176_OP_areturn,
-        f_177_OP_return
-    );
-    f_167_OP_goto = OP_goto;
+	//set of bytecodeconstants
+	s_bytecodeconstant = setOf(
+		f_2_OP_iconst_m1,
+		f_3_OP_iconst_0 ,
+		f_4_OP_iconst_1 ,
+		f_5_OP_iconst_2 ,
+		f_6_OP_iconst_3 ,
+		f_7_OP_iconst_4 ,
+		f_8_OP_iconst_5,
+		f_9_OP_lconst_0,
+		f_10_OP_lconst_1,
+		f_11_OP_fconst_0,
+		f_12_OP_fconst_1,
+		f_13_OP_fconst_2,
+		f_14_OP_dconst_0,
+		f_15_OP_dconst_1,
+		f_16_OP_bipush,
+		f_17_OP_sipush,
+		f_18_OP_ldc,
+		f_19_OP_ldc_w,
+		f_20_OP_ldc2_w
+	);
 
-    // Comparison features.
-    	f_149_fcmpl = OP_fcmpl;
-    	f_150_fcmpg = OP_fcmpg;
-    	f_151_dcmpl = OP_dcmpl;
-    	f_152_dcmpg = OP_dcmpg;
-    	f_153_ifeq = OP_ifeq;
-    	f_154_ifne = OP_ifne;
-    	f_155_iflt = OP_iflt;
-    	f_156_ifge = OP_ifge;
-    	f_157_ifgt = OP_ifgt;
-    	f_158_ifle = OP_ifle;
-    	f_159_if_icmpeq = OP_if_icmpeq;
-    	f_160_if_icmpne = OP_if_icmpne;
-    	f_161_if_icmplt = OP_if_icmplt;
-    	f_162_if_icmpge = OP_if_icmpge;
-    	f_163_if_icmpgt = OP_if_icmpgt;
-    	f_164_if_icmple = OP_if_icmple;
-    	f_165_if_acmpeq = OP_if_acmpeq;
-    	f_166_if_acmpne = OP_if_acmpne;
+	f_172_OP_ireturn = OP_ireturn;
+	f_173_OP_lreturn = OP_lreturn;
+	f_174_OP_freturn = OP_freturn;
+	f_175_OP_dreturn = OP_dreturn;
+	f_176_OP_areturn = OP_areturn;
+	f_177_OP_return = OP_return;
 
+	//set of return statements
+	s_return = setOf(
+		f_172_OP_ireturn,
+		f_173_OP_lreturn,
+		f_174_OP_freturn,
+		f_175_OP_dreturn,
+		f_176_OP_areturn,
+		f_177_OP_return
+	);
+	f_167_OP_goto = OP_goto;
+
+	// Comparison features.
+	f_149_fcmpl = OP_fcmpl;
+	f_150_fcmpg = OP_fcmpg;
+	f_151_dcmpl = OP_dcmpl;
+	f_152_dcmpg = OP_dcmpg;
+	f_153_ifeq = OP_ifeq;
+	f_154_ifne = OP_ifne;
+	f_155_iflt = OP_iflt;
+	f_156_ifge = OP_ifge;
+	f_157_ifgt = OP_ifgt;
+	f_158_ifle = OP_ifle;
+	f_159_if_icmpeq = OP_if_icmpeq;
+	f_160_if_icmpne = OP_if_icmpne;
+	f_161_if_icmplt = OP_if_icmplt;
+	f_162_if_icmpge = OP_if_icmpge;
+	f_163_if_icmpgt = OP_if_icmpgt;
+	f_164_if_icmple = OP_if_icmple;
+	f_165_if_acmpeq = OP_if_acmpeq;
+	f_166_if_acmpne = OP_if_acmpne;
 }
+
 #abstract
 {
 	#concVec vec;
 	#abstVec abst;
 
 	#assigns {
-        setFeatures(abst, s_load) = 0;
-        setFeatures(abst, s_store) = 0;
+		setFeatures(abst, s_load) = 0;
+		setFeatures(abst, s_store) = 0;
 
-        setFeatures(abst,s_bytecodeconstant)=0;
+		setFeatures(abst,s_bytecodeconstant)=0;
 
-        setFeatures(abst,s_return)=0;
+		setFeatures(abst,s_return)=0;
 
-        abst(f_167_OP_goto) = 0;
+		abst(f_167_OP_goto) = 0;
 
-        abst(f_149_fcmpl) = vec(f_149_fcmpl) + vec(f_150_fcmpg);
-        abst(f_150_fcmpg) = 0;
+		abst(f_149_fcmpl) = vec(f_149_fcmpl) + vec(f_150_fcmpg);
+		abst(f_150_fcmpg) = 0;
 
-        abst(f_151_dcmpl) = vec(f_151_dcmpl) + vec(f_152_dcmpg);
-        abst(f_152_dcmpg) = 0;
+		abst(f_151_dcmpl) = vec(f_151_dcmpl) + vec(f_152_dcmpg);
+		abst(f_152_dcmpg) = 0;
 
-        abst(f_153_ifeq) = vec(f_153_ifeq) + vec(f_154_ifne);
-        abst(f_154_ifne) = 0;
+		abst(f_153_ifeq) = vec(f_153_ifeq) + vec(f_154_ifne);
+		abst(f_154_ifne) = 0;
 
-        abst(f_155_iflt) = vec(f_155_iflt) + vec(f_156_ifge);
-        abst(f_156_ifge) = 0;
+		abst(f_155_iflt) = vec(f_155_iflt) + vec(f_156_ifge);
+		abst(f_156_ifge) = 0;
 
-        abst(f_157_ifgt) = vec(f_157_ifgt) + vec(f_158_ifle);
-        abst(f_158_ifle) = 0;
+		abst(f_157_ifgt) = vec(f_157_ifgt) + vec(f_158_ifle);
+		abst(f_158_ifle) = 0;
 
-        abst(f_159_if_icmpeq) = vec(f_159_if_icmpeq) + vec(f_160_if_icmpne);
-        abst(f_160_if_icmpne) = 0;
+		abst(f_159_if_icmpeq) = vec(f_159_if_icmpeq) + vec(f_160_if_icmpne);
+		abst(f_160_if_icmpne) = 0;
 
-        abst(f_161_if_icmplt) = vec(f_161_if_icmplt) + vec(f_162_if_icmpge);
-        abst(f_162_if_icmpge) = 0;
+		abst(f_161_if_icmplt) = vec(f_161_if_icmplt) + vec(f_162_if_icmpge);
+		abst(f_162_if_icmpge) = 0;
 
-        abst(f_163_if_icmpgt) = vec(f_163_if_icmpgt) + vec(f_164_if_icmple);
-        abst(f_164_if_icmple) = 0;
+		abst(f_163_if_icmpgt) = vec(f_163_if_icmpgt) + vec(f_164_if_icmple);
+		abst(f_164_if_icmple) = 0;
 
-        abst(f_165_if_acmpeq) = vec(f_165_if_acmpeq) + vec(f_166_if_acmpne);
-        abst(f_166_if_acmpne) = 0;
+		abst(f_165_if_acmpeq) = vec(f_165_if_acmpeq) + vec(f_166_if_acmpne);
+		abst(f_166_if_acmpne) = 0;
 	}
 }
 
 #concrete
 {
-	#clone vec;
-    #query veq;
+	#clone vec = VT_BYTECODE;
+	#query veq = VT_BYTECODE;
 
-    	#filters {
-            let{
-                return_ops_q = veq[172] + veq[173] + veq[174] + veq[175] + veq[176];
-                return_ops_c = veq[172] + veq[173] + veq[174] + veq[175] + veq[176];
-                loadq = sumOfFeatures(veq,s_load);
-                loadc = sumOfFeatures(vec,s_load);
-                storeq = sumOfFeatures(veq,s_store);
-                storec = sumOfFeatures(vec,s_store);
-                constq = sumOfFeatures(veq,s_bytecodeconstant);
-                constqc= sumOfFeatures(vec,s_bytecodeconstant);
-            } in {
-                sourceOfSize(veq)(1) !=0 && sourceOfSize(vec)(2) !=0;
-                (sourceOfSize(veq)(1) !=0 && sourceOfSize(vec)(2) !=0
-                && ((veq[149]-vec[149]!=0 && veq[149]-vec[149] == vec[150]-veq[150])
-                    || (veq[151]-vec[151]!=0 &&  veq[151]-vec[151] == vec[152]-veq[152])
-                    || (veq[153]-vec[153]!=0 &&  veq[153]-vec[153] == vec[154]-veq[154])
-                    || (veq[155]-vec[155]!=0 &&  veq[155]-vec[155] == vec[156]-veq[156])
-                    || (veq[157]-vec[157]!=0 &&  veq[157]-vec[157] == vec[158]-veq[158])
-                    || (veq[159]-vec[159]!=0 &&  veq[159]-vec[159] == vec[160]-veq[160])
-                    || (veq[161]-vec[161]!=0 &&  veq[161]-vec[161] == vec[162]-veq[162])
-                    || (veq[163]-vec[163]!=0 &&  veq[163]-vec[163] == vec[164]-veq[164])
-                    || (veq[165]-vec[165]!=0 &&  veq[165]-vec[165] == vec[166]-veq[166]))
-                && sourceOf(veq)(25)(1) - sourceOf(vec)(25)(2) == 0
-                && sourceOf(vec)(41)(2) > 1
-                && sourceOf(veq)(25)(1) > 1
-                && return_ops_c - return_ops_q > 0)
-                || (sourceOfSize(veq)(1) !=0 && sourceOfSize(vec)(2) !=0
-                && sourceOf(veq)(25)(1) - sourceOf(vec)(25)(2) == 0
-                && sourceOf(vec)(41)(2) > 1
-                && sourceOf(veq)(25)(1) > 1
-                && return_ops_c - return_ops_q > 0
-                && return_ops_c - return_ops_q - veq[167] == 0);
+	#filters {
+		let{
+			return_ops_q = veq[172] + veq[173] + veq[174] + veq[175] + veq[176];
+			return_ops_c = veq[172] + veq[173] + veq[174] + veq[175] + veq[176];
+			loadq = sumOfFeatures(veq,s_load);
+			loadc = sumOfFeatures(vec,s_load);
+			storeq = sumOfFeatures(veq,s_store);
+			storec = sumOfFeatures(vec,s_store);
+			constq = sumOfFeatures(veq,s_bytecodeconstant);
+			constqc= sumOfFeatures(vec,s_bytecodeconstant);
+		} in {
+			sourceOfSize(veq)(1) !=0 && sourceOfSize(vec)(2) !=0;
+			(sourceOfSize(veq)(1) !=0 && sourceOfSize(vec)(2) !=0
+			 && ((veq[149]-vec[149]!=0 && veq[149]-vec[149] == vec[150]-veq[150])
+				 || (veq[151]-vec[151]!=0 &&  veq[151]-vec[151] == vec[152]-veq[152])
+				 || (veq[153]-vec[153]!=0 &&  veq[153]-vec[153] == vec[154]-veq[154])
+				 || (veq[155]-vec[155]!=0 &&  veq[155]-vec[155] == vec[156]-veq[156])
+				 || (veq[157]-vec[157]!=0 &&  veq[157]-vec[157] == vec[158]-veq[158])
+				 || (veq[159]-vec[159]!=0 &&  veq[159]-vec[159] == vec[160]-veq[160])
+				 || (veq[161]-vec[161]!=0 &&  veq[161]-vec[161] == vec[162]-veq[162])
+				 || (veq[163]-vec[163]!=0 &&  veq[163]-vec[163] == vec[164]-veq[164])
+				 || (veq[165]-vec[165]!=0 &&  veq[165]-vec[165] == vec[166]-veq[166]))
+			 && sourceOf(veq)(25)(1) - sourceOf(vec)(25)(2) == 0
+			 && sourceOf(vec)(41)(2) > 1
+			 && sourceOf(veq)(25)(1) > 1
+			 && return_ops_c - return_ops_q > 0)
+				|| (sourceOfSize(veq)(1) !=0 && sourceOfSize(vec)(2) !=0
+						&& sourceOf(veq)(25)(1) - sourceOf(vec)(25)(2) == 0
+						&& sourceOf(vec)(41)(2) > 1
+						&& sourceOf(veq)(25)(1) > 1
+						&& return_ops_c - return_ops_q > 0
+						&& return_ops_c - return_ops_q - veq[167] == 0);
 
-            }
-    	}
+		}
+	}
 }

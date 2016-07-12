@@ -1,3 +1,4 @@
+
 // Abstractions rules for “Split temporary variable” refactoring.
 
 
@@ -131,7 +132,6 @@
 		f_77_astore_2,
 		f_78_astore_3
 	);
-
 }
 
 #abstract
@@ -167,8 +167,8 @@
 }
 #concrete
 {
-	#clone vec;
-	#query veq;
+	#clone vec = VT_BYTECODE;
+	#query veq = VT_BYTECODE;
 
 	#filters {
 		// Equivalent implementation of the one in the current system.
@@ -183,16 +183,14 @@
 			//DIFFERENCE_DECLARATION_STATEMENT = sourceOf(vec)(VARIABLE_DECLARATION_STATEMENT)(1) - sourceOf(veq)(VARIABLE_DECLARATION_STATEMENT)(2);
 		} in {
 
-		    sourceOfSize(vec)(1) !=0 && sourceOf(vec)(VARIABLE_DECLARATION_STATEMENT)(1)>=2;
-		    sourceOfSize(vec)(1) !=0 && sourceOfSize(veq)(2) !=0
-			&& ((sourceOf(vec)(VARIABLE_DECLARATION_EXPRESSION)(1) - sourceOf(veq)(VARIABLE_DECLARATION_EXPRESSION)(2) >=1
-            &&  sourceOf(vec)(VARIABLE_DECLARATION_EXPRESSION)(1) - sourceOf(veq)(VARIABLE_DECLARATION_EXPRESSION)(2) == sourceOf(veq)(ASSIGNMENT)(2)-sourceOf(vec)(ASSIGNMENT)(1))
-            || (sourceOf(vec)(VARIABLE_DECLARATION_FRAGMENT)(1) - sourceOf(veq)(VARIABLE_DECLARATION_FRAGMENT)(2) >=1
-            && sourceOf(vec)(VARIABLE_DECLARATION_FRAGMENT)(1) - sourceOf(veq)(VARIABLE_DECLARATION_FRAGMENT)(2)==sourceOf(veq)(ASSIGNMENT)(2)-sourceOf(vec)(ASSIGNMENT)(1))
-            || (sourceOf(vec)(VARIABLE_DECLARATION_STATEMENT)(1) - sourceOf(veq)(VARIABLE_DECLARATION_STATEMENT)(2) >=1
-            && sourceOf(vec)(VARIABLE_DECLARATION_STATEMENT)(1) - sourceOf(veq)(VARIABLE_DECLARATION_STATEMENT)(2) == sourceOf(veq)(ASSIGNMENT)(2)-sourceOf(vec)(ASSIGNMENT)(1)));
+			sourceOfSize(vec)(1) !=0 && sourceOf(vec)(VARIABLE_DECLARATION_STATEMENT)(1)>=2;
+			sourceOfSize(vec)(1) !=0 && sourceOfSize(veq)(2) !=0
+				&& ((sourceOf(vec)(VARIABLE_DECLARATION_EXPRESSION)(1) - sourceOf(veq)(VARIABLE_DECLARATION_EXPRESSION)(2) >=1
+							&&  sourceOf(vec)(VARIABLE_DECLARATION_EXPRESSION)(1) - sourceOf(veq)(VARIABLE_DECLARATION_EXPRESSION)(2) == sourceOf(veq)(ASSIGNMENT)(2)-sourceOf(vec)(ASSIGNMENT)(1))
+						|| (sourceOf(vec)(VARIABLE_DECLARATION_FRAGMENT)(1) - sourceOf(veq)(VARIABLE_DECLARATION_FRAGMENT)(2) >=1
+							&& sourceOf(vec)(VARIABLE_DECLARATION_FRAGMENT)(1) - sourceOf(veq)(VARIABLE_DECLARATION_FRAGMENT)(2)==sourceOf(veq)(ASSIGNMENT)(2)-sourceOf(vec)(ASSIGNMENT)(1))
+						|| (sourceOf(vec)(VARIABLE_DECLARATION_STATEMENT)(1) - sourceOf(veq)(VARIABLE_DECLARATION_STATEMENT)(2) >=1
+							&& sourceOf(vec)(VARIABLE_DECLARATION_STATEMENT)(1) - sourceOf(veq)(VARIABLE_DECLARATION_STATEMENT)(2) == sourceOf(veq)(ASSIGNMENT)(2)-sourceOf(vec)(ASSIGNMENT)(1)));
 		}
-
-
 	}
 }

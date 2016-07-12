@@ -550,8 +550,8 @@
 
 #concrete
 {
-	#clone vec;
-	#query veq;
+	#clone vec = VT_BYTECODE_INLINED;
+	#query veq = VT_BYTECODE;
 
 	#filters {
 		exists vi in inlinedInto(vec): {

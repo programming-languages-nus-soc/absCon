@@ -1,71 +1,72 @@
+
 // Abstractions and concretization rules for "Consolidate Duplicate Conditional" refactoring.
 
 
 #declares
 {
+	f_153_OP_ifeq = OP_ifeq;
+	f_154_OP_ifne = OP_ifne;
+	f_155_OP_iflt = OP_iflt;
+	f_156_OP_ifge = OP_ifge;
+	f_157_OP_ifgt = OP_ifgt;
+	f_158_OP_ifle = OP_ifle;
+	f_159_OP_if_icmpeq = OP_if_icmpeq;
+	f_160_OP_if_icmpne= OP_if_icmpne;
+	f_161_OP_if_icmplt = OP_if_icmplt;
+	f_162_OP_if_icmpge = OP_if_icmpge;
+	f_163_OP_if_icmpgt= OP_if_icmpgt;
+	f_164_OP_if_icmple= OP_if_icmple;
+	f_165_OP_if_acmpeq= OP_if_acmpeq;
+	f_166_OP_if_acmpne = OP_if_acmpne;
 
-    f_153_OP_ifeq = OP_ifeq;
-    f_154_OP_ifne = OP_ifne;
-    f_155_OP_iflt = OP_iflt;
-    f_156_OP_ifge = OP_ifge;
-    f_157_OP_ifgt = OP_ifgt;
-    f_158_OP_ifle = OP_ifle;
-    f_159_OP_if_icmpeq = OP_if_icmpeq;
-    f_160_OP_if_icmpne= OP_if_icmpne;
-    f_161_OP_if_icmplt = OP_if_icmplt;
-    f_162_OP_if_icmpge = OP_if_icmpge;
-    f_163_OP_if_icmpgt= OP_if_icmpgt;
-    f_164_OP_if_icmple= OP_if_icmple;
-    f_165_OP_if_acmpeq= OP_if_acmpeq;
-    f_166_OP_if_acmpne = OP_if_acmpne;
-
-    s_ifSet = setOf(
-        f_153_OP_ifeq,
-        f_154_OP_ifne,
-        f_155_OP_iflt,
-        f_156_OP_ifge,
-        f_157_OP_ifgt,
-        f_158_OP_ifle,
-        f_159_OP_if_icmpeq,
-        f_160_OP_if_icmpne,
-        f_161_OP_if_icmplt,
-        f_162_OP_if_icmpge,
-        f_163_OP_if_icmpgt,
-        f_164_OP_if_icmple,
-        f_165_OP_if_acmpeq,
-        f_166_OP_if_acmpne
-    );
+	s_ifSet = setOf(
+			f_153_OP_ifeq,
+			f_154_OP_ifne,
+			f_155_OP_iflt,
+			f_156_OP_ifge,
+			f_157_OP_ifgt,
+			f_158_OP_ifle,
+			f_159_OP_if_icmpeq,
+			f_160_OP_if_icmpne,
+			f_161_OP_if_icmplt,
+			f_162_OP_if_icmpge,
+			f_163_OP_if_icmpgt,
+			f_164_OP_if_icmple,
+			f_165_OP_if_acmpeq,
+			f_166_OP_if_acmpne
+		       );
 }
+
 #abstract
 {
 	#concVec vec;
 	#abstVec abst;
 
 	#assigns {
-        setFeaturesByRange(0 .. 219) = 1;
+		setFeaturesByRange(0 .. 219) = 1;
 	}
 }
 
 #concrete
 {
-	#clone vec;
-    #query veq;
+	#clone vec = VT_BYTECODE;
+	#query veq = VT_BYTECODE;
 
-    #filters{
-        forall(i in 0..53):{
-            vec(i) - veq(i) <= 0;
-        };
-        forall(i in 54..219):{
-            vec(i) - veq(i) <= 0;
-        };
-        let{
-            ifClone = sumOfFeatures(vec,s_ifSet);
-            ifQuery = sumOfFeatures(veq,s_ifSet);
+	#filters{
+		forall(i in 0..53):{
+			vec(i) - veq(i) <= 0;
+		};
+		forall(i in 54..219):{
+			vec(i) - veq(i) <= 0;
+		};
+		let {
+			ifClone = sumOfFeatures(vec,s_ifSet);
+			ifQuery = sumOfFeatures(veq,s_ifSet);
 
-        } in {
-            ifClone != 0 && ifQuery != 0;
-        }
+		} in {
+			ifClone != 0 && ifQuery != 0;
+		}
 
-        sourceOfSize(veq)(1) !=0 && sourceOf(veq)(167)(1) > 0 && sourceOf(veq)(25)(1) > 0 && sourceOfSize(vec)(2) !=0 && sourceOf(vec)(25)(2) > 0;
-    }
+		sourceOfSize(veq)(1) !=0 && sourceOf(veq)(167)(1) > 0 && sourceOf(veq)(25)(1) > 0 && sourceOfSize(vec)(2) !=0 && sourceOf(vec)(25)(2) > 0;
+	}
 }

@@ -1,31 +1,33 @@
+
 // Abstractions and concretization rules for "Encapsulate Downcast" refactoring.
 
 
 #declares
 {
-    f_192_OP_Checkcast = OP_checkcast;
-    f_217_OP_methodinvoke_checkcast =OP_methodinvoke_checkcast;
-    f_218_OP_apiinvoke_checkcast = OP_apiinvoke_checkcast;
-    f_193_OP_instanceof = OP_instanceof;
+	f_192_OP_Checkcast = OP_checkcast;
+	f_217_OP_methodinvoke_checkcast =OP_methodinvoke_checkcast;
+	f_218_OP_apiinvoke_checkcast = OP_apiinvoke_checkcast;
+	f_193_OP_instanceof = OP_instanceof;
 }
+
 #abstract
 {
 	#concVec vec;
 	#abstVec abst;
 
 	#assigns {
-        abst(f_192_OP_Checkcast) = 0;
-        abst(f_217_OP_methodinvoke_checkcast) = 0;
-        abst(f_218_OP_apiinvoke_checkcast) = 0;
+		abst(f_192_OP_Checkcast) = 0;
+		abst(f_217_OP_methodinvoke_checkcast) = 0;
+		abst(f_218_OP_apiinvoke_checkcast) = 0;
 	}
 }
 
 #concrete
 {
-	#clone vec;
-    	#query veq;
+	#clone vec = VT_BYTECODE;
+	#query veq = VT_BYTECODE;
 
-    	#filters {
-            veq(f_217_OP_methodinvoke_checkcast) > vec(f_217_OP_methodinvoke_checkcast) && veq(f_193_OP_instanceof) == 0;
-    	}
+	#filters {
+		veq(f_217_OP_methodinvoke_checkcast) > vec(f_217_OP_methodinvoke_checkcast) && veq(f_193_OP_instanceof) == 0;
+	}
 }
