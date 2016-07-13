@@ -1,0 +1,176 @@
+
+// Abstractions and concretization rules for "Replace Error code with Exception" refactoring.
+
+
+#declares
+{
+	// Bytecode features and groups.
+
+	// Load operations.
+	f_21_iload = OP_iload;
+	f_22_lload = OP_lload;
+	f_23_fload = OP_fload;
+	f_24_dload = OP_dload;
+	f_25_aload = OP_aload;
+	f_26_iload_0 = OP_iload_0;
+	f_27_iload_1 = OP_iload_1;
+	f_28_iload_2 = OP_iload_2;
+	f_29_iload_3 = OP_iload_3;
+	f_30_lload_0 = OP_lload_0;
+	f_31_lload_1 = OP_lload_1;
+	f_32_lload_2 = OP_lload_2;
+	f_33_lload_3 = OP_lload_3;
+	f_34_fload_0 = OP_fload_0;
+	f_35_fload_1 = OP_fload_1;
+	f_36_fload_2 = OP_fload_2;
+	f_37_fload_3 = OP_fload_3;
+	f_38_dload_0 = OP_dload_0;
+	f_39_dload_1 = OP_dload_1;
+	f_40_dload_2 = OP_dload_2;
+	f_41_dload_3 = OP_dload_3;
+	f_42_aload_0 = OP_aload_0;
+	f_43_aload_1 = OP_aload_1;
+	f_44_aload_2 = OP_aload_2;
+	f_45_aload_3 = OP_aload_3;
+
+	s_load = setOf(
+		f_21_iload,
+		f_22_lload,
+		f_23_fload,
+		f_24_dload,
+		f_25_aload,
+		f_26_iload_0,
+		f_27_iload_1,
+		f_28_iload_2,
+		f_29_iload_3,
+		f_30_lload_0,
+		f_31_lload_1,
+		f_32_lload_2,
+		f_33_lload_3,
+		f_34_fload_0,
+		f_35_fload_1,
+		f_36_fload_2,
+		f_37_fload_3,
+		f_38_dload_0,
+		f_39_dload_1,
+		f_40_dload_2,
+		f_41_dload_3,
+		f_42_aload_0,
+		f_43_aload_1,
+		f_44_aload_2,
+		f_45_aload_3
+	);
+
+	// Const operations.
+	f_2_iconst_m1 = OP_iconst_m1;
+	f_3_iconst_0 = OP_iconst_0;
+	f_4_iconst_1 = OP_iconst_1;
+	f_5_iconst_2 = OP_iconst_2;
+	f_6_iconst_3 = OP_iconst_3;
+	f_7_iconst_4 = OP_iconst_4;
+	f_8_iconst_5 = OP_iconst_5;
+	f_9_lconst_0 = OP_lconst_0;
+	f_10_lconst_1 = OP_lconst_1;
+	f_11_fconst_0 = OP_fconst_0;
+	f_12_fconst_1 = OP_fconst_1;
+	f_13_fconst_2 = OP_fconst_2;
+	f_14_dconst_0 = OP_dconst_0;
+	f_15_dconst_1 = OP_dconst_1;
+	f_16_bipush = OP_bipush;
+	f_17_sipush = OP_sipush;
+	f_18_ldc = OP_ldc;
+	f_19_ldc_w = OP_ldc_w;
+	f_20_ldc2_w = OP_ldc2_w;
+
+	s_const = setOf(
+		f_2_iconst_m1,
+		f_3_iconst_0,
+		f_4_iconst_1,
+		f_5_iconst_2,
+		f_6_iconst_3,
+		f_7_iconst_4,
+		f_8_iconst_5,
+		f_9_lconst_0,
+		f_10_lconst_1,
+		f_11_fconst_0,
+		f_12_fconst_1,
+		f_13_fconst_2,
+		f_14_dconst_0,
+		f_15_dconst_1,
+		f_16_bipush,
+		f_17_sipush,
+		f_18_ldc,
+		f_19_ldc_w,
+		f_20_ldc2_w
+	);
+
+	// Return opperations.
+	f_172_ireturn = OP_ireturn;
+	f_173_lreturn = OP_lreturn;
+	f_174_freturn = OP_freturn;
+	f_175_dreturn = OP_dreturn;
+	f_176_areturn = OP_areturn;
+	f_177_return = OP_return;
+
+	s_return = setOf(
+		f_172_ireturn,
+		f_173_lreturn,
+		f_174_freturn,
+		f_175_dreturn,
+		f_176_areturn
+	);
+
+	// Opperations related to creating and throwing an exception.
+	f_89_dup = OP_dup;
+	f_180_getfield = OP_getfield;
+	f_187_new = OP_new;
+	f_191_athrow = OP_athrow;
+	f_202_initinvoke = OP_initinvoke;
+
+	s_exception = setOf(
+		f_89_dup,
+		f_180_getfield,
+		f_187_new,
+		f_191_athrow,
+		f_202_initinvoke
+	);
+
+	// Sourcecode features.
+	f_sc_53_THROW_STATEMENT = 53;
+	f_sc_41_RETURN_STATEMENT = 41;
+}
+
+#abstract
+{
+	#concVec vec;
+	#abstVec abst;
+
+	#assigns {
+		setFeatures(abst, s_load) = 0;
+		setFeatures(abst, s_const) = 0;
+		setFeatures(abst, s_return) = 0;
+		setFeatures(abst, s_exception) = 0;
+	}
+}
+
+#concrete
+{
+	#clone vec = VT_BYTECODE;
+	#query veq = VT_BYTECODE;
+
+	#filters {
+		let {
+			sum_return_c = sumOfFeatures(vec, s_return);
+			sum_return_q = sumOfFeatures(veq, s_return);
+			sum_const_c = sumOfFeatures(vec, s_const);
+			sum_const_q = sumOfFeatures(veq, s_const);
+		} in {
+			sum_return_c - sum_const_c == sum_const_q - sum_return_q;
+			sourceOfSize(veq) > 0 && sourceOfSize(vec) > 0 &&
+				sourceOf(vec)(f_sc_41_RETURN_STATEMENT) < sourceOf(veq)(f_sc_41_RETURN_STATEMENT) &&
+				sourceOf(vec)(f_sc_53_THROW_STATEMENT) > sourceOf(veq)(f_sc_53_THROW_STATEMENT);
+		}
+	}
+}
+
+
