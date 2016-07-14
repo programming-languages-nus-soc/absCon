@@ -136,8 +136,9 @@
 	);
 
 	// Sourcecode features.
-	f_sc_53_THROW_STATEMENT = 53;
+	f_sc_34_NUMBER_LITERAL = 34;
 	f_sc_41_RETURN_STATEMENT = 41;
+	f_sc_53_THROW_STATEMENT = 53;
 }
 
 #abstract
@@ -159,17 +160,12 @@
 	#query veq = VT_BYTECODE;
 
 	#filters {
-		let {
-			sum_return_c = sumOfFeatures(vec, s_return);
-			sum_return_q = sumOfFeatures(veq, s_return);
-			sum_const_c = sumOfFeatures(vec, s_const);
-			sum_const_q = sumOfFeatures(veq, s_const);
-		} in {
-			sum_return_c - sum_const_c == sum_const_q - sum_return_q;
-			sourceOfSize(veq) > 0 && sourceOfSize(vec) > 0 &&
-				sourceOf(vec)(f_sc_41_RETURN_STATEMENT) < sourceOf(veq)(f_sc_41_RETURN_STATEMENT) &&
-				sourceOf(vec)(f_sc_53_THROW_STATEMENT) > sourceOf(veq)(f_sc_53_THROW_STATEMENT);
-		}
+		sourceOfSize(veq) > 0 && sourceOfSize(vec) > 0 &&
+			sourceOf(vec)(f_sc_34_NUMBER_LITERAL) - sourceOf(vec)(f_sc_41_RETURN_STATEMENT) ==
+			sourceOf(veq)(f_sc_34_NUMBER_LITERAL) - sourceOf(veq)(f_sc_41_RETURN_STATEMENT);
+		sourceOfSize(veq) > 0 && sourceOfSize(vec) > 0 &&
+			sourceOf(vec)(f_sc_41_RETURN_STATEMENT) > sourceOf(veq)(f_sc_41_RETURN_STATEMENT) &&
+			sourceOf(vec)(f_sc_53_THROW_STATEMENT) < sourceOf(veq)(f_sc_53_THROW_STATEMENT);
 	}
 }
 
