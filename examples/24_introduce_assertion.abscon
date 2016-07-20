@@ -1,0 +1,175 @@
+
+// Abstractions and concretization rules for "Replace Error code with Exception" refactoring.
+
+
+#declares
+{
+	// Bytecode features and groups.
+
+	// Load operations.
+	f_21_iload = OP_iload;
+	f_22_lload = OP_lload;
+	f_23_fload = OP_fload;
+	f_24_dload = OP_dload;
+	f_25_aload = OP_aload;
+	f_26_iload_0 = OP_iload_0;
+	f_27_iload_1 = OP_iload_1;
+	f_28_iload_2 = OP_iload_2;
+	f_29_iload_3 = OP_iload_3;
+	f_30_lload_0 = OP_lload_0;
+	f_31_lload_1 = OP_lload_1;
+	f_32_lload_2 = OP_lload_2;
+	f_33_lload_3 = OP_lload_3;
+	f_34_fload_0 = OP_fload_0;
+	f_35_fload_1 = OP_fload_1;
+	f_36_fload_2 = OP_fload_2;
+	f_37_fload_3 = OP_fload_3;
+	f_38_dload_0 = OP_dload_0;
+	f_39_dload_1 = OP_dload_1;
+	f_40_dload_2 = OP_dload_2;
+	f_41_dload_3 = OP_dload_3;
+	f_42_aload_0 = OP_aload_0;
+	f_43_aload_1 = OP_aload_1;
+	f_44_aload_2 = OP_aload_2;
+	f_45_aload_3 = OP_aload_3;
+
+	s_load = setOf(
+		f_21_iload,
+		f_22_lload,
+		f_23_fload,
+		f_24_dload,
+		f_25_aload,
+		f_26_iload_0,
+		f_27_iload_1,
+		f_28_iload_2,
+		f_29_iload_3,
+		f_30_lload_0,
+		f_31_lload_1,
+		f_32_lload_2,
+		f_33_lload_3,
+		f_34_fload_0,
+		f_35_fload_1,
+		f_36_fload_2,
+		f_37_fload_3,
+		f_38_dload_0,
+		f_39_dload_1,
+		f_40_dload_2,
+		f_41_dload_3,
+		f_42_aload_0,
+		f_43_aload_1,
+		f_44_aload_2,
+		f_45_aload_3
+	);
+
+	// Compare operations.
+	f_148_lcmp = OP_lcmp;
+	f_149_fcmpl = OP_fcmpl;
+	f_150_fcmpg = OP_fcmpg;
+	f_151_dcmpl = OP_dcmpl;
+	f_152_dcmpg = OP_dcmpg;
+	f_153_ifeq = OP_ifeq;
+	f_154_ifne = OP_ifne;
+	f_155_iflt = OP_iflt;
+	f_156_ifge = OP_ifge;
+	f_157_ifgt = OP_ifgt;
+	f_158_ifle = OP_ifle;
+	f_159_if_icmpeq = OP_if_icmpeq;
+	f_160_if_icmpne = OP_if_icmpne;
+	f_161_if_icmplt = OP_if_icmplt;
+	f_162_if_icmpge = OP_if_icmpge;
+	f_163_if_icmpgt = OP_if_icmpgt;
+	f_164_if_icmple = OP_if_icmple;
+	f_165_if_acmpeq = OP_if_acmpeq;
+	f_166_if_acmpne = OP_if_acmpne;
+
+	s_compare = setOf(
+		f_148_lcmp,
+		f_149_fcmpl,
+		f_150_fcmpg,
+		f_151_dcmpl,
+		f_152_dcmpg,
+		f_153_ifeq,
+		f_154_ifne,
+		f_155_iflt,
+		f_156_ifge,
+		f_157_ifgt,
+		f_158_ifle,
+		f_159_if_icmpeq,
+		f_160_if_icmpne,
+		f_161_if_icmplt,
+		f_162_if_icmpge,
+		f_163_if_icmpgt,
+		f_164_if_icmple,
+		f_165_if_acmpeq,
+		f_166_if_acmpne
+	);
+
+	// Logical operations.
+	f_116_ineg = OP_ineg;
+	f_117_lneg = OP_lneg;
+	f_118_fneg = OP_fneg;
+	f_119_dneg = OP_dneg;
+	f_120_ishl = OP_ishl;
+	f_121_lshl = OP_lshl;
+	f_122_ishr = OP_ishr;
+	f_123_lshr = OP_lshr;
+	f_124_iushr = OP_iushr;
+	f_125_lushr = OP_lushr;
+	f_126_iand = OP_iand;
+	f_127_land = OP_land;
+	f_128_ior = OP_ior;
+	f_129_lor = OP_lor;
+	f_130_ixor = OP_ixor;
+	f_131_lxor = OP_lxor;
+	f_132_iinc = OP_iinc;
+
+	s_logic = setOf(
+		f_116_ineg,
+		f_117_lneg,
+		f_118_fneg,
+		f_119_dneg,
+		f_120_ishl,
+		f_121_lshl,
+		f_122_ishr,
+		f_123_lshr,
+		f_124_iushr,
+		f_125_lushr,
+		f_126_iand,
+		f_127_land,
+		f_128_ior,
+		f_129_lor,
+		f_130_ixor,
+		f_131_lxor,
+		f_132_iinc
+	);
+
+	// Sourcecode features.
+	f_sc_16_CONDITIONAL_EXPRESSION = 16;
+	f_sc_6_ASSERT_STATEMENT = 6;
+}
+
+#abstract
+{
+	#concVec vec;
+	#abstVec abst;
+
+	#assigns {
+		setFeatures(abst, s_load) = 0;
+		setFeatures(abst, s_compare) = 0;
+		setFeatures(abst, s_logic) = 0;
+	}
+}
+
+#concrete
+{
+	#clone vec = VT_BYTECODE;
+	#query veq = VT_BYTECODE;
+
+	#filters {
+		sourceOfSize(veq) > 0 && sourceOfSize(vec) > 0 &&
+			sourceOf(vec)(f_sc_16_CONDITIONAL_EXPRESSION) < sourceOf(veq)(f_sc_16_CONDITIONAL_EXPRESSION) &&
+			sourceOf(vec)(f_sc_6_ASSERT_STATEMENT) > sourceOf(veq)(f_sc_6_ASSERT_STATEMENT);
+	}
+}
+
+
