@@ -27,17 +27,20 @@ indexAccessor: ID SQUAREBRACEOPEN DIGITS SQUAREBRACECLOSE;
 gAssign:'setFeatures' OPENBRACE ID COMMA ID CLOSEBRACE ASSIGN expr SEMICOLON ;
 dAssign:'setFeaturesByRange' OPENBRACE numRange CLOSEBRACE ASSIGN expr SEMICOLON;
 expr: exp+;
-exp: paranthesizedExp | exp MULDIV exp | exp ADDSUB exp | accessor |DIGITS | sumOfFeatures  | sourceOf | sourceOfSize|totalCount|absFeature |id;
+exp: paranthesizedExp | exp MULDIV exp | exp ADDSUB exp | accessor |DIGITS | sumOfFeatures  | sourceOf |byteCodeOf|byteCodeSizeOf| sourceOfSize|totalCount|absFeature |id;
 paranthesizedExp: OPENBRACE exp CLOSEBRACE;
 sumOfFeatures :'sumOfFeatures' OPENBRACE (ID | sourceOf) COMMA (ID|sourceOf) CLOSEBRACE;
 sourceOf:'sourceOf' OPENBRACE ID CLOSEBRACE OPENBRACE (ID|DIGITS) CLOSEBRACE;
+byteCodeOf:'byteCodeOf' OPENBRACE ID CLOSEBRACE OPENBRACE (ID|DIGITS) CLOSEBRACE;
+byteCodeSizeOf:'byteCodeSizeOf' OPENBRACE ID CLOSEBRACE;
 sourceOfSize:'sourceOfSize' OPENBRACE ID CLOSEBRACE;
 absFeature:'abs' OPENBRACE ID CLOSEBRACE;
 
 //Concretization Declarations
-conDecl: cloneVector queryVector concFtrDecl;
+conDecl: cloneVector queryVector inlineIndex? concFtrDecl;
 queryVector:'#query' ID ASSIGN vectorType SEMICOLON;
 cloneVector:'#clone' ID ASSIGN vectorType SEMICOLON;
+inlineIndex : '#inlineIndex' ASSIGN ('query'|'target') SEMICOLON;
 
 vectorType: 'VT_SOURCECODE'|'VT_BYTECODE'|'VT_BYTECODE_INLINED';
 

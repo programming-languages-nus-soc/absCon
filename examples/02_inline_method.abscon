@@ -203,6 +203,7 @@
 {
 	#clone vec = VT_BYTECODE;
 	#query veq = VT_BYTECODE_INLINED;
+	#inlineIndex = target;
 
 	#filters {
 		forall (vi in inlinedInto(veq)): {

@@ -316,6 +316,30 @@ public class AbsConBaseListener implements AbsConListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterByteCodeOf(AbsConParser.ByteCodeOfContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitByteCodeOf(AbsConParser.ByteCodeOfContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterByteCodeSizeOf(AbsConParser.ByteCodeSizeOfContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitByteCodeSizeOf(AbsConParser.ByteCodeSizeOfContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterSourceOfSize(AbsConParser.SourceOfSizeContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -371,6 +395,18 @@ public class AbsConBaseListener implements AbsConListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCloneVector(AbsConParser.CloneVectorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterInlineIndex(AbsConParser.InlineIndexContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitInlineIndex(AbsConParser.InlineIndexContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -161,7 +161,7 @@ bool isValidImitation= true;
 #if(${assign.expr.isInlinedInto()} && ${assign.expr.isConditionalExpression()})
 for (int i = 1; i < ${assign.expr.getInlineObject().getVar()}->methodIDs.size(); i++) {
     vector<VectorReader*>* clone_target_vectors =
-    			VectorReader::getMethodVectorsFromIndex(sourcecode_vidx,
+    			VectorReader::getMethodVectorsFromIndex(${inlineIndex},
     					${assign.expr.getInlineObject().getVar()}->methodIDs[i]);
     if(	(*clone_target_vectors).size() == 0){
         break;
@@ -209,14 +209,14 @@ isValidImitation = false;
 
 #if($filter.class.simpleName =="InlinedInto")
 #if(${filter.getInlineCheckType()} =="ForAll" )
-isValidImitation = isValidImitation && checkInlinedInto(${filter.getVar()},$vectorNames.query,$vectorNames.clone,query_vidx);
+isValidImitation = isValidImitation && checkInlinedInto(${filter.getVar()},$vectorNames.query,$vectorNames.clone,${inlineIndex});
 #end
 #end
 #if(${filter.getInlineCheckType()} =="Exists" && !${filter.isCompare()})
 bool isFound_$foreach.count = false;
 for (int i = 1; i < ${filter.getVar()}->methodIDs.size(); i++) {
     vector<VectorReader*>* clone_target_vectors =
-    			VectorReader::getMethodVectorsFromIndex(sourcecode_vidx,
+    			VectorReader::getMethodVectorsFromIndex(${inlineIndex},
     					${filter.getVar()}->methodIDs[i]);
     if(	(*clone_target_vectors).size() == 0){
         isFound_$foreach.count = false;

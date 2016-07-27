@@ -161,6 +161,18 @@ public interface AbsConVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSourceOf(AbsConParser.SourceOfContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AbsConParser#byteCodeOf}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitByteCodeOf(AbsConParser.ByteCodeOfContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AbsConParser#byteCodeSizeOf}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitByteCodeSizeOf(AbsConParser.ByteCodeSizeOfContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AbsConParser#sourceOfSize}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -190,6 +202,12 @@ public interface AbsConVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitCloneVector(AbsConParser.CloneVectorContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AbsConParser#inlineIndex}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInlineIndex(AbsConParser.InlineIndexContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link AbsConParser#vectorType}.
 	 * @param ctx the parse tree

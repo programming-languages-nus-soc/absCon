@@ -258,6 +258,26 @@ public interface AbsConListener extends ParseTreeListener {
 	 */
 	void exitSourceOf(AbsConParser.SourceOfContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AbsConParser#byteCodeOf}.
+	 * @param ctx the parse tree
+	 */
+	void enterByteCodeOf(AbsConParser.ByteCodeOfContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AbsConParser#byteCodeOf}.
+	 * @param ctx the parse tree
+	 */
+	void exitByteCodeOf(AbsConParser.ByteCodeOfContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AbsConParser#byteCodeSizeOf}.
+	 * @param ctx the parse tree
+	 */
+	void enterByteCodeSizeOf(AbsConParser.ByteCodeSizeOfContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AbsConParser#byteCodeSizeOf}.
+	 * @param ctx the parse tree
+	 */
+	void exitByteCodeSizeOf(AbsConParser.ByteCodeSizeOfContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AbsConParser#sourceOfSize}.
 	 * @param ctx the parse tree
 	 */
@@ -307,6 +327,16 @@ public interface AbsConListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCloneVector(AbsConParser.CloneVectorContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AbsConParser#inlineIndex}.
+	 * @param ctx the parse tree
+	 */
+	void enterInlineIndex(AbsConParser.InlineIndexContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AbsConParser#inlineIndex}.
+	 * @param ctx the parse tree
+	 */
+	void exitInlineIndex(AbsConParser.InlineIndexContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AbsConParser#vectorType}.
 	 * @param ctx the parse tree

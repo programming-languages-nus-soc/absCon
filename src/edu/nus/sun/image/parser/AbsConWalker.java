@@ -19,6 +19,8 @@ import java.util.*;
 public class AbsConWalker implements   AbsConListener {
 
 
+
+
     public class NumberRange{
         public String startIndex;
         public String endIndex;
@@ -320,6 +322,9 @@ public class AbsConWalker implements   AbsConListener {
     boolean isConditionalExpression;
     boolean isOrExpr;
     boolean isEnumerate;
+    boolean isbyteCodeSizeOf;
+    boolean isByteCodeOf;
+    String inlineIndex = "query_vidx";
 
 
     @Override public void enterProgram(AbsConParser.ProgramContext ctx) {
@@ -598,14 +603,6 @@ public class AbsConWalker implements   AbsConListener {
         isSourceOf = true;
         String exp;
         exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+ctx.getChild(5) +")";
-//        if(Integer.parseInt(ctx.getChild(8).getText())==0) {
-//            exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"sourcecode_vectorindex"+","+ctx.getChild(5) +")";
-//        } else{
-//            exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"sourcecode_vectorindex"+ctx.getChild(8)+ ","+ctx.getChild(5) +")";
-//        }
-//        if(Integer.parseInt(ctx.getChild(8).getText())==4){
-//            exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"vectorindex"+ ","+ctx.getChild(5) +")";
-//        }
         if(!isSumOfFeatures){
             expressionList.add(exp);
         }
@@ -617,17 +614,39 @@ public class AbsConWalker implements   AbsConListener {
     }
 
     @Override
+    public void enterByteCodeOf(AbsConParser.ByteCodeOfContext ctx) {
+        isByteCodeOf = true;
+        String exp;
+        exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+ctx.getChild(5) +")";
+        if(!isSumOfFeatures){
+            expressionList.add(exp);
+        }
+    }
+
+    @Override
+    public void exitByteCodeOf(AbsConParser.ByteCodeOfContext ctx) {
+        isByteCodeOf = false;
+    }
+
+    @Override
+    public void enterByteCodeSizeOf(AbsConParser.ByteCodeSizeOfContext ctx) {
+        String exp;
+        exp = ctx.getChild(0)+"("+ ctx.getChild(2) +")";
+        isbyteCodeSizeOf = true;
+        if(isCondition){
+            expressionList.add(exp);
+        }
+    }
+
+    @Override
+    public void exitByteCodeSizeOf(AbsConParser.ByteCodeSizeOfContext ctx) {
+        isbyteCodeSizeOf = false;
+    }
+
+    @Override
     public void enterSourceOfSize(AbsConParser.SourceOfSizeContext ctx) {
         String exp;
         exp = ctx.getChild(0)+"("+ ctx.getChild(2) +")";
-//        if(Integer.parseInt(ctx.getChild(5).getText())==0){
-//             exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"sourcecode_vectorindex"+")";
-//        } else{
-//             exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"sourcecode_vectorindex"+ctx.getChild(5)+")";
-//        }
-//        if(Integer.parseInt(ctx.getChild(5).getText())==4){
-//            exp = ctx.getChild(0)+"("+ ctx.getChild(2) +","+"vectorindex"+")";
-//        }
         isSourceSizeOf = true;
         if(isCondition){
             expressionList.add(exp);
@@ -665,6 +684,18 @@ public class AbsConWalker implements   AbsConListener {
 
     @Override
     public void exitCloneVector(AbsConParser.CloneVectorContext ctx) {
+
+    }
+
+    @Override
+    public void enterInlineIndex(AbsConParser.InlineIndexContext ctx) {
+        if(ctx.getChild(2).getText().compareTo("target") == 0){
+            inlineIndex = "target_vidx";
+        }
+    }
+
+    @Override
+    public void exitInlineIndex(AbsConParser.InlineIndexContext ctx) {
 
     }
 
@@ -1203,6 +1234,7 @@ public class AbsConWalker implements   AbsConListener {
         context.put("vectorNames",typeOfVariableAndName);
         context.put("filterList",filters);
         context.put("assignList",simpleAssignList);
+        context.put("inlineIndex",inlineIndex);
         StringWriter writer = new StringWriter();
         t.merge(context,writer);
         writeToFile("Concretization.cpp",writer.toString());
