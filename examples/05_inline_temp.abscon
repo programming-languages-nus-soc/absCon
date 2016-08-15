@@ -32,14 +32,6 @@
 	f_43_aload_1 = OP_aload_1;
 	f_44_aload_2 = OP_aload_2;
 	f_45_aload_3 = OP_aload_3;
-	f_46_iaload = OP_iaload;
-	f_47_laload = OP_laload;
-	f_48_faload = OP_faload;
-	f_49_daload = OP_daload;
-	f_50_aaload = OP_aaload;
-	f_51_baload = OP_baload;
-	f_52_caload = OP_caload;
-	f_53_saload = OP_saload;
 
 	// Set of load operations.
 	s_load = setOf(
@@ -67,15 +59,7 @@
 		f_42_aload_0,
 		f_43_aload_1,
 		f_44_aload_2,
-		f_45_aload_3,
-		f_46_iaload,
-		f_47_laload,
-		f_48_faload,
-		f_49_daload,
-		f_50_aaload,
-		f_51_baload,
-		f_52_caload,
-		f_53_saload
+		f_45_aload_3
 	);
 
 	// Store operations.
@@ -104,14 +88,6 @@
 	f_76_astore_1 = OP_astore_1;
 	f_77_astore_2 = OP_astore_2;
 	f_78_astore_3 = OP_astore_3;
-	f_79_iastore = OP_iastore;
-	f_80_lastore = OP_lastore;
-	f_81_fastore = OP_fastore;
-	f_82_dastore = OP_dastore;
-	f_83_aastore = OP_aastore;
-	f_84_bastore = OP_bastore;
-	f_85_castore = OP_castore;
-	f_86_sastore = OP_sastore;
 
 	// Set of store operations.
 	s_store = setOf(
@@ -139,15 +115,7 @@
 		f_75_astore_0,
 		f_76_astore_1,
 		f_77_astore_2,
-		f_78_astore_3,
-		f_79_iastore,
-		f_80_lastore,
-		f_81_fastore,
-		f_82_dastore,
-		f_83_aastore,
-		f_84_bastore,
-		f_85_castore,
-		f_86_sastore
+		f_78_astore_3
 	);
 
 }
