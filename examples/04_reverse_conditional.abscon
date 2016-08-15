@@ -233,5 +233,14 @@
 			|| (veq[161]-vec[161]!=0 &&  veq[161]-vec[161] == vec[162]-veq[162])
 			|| (veq[163]-vec[163]!=0 &&  veq[163]-vec[163] == vec[164]-veq[164])
 			|| (veq[165]-vec[165]!=0 &&  veq[165]-vec[165] == vec[166]-veq[166]);
+		not(veq[149]-vec[149]!=0 && veq[149]-vec[149] != vec[150]-veq[150])
+			&& not(veq[151]-vec[151]!=0 &&  veq[151]-vec[151] != vec[152]-veq[152])
+			&& not(veq[153]-vec[153]!=0 &&  veq[153]-vec[153] != vec[154]-veq[154])
+			&& not(veq[155]-vec[155]!=0 &&  veq[155]-vec[155] != vec[156]-veq[156])
+			&& not(veq[157]-vec[157]!=0 &&  veq[157]-vec[157] != vec[158]-veq[158])
+			&& not(veq[159]-vec[159]!=0 &&  veq[159]-vec[159] != vec[160]-veq[160])
+			&& not(veq[161]-vec[161]!=0 &&  veq[161]-vec[161] != vec[162]-veq[162])
+			&& not(veq[163]-vec[163]!=0 &&  veq[163]-vec[163] != vec[164]-veq[164])
+			&& not(veq[165]-vec[165]!=0 &&  veq[165]-vec[165] != vec[166]-veq[166]);
 	}
 }

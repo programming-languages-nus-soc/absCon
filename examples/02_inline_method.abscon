@@ -67,15 +67,7 @@
 		f_42_aload_0,
 		f_43_aload_1,
 		f_44_aload_2,
-		f_45_aload_3,
-		f_46_iaload,
-		f_47_laload,
-		f_48_faload,
-		f_49_daload,
-		f_50_aaload,
-		f_51_baload,
-		f_52_caload,
-		f_53_saload
+		f_45_aload_3
 	);
 
 	// Store operations.
@@ -139,15 +131,7 @@
 		f_75_astore_0,
 		f_76_astore_1,
 		f_77_astore_2,
-		f_78_astore_3,
-		f_79_iastore,
-		f_80_lastore,
-		f_81_fastore,
-		f_82_dastore,
-		f_83_aastore,
-		f_84_bastore,
-		f_85_castore,
-		f_86_sastore
+		f_78_astore_3
 	);
 
 	// Const operations.
@@ -166,10 +150,14 @@
 	f_13_fconst_2 = OP_fconst_2;
 	f_14_dconst_0 = OP_dconst_0;
 	f_15_dconst_1 = OP_dconst_1;
+	f_16_bipush = OP_bipush;
+	f_17_sipush = OP_sipush;
+	f_18_ldc = OP_ldc;
+	f_19_ldc_w = OP_ldc_w;
+	f_20_ldc2_w = OP_ldc2_w;
 
 	// Set of const operations.
 	s_const = setOf(
-		f_1_aconst_null,
 		f_2_iconst_m1,
 		f_3_iconst_0,
 		f_4_iconst_1,
@@ -183,7 +171,12 @@
 		f_12_fconst_1,
 		f_13_fconst_2,
 		f_14_dconst_0,
-		f_15_dconst_1
+		f_15_dconst_1,
+		f_16_bipush,
+		f_17_sipush,
+		f_18_ldc,
+		f_19_ldc_w,
+		f_20_ldc2_w
 	);
 }
 
@@ -207,7 +200,7 @@
 
 	#filters {
 		forall (vi in inlinedInto(veq)): {
-			veq == vi;
+			veq != vi;
 		};
 	}
 }
